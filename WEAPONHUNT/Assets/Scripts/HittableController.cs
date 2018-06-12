@@ -10,6 +10,7 @@ namespace Assets.Scripts
     {
         public bool CanHit { get; set; }
         public GameObject AimHit { get; set; }
+        public GameObject Hit { get; set; }
 
         public abstract bool IsHitting();
         public abstract void GettingHit(float power);

@@ -48,6 +48,9 @@ namespace Assets.Scripts
         public const string GANGMAN_PUNCH = "GangmanPunch";
         public const string GANGMAN_PUNCH_L = "GangmanPunch_l";
 
+
+        public const string HITTING = "Hitting";
+
         public const float TIME_PUNCH = 0.5f;
         public const float TIME_JUMP = 1.2f;
         public const float COOL_DOWN_TIME_PUNCH = 1f;

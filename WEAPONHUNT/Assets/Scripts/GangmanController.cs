@@ -39,7 +39,7 @@ namespace Assets.Scripts
                 //CanHitPlayer();
 
             Move();
-            Attack();
+            //Attack();
         }
 
         bool ValidateTimeToWait()
@@ -48,9 +48,9 @@ namespace Assets.Scripts
             if (GangmanState == GangmanAction.Punch)
             {
                 wait = time <= GameController.TIME_PUNCH;
+                GangmanState = GangmanAction.Cooldown;
                 if (!wait)
                 {
-                    GangmanState = GangmanAction.Cooldown;
                 }
             } else if (GangmanState == GangmanAction.Cooldown)
             {
@@ -111,13 +111,37 @@ namespace Assets.Scripts
             {
                 GangmanState = GangmanAction.Punch;
                 Animator animation = animator.GetComponent<Animator>();
+
+                HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
+                HitController hcontrollerL = null;
+                HitController hcontrollerR = null;
+
+                foreach (HitController hcontroller in hcontrollers)
+                {
+                    if (hcontroller.gameObject.tag == "hitRight")
+                    {
+                        hcontrollerR = hcontroller;
+                    }
+                    else if (hcontroller.gameObject.tag == "hitLeft")
+                    {
+                        hcontrollerL = hcontroller;
+                    }
+                }
                 if (facingRight)
                 {
                     animation.Play(GameController.GANGMAN_PUNCH);
+                    if (hcontrollerR != null)
+                    {
+                        hcontrollerR.GetActionHit();
+                    }
                 }
                 else
                 {
                     animation.Play(GameController.GANGMAN_PUNCH_L);
+                    if (hcontrollerL != null)
+                    {
+                        hcontrollerL.GetActionHit();
+                    }
                 }
 
                 if (CanHit && AimHit!= null)

@@ -96,18 +96,42 @@ public class PlayerController: HittableController
         {
             playerState = PlayerAction.Punch;
             Animator animation = animator.GetComponent<Animator>();
+            HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
+            HitController hcontrollerL = null;
+            HitController hcontrollerR = null;
+
+            foreach (HitController hcontroller in hcontrollers)
+            {
+                if (hcontroller.gameObject.tag == "hitRight")
+                {
+                    hcontrollerR = hcontroller;
+                }
+                else if (hcontroller.gameObject.tag == "hitLeft")
+                {
+                    hcontrollerL = hcontroller;
+                }
+            }
             if (facingRight)
             {
                 animation.Play(GameController.PUNCH);
+
+                if (hcontrollerR != null)
+                {
+                    hcontrollerR.GetActionHit();
+                }
             } else
             {
                 animation.Play(GameController.PUNCH_L);
+                if (hcontrollerR != null)
+                {
+                    hcontrollerL.GetActionHit();
+                }
             }
             if (CanHit && AimHit != null)
             {
                 HittableController hController = AimHit.GetComponent<HittableController>();
                 if (hController != null)
-                {
+                {                                        
                     hController.GettingHit(GameController.ATTACK_POWER_1);
                 }
             }
@@ -222,6 +246,6 @@ public class PlayerController: HittableController
 
     public override void GettingHit(float power)
     {
-        print(gameObject.tag + " is getting Hit : " + power);
+        print(gameObject.tag + " is getting Hit : " + power);   
     }
 }

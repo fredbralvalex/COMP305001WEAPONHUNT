@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class HitController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public GameObject hit;
+    public bool Destroyed { get; set; }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -16,7 +19,7 @@ public class HitController : MonoBehaviour {
 	}
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //print("Hit Enter: " + other.gameObject.tag);
+        print("Hit Enter: " + other.gameObject.tag);
         HitReacheable(other, true);
     }
 
@@ -28,7 +31,7 @@ public class HitController : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        //print("Hit Exit: " + other.gameObject.tag);
+        print("Hit Exit: " + other.gameObject.tag);
         HitReacheable(other, false);
     }
 
@@ -36,16 +39,28 @@ public class HitController : MonoBehaviour {
     {
         GameObject obj = transform.parent.gameObject;
         HittableController objController = obj.GetComponent<HittableController>();
-        HittableController oController = other.gameObject.GetComponent<HittableController>();
-        if (oController == null)
+        if (canHit)
         {
-            canHit = false;
-        } else
-        {
-            //print("Can Hit: " + obj.gameObject.tag + " :: " + other.gameObject.tag + " > " + canHit);
+            HittableController oController = other.gameObject.GetComponent<HittableController>();
+            if (oController == null)
+            {
+                canHit = false;
+            } else
+            {
+                //print("Can Hit: " + obj.gameObject.tag + " :: " + other.gameObject.tag + " > " + canHit);
+                //objController.Hit = GetActionHit();
+            }
         }
         objController.CanHit = canHit;
         objController.AimHit = other.gameObject;
+    }
+
+    public GameObject GetActionHit()
+    {
+        GameObject clone;
+        clone = Instantiate(hit, hit.transform.position, hit.transform.rotation) as GameObject;
+        clone.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+        return clone;
     }
 
     /*
