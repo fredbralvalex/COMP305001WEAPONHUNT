@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera_Move : MonoBehaviour {
+public class CameraController : MonoBehaviour {
 
     [SerializeField]
     private float xMax;
