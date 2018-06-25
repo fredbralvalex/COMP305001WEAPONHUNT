@@ -11,6 +11,15 @@ TagManager:
   - hit
   - hitLeft
   - hitRight
+  - GameBar
+  - Life
+  - Blood
+  - hitLeftP
+  - hitLeftK
+  - hitRightP
+  - hitRightK
+  - RespawnLeft
+  - RespawnRight
   layers:
   - Default
   - TransparentFX
@@ -22,9 +31,9 @@ TagManager:
   - 
   - Hitting
   - Background
-  - 
-  - 
-  - 
+  - GameBar
+  - Floor
+  - MainGame
   - 
   - 
   - 
@@ -51,6 +60,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Floor
+    uniqueID: 421948039
+    locked: 0
+  - name: MainGame
+    uniqueID: 3885648557
+    locked: 0
   - name: Hitting
     uniqueID: 3939251385
+    locked: 0
+  - name: GameBar
+    uniqueID: 3284895027
     locked: 0

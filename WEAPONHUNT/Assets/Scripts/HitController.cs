@@ -14,24 +14,25 @@ public class HitController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Update () {        
+    }
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        print("Hit Enter: " + other.gameObject.tag);
-        HitReacheable(other, true);
+        //print("Hit Enter: " + other.gameObject.tag);
+            HitReacheable(other, true);
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
         //print("Hit Stay: " + other.gameObject.tag);
-        //HitReacheable(other, true);
+        HitReacheable(other, true);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        print("Hit Exit: " + other.gameObject.tag);
+        //print("Hit Exit: " + other.gameObject.tag);
         HitReacheable(other, false);
     }
 
@@ -51,6 +52,7 @@ public class HitController : MonoBehaviour {
                 //objController.Hit = GetActionHit();
             }
         }
+        //canHit = true;
         objController.CanHit = canHit;
         objController.AimHit = other.gameObject;
     }

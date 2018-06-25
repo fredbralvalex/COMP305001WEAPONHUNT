@@ -15,6 +15,26 @@ public class EnemySensorController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        OnTrigger(other);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        OnTrigger(other);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        GameObject enemy = transform.parent.gameObject;
+        EnemyController eController = enemy.GetComponent<EnemyController>();
+        if (other.gameObject.tag == "Player")
+        {
+            eController.IdleCommand();
+        }
+    }
+
+    private void OnTrigger(Collider2D other)
+    {
         GameObject enemy = transform.parent.gameObject;
         EnemyController eController = enemy.GetComponent<EnemyController>();
         Vector2 ePos = transform.parent.transform.position;
@@ -26,21 +46,12 @@ public class EnemySensorController : MonoBehaviour {
             {
                 eController.FaceRightCommand();
                 //print("Enemy Facing Right! ");
-            } else
+            }
+            else
             {
                 //print("Enemy Facing Left! ");
                 eController.FaceLeftCommand();
             }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        GameObject enemy = transform.parent.gameObject;
-        EnemyController eController = enemy.GetComponent<EnemyController>();
-        if (other.gameObject.tag == "Player")
-        {
-            eController.IdleCommand();
         }
     }
 }

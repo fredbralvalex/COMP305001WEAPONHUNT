@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerController: HittableController
 {
 
-    public enum PlayerAction { Move, Idle, Jump, Punch, Kick };
-    PlayerAction playerState = PlayerAction.Idle;
+    public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Fall, Defeated, End, GetUp };
+    public PlayerAction playerState = PlayerAction.Idle;
     private double time;
     float maxJumpHigh;
 
@@ -18,33 +18,91 @@ public class PlayerController: HittableController
     public float moveX;
     Animator animator;
     SpriteRenderer sprite;
+    Rigidbody2D playerRB;
+    GameController gameController;
 
     void Start() {
         animator = gameObject.GetComponent<Animator>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
+        playerRB = gameObject.GetComponent<Rigidbody2D>();
+        GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
+        gameController = gObj.GetComponent<GameController>();
     }
 	
 	void Update () {
-        PerformeJumpFall();
+        Blinking();
+        //playerRB.mass = 1;
+        //playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+        if (playerState == PlayerAction.Jump)
+        {
+
+            PerformeJumpFall();
+        }
         time += Time.deltaTime;
         if (ValidateTimeToWait())
         {
             return;
-        }        
-        Move();
-        Attack();
-        jump();
+        }
+        time = 0;
 
+        if (playerState == PlayerAction.Defeated)
+        {
+            playerState = PlayerAction.End;
+        }
+        if (playerState == PlayerAction.GetUp && Hits == 0)
+        {
+            //New Chancd
+            playerState = PlayerAction.Idle;
+        }
+
+        if (gameController.LifeAmount - Hits <= 0)
+        {
+            if (playerState == PlayerAction.End)
+            {
+                //gameObject.SetActive(false);
+                //Destroy(gameObject);
+                if (gameController.NewChancePlayer())
+                {
+                    playerState = PlayerAction.GetUp;
+                    Hits = 0;
+                    UpdateLifeBar();
+                    PlayGetUp();
+                }
+
+            }
+            else
+            {
+                playerState = PlayerAction.Defeated;
+                PlayDefeated();
+            }
+        }
+        else
+        {
+            Move();
+            Attack();
+            Jump();
+        }
     }
 
     bool ValidateTimeToWait()
     {
         bool wait = false;
-        if (playerState == PlayerAction.Punch)
+        if (playerState == PlayerAction.Punch && gameController.LifeAmount - Hits > 0)
         {
             wait = time <= GameController.TIME_PUNCH;
-        } else if (playerState == PlayerAction.Jump) {
+        } else if (playerState == PlayerAction.Kick && gameController.LifeAmount - Hits > 0)
+        {
+            wait = time <= GameController.TIME_KICK;
+        } else if (playerState == PlayerAction.Jump && gameController.LifeAmount - Hits > 0) {
             wait = time <= GameController.TIME_JUMP;
+        }
+        else if (playerState == PlayerAction.Defeated)
+        {
+            wait = time <= GameController.TIME_DEFEATED;
+        }
+        else if (playerState == PlayerAction.GetUp)
+        {
+            wait = time <= GameController.TIME_GET_UP;
         }
         else
         {
@@ -95,52 +153,102 @@ public class PlayerController: HittableController
         if (Input.GetKeyDown(GameController.ATTACK_1))
         {
             playerState = PlayerAction.Punch;
-            Animator animation = animator.GetComponent<Animator>();
-            HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
-            HitController hcontrollerL = null;
-            HitController hcontrollerR = null;
-
-            foreach (HitController hcontroller in hcontrollers)
-            {
-                if (hcontroller.gameObject.tag == "hitRight")
-                {
-                    hcontrollerR = hcontroller;
-                }
-                else if (hcontroller.gameObject.tag == "hitLeft")
-                {
-                    hcontrollerL = hcontroller;
-                }
-            }
-            if (facingRight)
-            {
-                animation.Play(GameController.PUNCH);
-
-                if (hcontrollerR != null)
-                {
-                    hcontrollerR.GetActionHit();
-                }
-            } else
-            {
-                animation.Play(GameController.PUNCH_L);
-                if (hcontrollerR != null)
-                {
-                    hcontrollerL.GetActionHit();
-                }
-            }
-            if (CanHit && AimHit != null)
-            {
-                HittableController hController = AimHit.GetComponent<HittableController>();
-                if (hController != null)
-                {                                        
-                    hController.GettingHit(GameController.ATTACK_POWER_1);
-                }
-            }
+            Attack(true);
         }
         else if (Input.GetKeyDown(GameController.ATTACK_2))
         {
             playerState = PlayerAction.Kick;
-            //TODO
+            Attack(false);
         }        
+    }
+
+    private void Attack(bool isPunch)
+    {
+        Animator animation = animator.GetComponent<Animator>();
+        HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
+        HitController hcontrollerL = null;
+        HitController hcontrollerR = null;
+
+        foreach (HitController hcontroller in hcontrollers)
+        {
+
+            if (isPunch)
+            {
+                if (hcontroller.gameObject.tag == "hitRightP")
+                {
+                    hcontrollerR = hcontroller;
+                }
+                else if (hcontroller.gameObject.tag == "hitLeftP")
+                {
+                    hcontrollerL = hcontroller;
+                }
+            }
+            else
+            {
+                if (hcontroller.gameObject.tag == "hitRightK")
+                {
+                    hcontrollerR = hcontroller;
+                }
+                else if (hcontroller.gameObject.tag == "hitLeftK")
+                {
+                    hcontrollerL = hcontroller;
+                }
+            }
+        }
+
+
+        if (facingRight)
+        {
+            if (isPunch)
+            {
+                animation.Play(GameController.PUNCH);
+            } else
+            {
+                animation.Play(GameController.KICK);
+            }
+        }
+        else
+        {
+            if (isPunch)
+            {
+                animation.Play(GameController.PUNCH_L);
+            }
+            else
+            {
+                animation.Play(GameController.KICK_L);
+            }
+        }
+
+        if (CanHit && AimHit != null)
+        {
+            HittableController hController = AimHit.GetComponent<HittableController>();
+            if (hController != null)
+            {
+                if (facingRight)
+                {
+                    if (hcontrollerR != null)
+                    {
+                        hcontrollerR.GetActionHit();
+                    }
+                }
+                else
+                {
+                    if (hcontrollerL != null)
+                    {
+                        hcontrollerL.GetActionHit();
+                    }
+                }
+
+                if (isPunch)
+                {
+                    hController.GettingHit(GameController.ATTACK_PUNCH);
+                }
+                else
+                {
+                    hController.GettingHit(GameController.ATTACK_KICK);
+                }
+            }
+        }
     }
 
     private void MoveTransform(Vector2 direction)
@@ -159,7 +267,7 @@ public class PlayerController: HittableController
         }
     }
 
-    private void jump()
+    private void Jump()
     {
         if (Input.GetKeyDown(GameController.JUMP))
         {
@@ -205,12 +313,12 @@ public class PlayerController: HittableController
             {
                 //going high       
                 //state = Movement.Jump;
-                nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime;
+                nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime * 1.2f;
                 //print("Up");
             }
             else
             {
-                //print("Down");
+                print("Down");
                 //Falling
             }
         }        
@@ -224,16 +332,30 @@ public class PlayerController: HittableController
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        print(other.gameObject.tag);
+        //print(other.gameObject.tag);
         if (other.gameObject.tag == "Ground")
         {
             CalcMaxJumpHigh();
+            playerState= PlayerAction.Idle;
+        }
+        else if (other.gameObject.tag == "Gangman")
+        {
+            Rigidbody2D rigidbody = other.gameObject.GetComponent<Rigidbody2D>();
+            //rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            //playerRB.mass = 100;
+        }
+        else if (other.gameObject.tag == "Blood")
+        {
+            Hits--;
+            UpdateLifeBar();
+            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
         }
     }
 
     private void CalcMaxJumpHigh()
     {
-        float varRun = 1;
+        float varRun = 2;
         float varSlide = 1;
         maxJumpHigh = transform.localPosition.y + sprite.bounds.size.y * varRun * varSlide;
        
@@ -246,6 +368,83 @@ public class PlayerController: HittableController
 
     public override void GettingHit(float power)
     {
-        print(gameObject.tag + " is getting Hit : " + power);   
+        GameObject  gObj = GameObject.FindGameObjectWithTag("GameBar");
+        GameController gController = gObj.GetComponent<GameController>();
+        gController.GangmanScoreN++;
+        Hits++;
+        //print(gameObject.tag + " is getting Hit : " + power);
+        Blink = true;
+        UpdateLifeBar();
+        PushedBack(power);
+    }
+
+    private void PushedBack(float power)
+    {
+        Vector2 direction;
+        if(facingRight)
+        {
+            direction = Vector2.left;
+        } else
+        {
+            direction = Vector2.right;
+
+        }
+
+        Vector2 nextPosition = direction * power/10;
+        transform.localPosition += (Vector3)nextPosition;
+    }
+
+    private void UpdateLifeBar()
+    {
+        GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
+        GameController gController = gObj.GetComponent<GameController>();
+
+        if ((float)Hits / gController.LifeAmount <= 1)
+        {
+            gController.LifeBar.fillAmount = 1.0f - (float)Hits / gController.LifeAmount;
+            if (gController.LifeBar.fillAmount > 0.75)
+            {
+                gController.LifeBar.color = Color.green;
+            }
+            else if (gController.LifeBar.fillAmount > 0.25 && gController.LifeBar.fillAmount <= 0.75)
+            {
+                gController.LifeBar.color = Color.yellow;
+            }
+            else if (gController.LifeBar.fillAmount > 0 && gController.LifeBar.fillAmount <= 0.25)
+            {
+                gController.LifeBar.color = Color.red;
+            }
+        }
+    }
+
+    protected override SpriteRenderer GetSprite()
+    {
+        return sprite;
+    }
+
+    private void PlayDefeated()
+    {
+        Animator animation = animator.GetComponent<Animator>();
+        if (facingRight)
+        {
+            animation.Play(GameController.CHAR_FALL);
+        }
+        else
+        {
+            animation.Play(GameController.CHAR_FALL_L);
+        }
+    }
+
+    private void PlayGetUp()
+    {
+        Animator animation = animator.GetComponent<Animator>();
+        if (facingRight)
+        {
+            animation.Play(GameController.CHAR_GET_UP);
+        }
+        else
+        {
+            animation.Play(GameController.CHAR_GET_UP_L);
+        }
     }
 }
