@@ -121,7 +121,7 @@ public class PlayerController: HittableController
             //move left
             facingRight = false;
             Animator animation = animator.GetComponent<Animator>();
-            animation.Play(GameController.RUN_L);
+            animation.Play(RUN_L);
             MoveTransform(Vector2.left);
         }
         else if (Input.GetKeyDown(GameController.RIGHT) || moveHorizontal > 0)
@@ -130,7 +130,7 @@ public class PlayerController: HittableController
             //move right
             facingRight = true;
             Animator animation = animator.GetComponent<Animator>();
-            animation.Play(GameController.RUN);
+            animation.Play(RUN);
             MoveTransform(Vector2.right);
         }
         else
@@ -139,11 +139,11 @@ public class PlayerController: HittableController
             Animator animation = animator.GetComponent<Animator>();
             if (facingRight)
             {
-                animation.Play(GameController.IDLE);
+                animation.Play(IDLE);
             }
             else
             {
-                animation.Play(GameController.IDLE_L);
+                animation.Play(IDLE_L);
             }
         }
     }
@@ -201,21 +201,21 @@ public class PlayerController: HittableController
         {
             if (isPunch)
             {
-                animation.Play(GameController.PUNCH);
+                animation.Play(PUNCH);
             } else
             {
-                animation.Play(GameController.KICK);
+                animation.Play(KICK);
             }
         }
         else
         {
             if (isPunch)
             {
-                animation.Play(GameController.PUNCH_L);
+                animation.Play(PUNCH_L);
             }
             else
             {
-                animation.Play(GameController.KICK_L);
+                animation.Play(KICK_L);
             }
         }
 
@@ -276,11 +276,11 @@ public class PlayerController: HittableController
             Animator animation = animator.GetComponent<Animator>();
             if (facingRight)
             {
-                animation.Play(GameController.JUMP_AN);
+                animation.Play(JUMP_AN);
             }
             else
             {
-                animation.Play(GameController.JUMP_AN_L);
+                animation.Play(JUMP_AN_L);
             }            
         }        
     }
@@ -427,11 +427,11 @@ public class PlayerController: HittableController
         Animator animation = animator.GetComponent<Animator>();
         if (facingRight)
         {
-            animation.Play(GameController.CHAR_FALL);
+            animation.Play(CHAR_FALL);
         }
         else
         {
-            animation.Play(GameController.CHAR_FALL_L);
+            animation.Play(CHAR_FALL_L);
         }
     }
 
@@ -440,11 +440,32 @@ public class PlayerController: HittableController
         Animator animation = animator.GetComponent<Animator>();
         if (facingRight)
         {
-            animation.Play(GameController.CHAR_GET_UP);
+            animation.Play(CHAR_GET_UP);
         }
         else
         {
-            animation.Play(GameController.CHAR_GET_UP_L);
+            animation.Play(CHAR_GET_UP_L);
         }
     }
+
+    public const string IDLE = "CharIdle";
+    public const string IDLE_L = "CharIdle_l";
+
+    public const string RUN = "CharRun";
+    public const string RUN_L = "CharRun_l";
+
+    public const string JUMP_AN = "CharJump";
+    public const string JUMP_AN_L = "CharJump_l";
+
+    public const string PUNCH = "CharPunch";
+    public const string PUNCH_L = "CharPunch_l";
+
+    public const string KICK = "CharKick";
+    public const string KICK_L = "CharKick_l";
+
+    public const string CHAR_FALL = "CharDefeated";
+    public const string CHAR_FALL_L = "CharDefeated_l";
+
+    public const string CHAR_GET_UP = "CharGetUp";
+    public const string CHAR_GET_UP_L = "CharGetUp_l";
 }

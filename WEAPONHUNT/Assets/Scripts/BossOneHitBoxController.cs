@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GangmanHitBoxController : MonoBehaviour {
+public class BossOneHitBoxController : MonoBehaviour {
 
     private double time = 0;
     private double timeCoolDown = 2;

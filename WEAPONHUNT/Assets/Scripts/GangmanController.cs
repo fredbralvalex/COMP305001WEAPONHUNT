@@ -9,141 +9,69 @@ namespace Assets.Scripts
 {
     class GangmanController : EnemyController
     {
-        public enum GangmanAction { Move, Idle, Jump, Punch, Kick, Cooldown, Defeated, End};
-        public enum GangmanCommands { Move, Idle, Punch, Kick };
-        private GangmanAction GangmanState = GangmanAction.Idle;
-        private GangmanAction GangmanNextState = GangmanAction.Idle;
-        private double time;       
-
-        float maxJumpHigh;
-        GangmanCommands command;
-
-        public int Life = 5;
-        public new int Hits;
-
         public Image LifeBar;
-
-        public bool facingRight = true;
-        bool stateMovement = true;
-        Animator animator;
         SpriteRenderer sprite;
+
+        
+        Animator animator;
         Rigidbody2D enemyRB;
 
         void Start()
         {
-            //LifeBar.type = Image.Type.Filled;
-            //LifeBar.fillAmount = 0.5f;
             animator = gameObject.GetComponent<Animator>();
             sprite = gameObject.GetComponent<SpriteRenderer>();
             enemyRB = gameObject.GetComponent<Rigidbody2D>();
-            command = GangmanCommands.Idle;            
+            command = EnemyCommands.Idle;            
         }
 
-        void Update()
+
+        protected override Image GetLifeBar()
         {
-            //enemyRB.constraints = RigidbodyConstraints2D.FreezeRotation;
-            Blinking();
-            time += Time.deltaTime;            
-
-            if (ValidateTimeToWait())
-            {
-                return;
-            }
-            //CanHitPlayer();
-
-            if (Life - Hits <= 0)
-            {
-                if (GangmanState == GangmanAction.End)
-                {
-                    GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
-                    GameController gameController = gObj.GetComponent<GameController>();
-                    gameController.EliminateGangMan(gameObject);
-                } else
-                {
-                    GangmanState = GangmanAction.Defeated;
-                    PlayDefeated();
-                }
-            }
-            else
-            {
-                Action();
-                Attack();
-            }
+            return LifeBar;
         }
 
-        bool ValidateTimeToWait()
-        {
-            bool wait = false;
-            if (GangmanState == GangmanAction.Punch && Life - Hits > 0)
-            {
-                wait = time <= GameController.TIME_PUNCH;
-                GangmanNextState = GangmanAction.Cooldown;
-            }
-            else if (GangmanState == GangmanAction.Cooldown && command != GangmanCommands.Move && Life - Hits > 0)
-            {
-                wait = time <= GameController.COOL_DOWN_TIME_PUNCH + GameController.TIME_PUNCH;
-                GangmanNextState = GangmanAction.Idle;
-                //print("waiting cooldown");
-            } else if (GangmanState == GangmanAction.Defeated)
-            {
-                wait = time <= GameController.TIME_DEFEATED;
-                GangmanNextState = GangmanAction.End;
-            }
-
-            //when the time to wait finishes
-            if (!wait)
-            {
-                //print("not waiting: "+ GangmanNextState);
-                time = 0;
-                GangmanState = GangmanNextState;
-                //print(GangmanState);
-            }
-            return wait;
-
-        }
-
-        private void Action()
+        protected override void Action()
         {            
-            if (command == GangmanCommands.Move && !CanHit)
+            if (command == EnemyCommands.Move && !CanHit)
             {
                 //GangmanState = GangmanAction.Move;
-                if (facingRight)
+                if (FacingRight)
                 {
                     //move right
                     Animator animation = animator.GetComponent<Animator>();
-                    animation.Play(GameController.GANGMAN_RUN);
+                    animation.Play(GANGMAN_RUN);
                     MoveTransform(Vector2.right);
                 }
                 else
                 {
                     //move left
                     Animator animation = animator.GetComponent<Animator>();
-                    animation.Play(GameController.GANGMAN_RUN_L);
+                    animation.Play(GANGMAN_RUN_L);
                     MoveTransform(Vector2.left);
                 }
             }
-            else if (command == GangmanCommands.Idle 
-                || GangmanState == GangmanAction.Idle 
-                || GangmanState == GangmanAction.Cooldown)
+            else if (command == EnemyCommands.Idle 
+                || EnemyState == EnemyAction.Idle 
+                || EnemyState == EnemyAction.Cooldown)
             {
                 //GangmanState = GangmanAction.Idle;
                 Animator animation = animator.GetComponent<Animator>();
-                if (facingRight)
+                if (FacingRight)
                 {
-                    animation.Play(GameController.GANGMAN_IDLE);
+                    animation.Play(GANGMAN_IDLE);
                 }
                 else
                 {
-                    animation.Play(GameController.GANGMAN_IDLE_L);
+                    animation.Play(GANGMAN_IDLE_L);
                 }
             }
         }
 
-        private void Attack()
+        protected override void Attack()
         {
-            if (command == GangmanCommands.Punch)
+            if (command == EnemyCommands.Attack1)
             {
-                GangmanState = GangmanAction.Punch;
+                EnemyState = EnemyAction.Attack1;
                 Animator animation = animator.GetComponent<Animator>();
 
                 HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
@@ -161,13 +89,13 @@ namespace Assets.Scripts
                         hcontrollerL = hcontroller;
                     }
                 }
-                if (facingRight)
+                if (FacingRight)
                 {
-                    animation.Play(GameController.GANGMAN_PUNCH);
+                    animation.Play(GANGMAN_PUNCH);
                 }
                 else
                 {
-                    animation.Play(GameController.GANGMAN_PUNCH_L);
+                    animation.Play(GANGMAN_PUNCH_L);
                 }
 
                 if (CanHit && AimHit!= null)
@@ -175,7 +103,7 @@ namespace Assets.Scripts
                     HittableController hController = AimHit.GetComponent<HittableController>();
                     if (hController != null)
                     {
-                        if (facingRight)
+                        if (FacingRight)
                         {
                             if (hcontrollerR != null)
                             {
@@ -192,14 +120,14 @@ namespace Assets.Scripts
                         hController.GettingHit(GameController.ATTACK_KICK);
                     }
                 }
-                command = GangmanCommands.Idle;
+                command = EnemyCommands.Idle;
 
             }
-            else if (command == GangmanCommands.Kick)
+            else if (command == EnemyCommands.Attack2)
             {
-                GangmanState = GangmanAction.Kick;
+                EnemyState = EnemyAction.Attack2;
                 //TODO
-                command = GangmanCommands.Idle;
+                command = EnemyCommands.Idle;
             }
         }
 
@@ -208,7 +136,7 @@ namespace Assets.Scripts
             float var = 1;
 
             Vector2 nextPosition = direction * var * GameController.SPEED_CONSTANT * Time.deltaTime;
-            if (stateMovement)
+            if (StateMovement)
             {
                 //print("state movement: " + transform.localPosition + ":: " + transform.localPosition + (Vector3)nextPosition);
                 transform.localPosition += (Vector3)nextPosition;
@@ -218,7 +146,7 @@ namespace Assets.Scripts
                 //print("NOT state movement");
                 transform.localPosition -= (Vector3)nextPosition;
                 //gameObject.SetActive(false);
-                stateMovement = true;
+                StateMovement = true;
             }
         }
 
@@ -229,112 +157,43 @@ namespace Assets.Scripts
             {
             } else if (other.gameObject.tag == "Player")
             {
-                command = GangmanCommands.Idle;
+                command = EnemyCommands.Idle;
             }
         }
-
-
-        public override void FaceLeftCommand()
-        {
-            facingRight = false;
-            //print("Enemy Faced Left! ");
-        }
-
-        public override void FaceRightCommand()
-        {
-            //print("Enemy Faced Right! ");
-            facingRight = true;
-        }
-
-        public override void IdleCommand()
-        {
-            command = GangmanCommands.Idle;
-        }
-
-        public override void MoveCommand()
-        {
-            command = GangmanCommands.Move;
-        }
-
-        public override void PunchCommand()
-        {
-            if (GangmanState != GangmanAction.Cooldown)
-            {
-                command = GangmanCommands.Punch;
-            }
-        }
-
-        public override bool IsHitting()
-        {
-            return GangmanState == GangmanAction.Punch || GangmanState == GangmanAction.Kick;
-        }
-
-        public override void GettingHit(float power)
-        {
-            GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
-            GameController gController = gObj.GetComponent<GameController>();
-            gController.PlayerScoreN++;
-            Hits++;
-            //print(gameObject.tag + " is getting Hit : " + power);
-            Blink = true;
-
-            if ((float)Hits / Life <= 1)
-            {
-                LifeBar.fillAmount = 1.0f - (float)Hits/Life;
-                if (LifeBar.fillAmount > 0.75)
-                {
-                    LifeBar.color = Color.green;
-                } else if (LifeBar.fillAmount > 0.25 && LifeBar.fillAmount <= 0.75)
-                {
-                    LifeBar.color = Color.yellow;
-                }
-                else if (LifeBar.fillAmount > 0 && LifeBar.fillAmount <= 0.25)
-                {
-                    LifeBar.color = Color.red;
-                }
-            }
-            PushedBack(power);
-        }
-
-
-        private void PushedBack(float power)
-        {
-            Vector2 direction;
-            if (facingRight)
-            {
-                direction = Vector2.left;
-            }
-            else
-            {
-                direction = Vector2.right;
-            }
-
-            Vector2 nextPosition = direction * power * 0.10f;
-            transform.localPosition += (Vector3)nextPosition;
-        }
-
-        private bool CanHitPlayer()
-            {
-                return AimHit != null && AimHit.tag == "Player" && CanHit;
-            }
 
         protected override SpriteRenderer GetSprite()
         {
             return sprite;
         }
 
-        private void PlayDefeated()
+        protected override void PlayDefeated()
         {
             Animator animation = animator.GetComponent<Animator>();
-            if (facingRight)
+            if (FacingRight)
             {
-                animation.Play(GameController.GANGMAN_FALL);
+                animation.Play(GANGMAN_FALL);
             } else
             {
-                animation.Play(GameController.GANGMAN_FALL_L);
+                animation.Play(GANGMAN_FALL_L);
             }
         }
+
+        public const string GANGMAN_IDLE = "GangmanIdle";
+        public const string GANGMAN_IDLE_L = "GangmanIdle_l";
+
+        public const string GANGMAN_RUN = "GangmanRun";
+        public const string GANGMAN_RUN_L = "GangmanRun_l";
+
+        public const string GANGMAN_JUMP_AN = "GangmanJump";
+        public const string GANGMAN_JUMP_AN_L = "GangmanJump_l";
+
+        public const string GANGMAN_PUNCH = "GangmanPunch";
+        public const string GANGMAN_PUNCH_L = "GangmanPunch_l";
+
+        public const string GANGMAN_FALL = "GangmanFall";
+        public const string GANGMAN_FALL_L = "GangmanFall_l";
     }
+
 
 
 }

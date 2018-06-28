@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +16,18 @@ namespace Assets.Scripts
         public GameObject RespawnRight;
 
         public GameObject GameElements;
-        public GameObject Menuposition;
-        public GameObject Itemsposition;
-        public GameObject LifeBarposition;
+        public GameObject MenuPosition;
+        public GameObject ItemsPosition;
+        public GameObject LifeBarPosition;
+        public GameObject LifeBarBossPosition;
+
         public Canvas LifeBarCanvas;
+        public Canvas LifeBarBossOneCanvas;
+        public Canvas LifeBarBossTwoCanvas;
+        public Canvas LifeBarBossThreeCanvas;
+
         public Image LifeBar;
+
         public int LifeAmount = 10;
 
         public float MenuOffset = 2.5f;
@@ -29,6 +37,9 @@ namespace Assets.Scripts
         public int Level = 1;
 
         public GameObject GangMan;
+        public GameObject BossOne;
+        public GameObject BossTwo;
+        public GameObject BossThree;
         public List<GameObject> Gangmen;
         public int qtdGangmen = 5;
         private int qtdGangmenGenerated = 0;
@@ -43,15 +54,16 @@ namespace Assets.Scripts
             playerItems.Add(CreateLife());
             playerItems.Add(CreateLife());
 
-            LifeBarCanvas.transform.parent = LifeBarposition.transform;
-            LifeBarCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarposition.transform.localPosition.y, LifeBarposition.transform.localPosition.z);
-
-            GenerateGangMan(true);
+            LifeBarCanvas.transform.parent = LifeBarPosition.transform;
+            LifeBarCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
+            GenerateBoss(true);
+            //GenerateGangMan(true);
         }
 
         void Update()
         {
             PlayerScore.text = "" +PlayerScoreN;
+            //PlayerScores.text = "" + PlayerScoreN;
             GangmanScore.text = "" + GangmanScoreN;
             MountMenu();
         }
@@ -72,30 +84,52 @@ namespace Assets.Scripts
 
         public void GenerateBoss(bool right)
         {
-
+            GameObject boss = null;
             switch (Level)
             {
                 case 1:
+                    LifeBarBossOneCanvas.transform.parent = LifeBarBossPosition.transform;
+                    LifeBarBossOneCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    boss = Instantiate(BossOne);
                     break;
                 case 2:
                     break;
                 case 3:
                     break;
-            }            
+            }
+
+            if (boss != null)
+            {
+                if (right)
+                {
+                    boss.transform.localPosition = RespawnRight.transform.position;
+                }
+                else
+                {
+                    boss.transform.localPosition = RespawnLeft.transform.position;
+                }
+            }
         }
 
-        public void EliminateGangMan(GameObject gangman)
+        public void EliminateEnemy(GameObject enemy)
         {
-            Gangmen.Remove(gangman);
-            gangman.SetActive(false);
-            Destroy(gangman);
+            if (enemy.tag == "Gangman")
+            {
+                Gangmen.Remove(enemy);
+                enemy.SetActive(false);
+                Destroy(enemy);
 
-            if (qtdGangmenGenerated < qtdGangmen)
+                if (qtdGangmenGenerated < qtdGangmen)
+                {
+                    GenerateGangMan(true);
+                }
+                else
+                {
+                    GenerateBoss(true);
+                }
+            }
+            else if (enemy.tag == "BossOne")
             {
-                GenerateGangMan(true);
-            } else
-            {
-                GenerateBoss(true);
             }
         }
 
@@ -136,16 +170,16 @@ namespace Assets.Scripts
 
             foreach (GameObject item in lifeList)
             {
-                item.transform.parent = Menuposition.transform;
-                item.transform.localPosition = new Vector3(var + MenuOffset, Menuposition.transform.localPosition.y, Menuposition.transform.localPosition.z);
+                item.transform.parent = MenuPosition.transform;
+                item.transform.localPosition = new Vector3(var + MenuOffset, MenuPosition.transform.localPosition.y, MenuPosition.transform.localPosition.z);
                 item.SetActive(true);
                 var = var + ItemOffset;
             }
 
             foreach (GameObject item in ItemList)
             {
-                item.transform.parent = Itemsposition.transform;
-                item.transform.localPosition = new Vector3(var + MenuOffset, Itemsposition.transform.localPosition.y, Itemsposition.transform.localPosition.z);
+                item.transform.parent = ItemsPosition.transform;
+                item.transform.localPosition = new Vector3(var + MenuOffset, ItemsPosition.transform.localPosition.y, ItemsPosition.transform.localPosition.z);
                 item.SetActive(true);
                 var = var + ItemOffset;
             }
@@ -188,6 +222,8 @@ namespace Assets.Scripts
         public Text PlayerScore;
         public Text GangmanScore;
 
+        public TextMeshProUGUI PlayerScores;
+
         public int PlayerScoreN { get; set; }
         public int GangmanScoreN { get; set; }
 
@@ -205,50 +241,14 @@ namespace Assets.Scripts
 
         public const KeyCode JUMP = KeyCode.J;
         public const KeyCode ATTACK_1 = KeyCode.K;
-        public const KeyCode ATTACK_2 = KeyCode.L;
-
-        public const string IDLE = "CharIdle";
-        public const string IDLE_L = "CharIdle_l";
-
-        public const string RUN = "CharRun";
-        public const string RUN_L = "CharRun_l";
-
-        public const string JUMP_AN = "CharJump";
-        public const string JUMP_AN_L = "CharJump_l";
-
-        public const string PUNCH = "CharPunch";
-        public const string PUNCH_L = "CharPunch_l";
-
-        public const string KICK = "CharKick";
-        public const string KICK_L = "CharKick_l";
-
-        public const string CHAR_FALL = "CharDefeated";
-        public const string CHAR_FALL_L = "CharDefeated_l";
-
-        public const string CHAR_GET_UP = "CharGetUp";
-        public const string CHAR_GET_UP_L = "CharGetUp_l";
-
-        public const string GANGMAN_IDLE = "GangmanIdle";
-        public const string GANGMAN_IDLE_L = "GangmanIdle_l";
-
-        public const string GANGMAN_RUN = "GangmanRun";
-        public const string GANGMAN_RUN_L = "GangmanRun_l";
-
-        public const string GANGMAN_JUMP_AN = "GangmanJump";
-        public const string GANGMAN_JUMP_AN_L = "GangmanJump_l";
-
-        public const string GANGMAN_PUNCH = "GangmanPunch";
-        public const string GANGMAN_PUNCH_L = "GangmanPunch_l";
-
-        public const string GANGMAN_FALL = "GangmanFall";
-        public const string GANGMAN_FALL_L = "GangmanFall_l";
+        public const KeyCode ATTACK_2 = KeyCode.L;                
 
         public const string HITTING = "Hitting";
 
         public const float TIME_PUNCH = 0.5f;
         public const float TIME_KICK = 0.5f;
         public const float TIME_JUMP = 1.2f;
-        public const float COOL_DOWN_TIME_PUNCH = 1f;
+        public const float COOL_DOWN_TIME_ATTACK1 = 1f;
         public const float COOL_DOWN_TIME = 0.3f;
         public const float TIME_DEFEATED = 2f;
         public const float TIME_GET_UP = 0.6f;
