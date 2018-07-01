@@ -9,7 +9,7 @@ public class EnemySensorController : MonoBehaviour {
 		
 	}
 	
-	void Update () {
+	void FixedUpdate() {
 		
 	}
 

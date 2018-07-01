@@ -20,7 +20,7 @@ public class TextEffect : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate() {
         time += Time.deltaTime;
         if (time >= timeTowait * Time.deltaTime)
         {

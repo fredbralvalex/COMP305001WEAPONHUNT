@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController: HittableController
+public class PlayerController: HittableController, IBoundaryElementController
 {
 
     public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Fall, Defeated, End, GetUp };
@@ -13,7 +13,7 @@ public class PlayerController: HittableController
     float maxJumpHigh;
 
     public bool facingRight = true;
-    bool stateMovement = true;
+    bool StateMovement = true;
     public int playerJumpPower = 1250;
     public float moveX;
     Animator animator;
@@ -29,7 +29,7 @@ public class PlayerController: HittableController
         gameController = gObj.GetComponent<GameController>();
     }
 	
-	void Update () {
+	void FixedUpdate() {
         Blinking();
         //playerRB.mass = 1;
         //playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -241,11 +241,11 @@ public class PlayerController: HittableController
 
                 if (isPunch)
                 {
-                    hController.GettingHit(GameController.ATTACK_PUNCH);
+                    hController.GettingHit(GameController.POWER_ATTACK_1);
                 }
                 else
                 {
-                    hController.GettingHit(GameController.ATTACK_KICK);
+                    hController.GettingHit(GameController.POWER_ATTACK_2);
                 }
             }
         }
@@ -256,14 +256,20 @@ public class PlayerController: HittableController
         float var = 1;
 
         Vector2 nextPosition = direction * var * GameController.SPEED_CONSTANT * Time.deltaTime;
-        if (stateMovement)
+        Move(nextPosition);
+    }
+    private void Move(Vector3 nextPosition)
+    {
+        if (StateMovement)
         {
             transform.localPosition += (Vector3)nextPosition;
         }
         else
         {
+            //print("NOT state movement");
             transform.localPosition -= (Vector3)nextPosition;
-            stateMovement = true;
+            //gameObject.SetActive(false);
+            StateMovement = true;
         }
     }
 
@@ -324,10 +330,7 @@ public class PlayerController: HittableController
         }        
 
         transform.localPosition += (Vector3)nextPositionVertical;
-        if (stateMovement)
-        {
-            transform.localPosition += (Vector3)nextPositionHorizontal;
-        }
+        Move(nextPositionHorizontal);
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -370,7 +373,7 @@ public class PlayerController: HittableController
     {
         GameObject  gObj = GameObject.FindGameObjectWithTag("GameBar");
         GameController gController = gObj.GetComponent<GameController>();
-        gController.GangmanScoreN++;
+        gController.EnemiesScoreN++;
         Hits++;
         //print(gameObject.tag + " is getting Hit : " + power);
         Blink = true;
@@ -391,7 +394,7 @@ public class PlayerController: HittableController
         }
 
         Vector2 nextPosition = direction * power/10;
-        transform.localPosition += (Vector3)nextPosition;
+        Move(nextPosition);
     }
 
     private void UpdateLifeBar()
@@ -446,6 +449,11 @@ public class PlayerController: HittableController
         {
             animation.Play(CHAR_GET_UP_L);
         }
+    }
+
+    void IBoundaryElementController.TouchesBoundaries()
+    {
+        StateMovement = false;
     }
 
     public const string IDLE = "CharIdle";

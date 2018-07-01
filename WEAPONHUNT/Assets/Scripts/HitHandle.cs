@@ -11,7 +11,7 @@ public class HitHandle : MonoBehaviour {
         enabled = false;
     }
 
-    void Update () {
+    void FixedUpdate() {
         StartCoroutine(KillOnAnimationEnd());
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ public class CameraController : MonoBehaviour {
 
     public GameObject player;
     private PlayerController playerController;
+    private GameController gameController;
     private Vector3 offset;
     private float fixedY;
 
@@ -31,6 +33,7 @@ public class CameraController : MonoBehaviour {
         fixedY = player.transform.localPosition.y;
 
         playerController = player.GetComponent<PlayerController>();
+        gameController = GetComponentInChildren<GameController>();
     }
 	
 	// Update is called once per frame
@@ -41,6 +44,9 @@ public class CameraController : MonoBehaviour {
         gameObject.transform.position = new Vector3(x, y, gameObject.transform.position.z);
         */
         //transform.position = player.transform.position + offset;
-        transform.localPosition = new Vector3(player.transform.position.x, fixedY, player.transform.localPosition.z) + offset;
+        if (!gameController.FreezesCamera())
+        {
+            transform.localPosition = new Vector3(player.transform.position.x, fixedY, player.transform.localPosition.z) + offset;
+        }
 	}
 }

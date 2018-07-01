@@ -21,6 +21,9 @@ TagManager:
   - RespawnLeft
   - RespawnRight
   - BossOne
+  - LifeBar
+  - BossTwo
+  - BossThree
   layers:
   - Default
   - TransparentFX

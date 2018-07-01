@@ -27,6 +27,10 @@ namespace Assets.Scripts
         public Canvas LifeBarBossThreeCanvas;
 
         public Image LifeBar;
+        public Image LifeBarBossOneImage;
+        public Image LifeBarBossTwoImage;
+        public Image LifeBarBossThreeImage;
+
 
         public int LifeAmount = 10;
 
@@ -44,6 +48,8 @@ namespace Assets.Scripts
         public int qtdGangmen = 5;
         private int qtdGangmenGenerated = 0;
 
+        private bool FreezeCamera;
+
         private void Start()
         {
             playerItems = new List<GameObject>();
@@ -56,15 +62,14 @@ namespace Assets.Scripts
 
             LifeBarCanvas.transform.parent = LifeBarPosition.transform;
             LifeBarCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
-            GenerateBoss(true);
+            //GenerateBoss(true);
             //GenerateGangMan(true);
         }
 
-        void Update()
-        {
-            PlayerScore.text = "" +PlayerScoreN;
-            //PlayerScores.text = "" + PlayerScoreN;
-            GangmanScore.text = "" + GangmanScoreN;
+        void FixedUpdate()
+        {           
+            PlayerScores.text = "" + PlayerScoreN;
+            GangmanScore.text = "" + EnemiesScoreN;
             MountMenu();
         }
 
@@ -91,10 +96,22 @@ namespace Assets.Scripts
                     LifeBarBossOneCanvas.transform.parent = LifeBarBossPosition.transform;
                     LifeBarBossOneCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
                     boss = Instantiate(BossOne);
+                    BossOneController controllerB1 = boss.GetComponent<BossOneController>();
+                    controllerB1.LifeBar = LifeBarBossOneImage;
                     break;
                 case 2:
+                    LifeBarBossTwoCanvas.transform.parent = LifeBarBossPosition.transform;
+                    LifeBarBossTwoCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    boss = Instantiate(BossTwo);
+                    BossTwoController controllerB2 = boss.GetComponent<BossTwoController>();
+                    controllerB2.LifeBar = LifeBarBossTwoImage;
                     break;
                 case 3:
+                    LifeBarBossThreeCanvas.transform.parent = LifeBarBossPosition.transform;
+                    LifeBarBossThreeCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    boss = Instantiate(BossThree);
+                    BossThreeController controllerB3 = boss.GetComponent<BossThreeController>();
+                    controllerB3.LifeBar = LifeBarBossThreeImage;
                     break;
             }
 
@@ -118,6 +135,7 @@ namespace Assets.Scripts
                 Gangmen.Remove(enemy);
                 enemy.SetActive(false);
                 Destroy(enemy);
+                FreezeCamera = false;
 
                 if (qtdGangmenGenerated < qtdGangmen)
                 {
@@ -130,6 +148,9 @@ namespace Assets.Scripts
             }
             else if (enemy.tag == "BossOne")
             {
+                enemy.SetActive(false);
+                Destroy(enemy);
+                Destroy(LifeBarBossOneCanvas.gameObject);
             }
         }
 
@@ -219,16 +240,30 @@ namespace Assets.Scripts
             }
         }
 
-        public Text PlayerScore;
+        public bool FreezesCamera ()
+        {
+            return FreezeCamera;
+        }
+
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.tag == "BossOne")
+            {
+                FreezeCamera = true;
+            }
+        }
+
         public Text GangmanScore;
 
         public TextMeshProUGUI PlayerScores;
 
         public int PlayerScoreN { get; set; }
-        public int GangmanScoreN { get; set; }
+        public int EnemiesScoreN { get; set; }
 
-        public const float ATTACK_PUNCH = 1f;
-        public const float ATTACK_KICK = 2f;
+        public const float POWER_ATTACK_1 = 1f;
+        public const float POWER_ATTACK_2 = 2f;
+        public const float POWER_ATTACK_3 = 3f;
 
         public const float SPEED_CONSTANT = 2f;        
         public const float SPEED_JUMP_CONSTANT = 4f;

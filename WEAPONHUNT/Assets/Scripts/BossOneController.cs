@@ -16,22 +16,11 @@ class BossOneController : EnemyController
         animator = gameObject.GetComponent<Animator>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
         enemyRB = gameObject.GetComponent<Rigidbody2D>();
-        command = EnemyCommands.Idle;
-    }
-
-    public override bool IsHitting()
-    {
-        throw new System.NotImplementedException();
     }
 
     protected override Image GetLifeBar()
     {
         return LifeBar;
-    }
-
-    public override void GettingHit(float power)
-    {
-        throw new System.NotImplementedException();
     }
 
     protected override SpriteRenderer GetSprite()
@@ -52,25 +41,106 @@ class BossOneController : EnemyController
         }
     }
 
-    protected override void Action()
+    protected override void PlayMove()
     {
-        throw new System.NotImplementedException();
+        Animator animation = animator.GetComponent<Animator>();
+        if (FacingRight)
+        {
+            animation.Play(BOSS_ONE_MOVE);
+        }
+        else
+        {
+            animation.Play(BOSS_ONE_MOVE_L);
+        }
     }
 
-    protected override void Attack()
+    protected override void PlayMoveBack()
     {
-        throw new System.NotImplementedException();
+        Animator animation = animator.GetComponent<Animator>();
+        if (FacingRight)
+        {
+            animation.Play(BOSS_ONE_MOVE);
+        }
+        else
+        {
+            animation.Play(BOSS_ONE_MOVE_L);
+        }
     }
 
-    public const string BOSS_ONE_IDLE = "BossOneIdle";
-    public const string BOSS_ONE_IDLE_L = "BossOneIdle_l";
+    protected override void PlayIdle()
+    {
+        Animator animation = animator.GetComponent<Animator>();
+        if (FacingRight)
+        {
+            animation.Play(BOSS_ONE_IDLE);
+        }
+        else
+        {
+            animation.Play(BOSS_ONE_IDLE_L);
+        }
+    }
 
-    public const string BOSS_ONE_MOVE = "BossOneMove";
-    public const string BOSS_ONE_MOVE_L = "BossOneMove_l";
+    protected override void PlayAttack()
+    {
+        Animator animation = animator.GetComponent<Animator>();
+        if (FacingRight)
+        {
+            animation.Play(BOSS_ONE_ATTACK);
+        }
+        else
+        {
+            animation.Play(BOSS_ONE_ATTACK_L);
+        }
+    }
 
-    public const string BOSS_ONE_ATTACK = "BossOneAttack";
-    public const string BOSS_ONE_ATTACK_L = "BossOneAttack_l";
+    protected override void PlayCoolDown()
+    {
+        PlayIdle();
+    }
 
-    public const string BOSS_ONE_FALL = "BossOneFall";
-    public const string BOSS_ONE_FALL_L = "BossOneFall_l";
+    protected override float GetTimeAttack()
+    {
+        if (EnemyState == EnemyAction.Attack1)
+        {
+            return TIME_ATTACK_1;
+        }
+        else
+        {
+            return TIME_ATTACK_2;
+        }
+    }
+
+    protected override float GetPowerAttack()
+    {
+        if (EnemyState == EnemyAction.Attack1)
+        {
+            return GameController.POWER_ATTACK_3;
+        }
+        else
+        {
+            return GameController.POWER_ATTACK_3;
+        }
+    }
+
+    protected override float GetSpeedMovement()
+    {
+        return SPEED_CONSTANT;
+    }
+
+    public const float SPEED_CONSTANT = 1f;
+
+    public const float TIME_ATTACK_1 = 0.4f;
+    public const float TIME_ATTACK_2 = 0.4f;
+
+    public const string BOSS_ONE_IDLE = "B1Idle";
+    public const string BOSS_ONE_IDLE_L = "B1Idle_l";
+
+    public const string BOSS_ONE_MOVE = "b1Walk";
+    public const string BOSS_ONE_MOVE_L = "b1Walk_l";
+
+    public const string BOSS_ONE_ATTACK = "B1Attack";
+    public const string BOSS_ONE_ATTACK_L = "B1Attack_l";
+
+    public const string BOSS_ONE_FALL = "b1Defeated";
+    public const string BOSS_ONE_FALL_L = "b1Defeated_l";
 }

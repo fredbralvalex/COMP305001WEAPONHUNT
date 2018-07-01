@@ -20,8 +20,7 @@ namespace Assets.Scripts
         {
             animator = gameObject.GetComponent<Animator>();
             sprite = gameObject.GetComponent<SpriteRenderer>();
-            enemyRB = gameObject.GetComponent<Rigidbody2D>();
-            command = EnemyCommands.Idle;            
+            enemyRB = gameObject.GetComponent<Rigidbody2D>();                        
         }
 
 
@@ -30,135 +29,24 @@ namespace Assets.Scripts
             return LifeBar;
         }
 
-        protected override void Action()
-        {            
-            if (command == EnemyCommands.Move && !CanHit)
-            {
-                //GangmanState = GangmanAction.Move;
-                if (FacingRight)
-                {
-                    //move right
-                    Animator animation = animator.GetComponent<Animator>();
-                    animation.Play(GANGMAN_RUN);
-                    MoveTransform(Vector2.right);
-                }
-                else
-                {
-                    //move left
-                    Animator animation = animator.GetComponent<Animator>();
-                    animation.Play(GANGMAN_RUN_L);
-                    MoveTransform(Vector2.left);
-                }
-            }
-            else if (command == EnemyCommands.Idle 
-                || EnemyState == EnemyAction.Idle 
-                || EnemyState == EnemyAction.Cooldown)
-            {
-                //GangmanState = GangmanAction.Idle;
-                Animator animation = animator.GetComponent<Animator>();
-                if (FacingRight)
-                {
-                    animation.Play(GANGMAN_IDLE);
-                }
-                else
-                {
-                    animation.Play(GANGMAN_IDLE_L);
-                }
-            }
-        }
+       
 
-        protected override void Attack()
+        protected override void PlayAttack()
         {
-            if (command == EnemyCommands.Attack1)
+            Animator animation = animator.GetComponent<Animator>();
+            if (FacingRight)
             {
-                EnemyState = EnemyAction.Attack1;
-                Animator animation = animator.GetComponent<Animator>();
-
-                HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
-                HitController hcontrollerL = null;
-                HitController hcontrollerR = null;
-
-                foreach (HitController hcontroller in hcontrollers)
-                {
-                    if (hcontroller.gameObject.tag == "hitRight")
-                    {
-                        hcontrollerR = hcontroller;
-                    }
-                    else if (hcontroller.gameObject.tag == "hitLeft")
-                    {
-                        hcontrollerL = hcontroller;
-                    }
-                }
-                if (FacingRight)
-                {
-                    animation.Play(GANGMAN_PUNCH);
-                }
-                else
-                {
-                    animation.Play(GANGMAN_PUNCH_L);
-                }
-
-                if (CanHit && AimHit!= null)
-                {
-                    HittableController hController = AimHit.GetComponent<HittableController>();
-                    if (hController != null)
-                    {
-                        if (FacingRight)
-                        {
-                            if (hcontrollerR != null)
-                            {
-                                hcontrollerR.GetActionHit();
-                            }
-                        }
-                        else
-                        {
-                            if (hcontrollerL != null)
-                            {
-                                hcontrollerL.GetActionHit();
-                            }
-                        }
-                        hController.GettingHit(GameController.ATTACK_KICK);
-                    }
-                }
-                command = EnemyCommands.Idle;
-
-            }
-            else if (command == EnemyCommands.Attack2)
-            {
-                EnemyState = EnemyAction.Attack2;
-                //TODO
-                command = EnemyCommands.Idle;
-            }
-        }
-
-        private void MoveTransform(Vector2 direction)
-        {
-            float var = 1;
-
-            Vector2 nextPosition = direction * var * GameController.SPEED_CONSTANT * Time.deltaTime;
-            if (StateMovement)
-            {
-                //print("state movement: " + transform.localPosition + ":: " + transform.localPosition + (Vector3)nextPosition);
-                transform.localPosition += (Vector3)nextPosition;
+                animation.Play(GANGMAN_PUNCH);
             }
             else
             {
-                //print("NOT state movement");
-                transform.localPosition -= (Vector3)nextPosition;
-                //gameObject.SetActive(false);
-                StateMovement = true;
+                animation.Play(GANGMAN_PUNCH_L);
             }
         }
 
-        void OnCollisionEnter2D(Collision2D other)
+        protected override void PlayCoolDown()
         {
-            //print(other.gameObject.tag);
-            if (other.gameObject.tag == "Ground")
-            {
-            } else if (other.gameObject.tag == "Player")
-            {
-                command = EnemyCommands.Idle;
-            }
+            PlayIdle();
         }
 
         protected override SpriteRenderer GetSprite()
@@ -177,6 +65,78 @@ namespace Assets.Scripts
                 animation.Play(GANGMAN_FALL_L);
             }
         }
+
+        protected override void PlayMove()
+        {
+            Animator animation = animator.GetComponent<Animator>();
+            if (FacingRight)
+            {
+                animation.Play(GANGMAN_RUN);
+            }
+            else
+            {
+                animation.Play(GANGMAN_RUN_L);
+            }
+        }
+
+        protected override void PlayMoveBack()
+        {
+            Animator animation = animator.GetComponent<Animator>();
+            if (FacingRight)
+            {
+                animation.Play(GANGMAN_RUN_L);
+            }
+            else
+            {
+                animation.Play(GANGMAN_RUN);
+            }
+        }
+
+        protected override void PlayIdle()
+        {
+            Animator animation = animator.GetComponent<Animator>();
+            if (FacingRight)
+            {
+                animation.Play(GANGMAN_IDLE);
+            }
+            else
+            {
+                animation.Play(GANGMAN_IDLE_L);
+            }
+        }
+
+        protected override float GetPowerAttack()
+        {
+            if (EnemyState == EnemyAction.Attack1)
+            {
+                return GameController.POWER_ATTACK_1;
+            }
+            else
+            {
+                return GameController.POWER_ATTACK_2;
+            }
+        }
+
+        protected override float GetTimeAttack()
+        {
+            if (EnemyState == EnemyAction.Attack1) {
+                return TIME_ATTACK_1;
+            }
+            else
+            {
+                return TIME_ATTACK_2;
+            }
+        }
+
+        protected override float GetSpeedMovement()
+        {
+            return SPEED_CONSTANT;
+        }
+
+        public const float SPEED_CONSTANT = 1.5f;
+
+        public const float TIME_ATTACK_1 = 0.5f;
+        public const float TIME_ATTACK_2 = 0.5f;
 
         public const string GANGMAN_IDLE = "GangmanIdle";
         public const string GANGMAN_IDLE_L = "GangmanIdle_l";

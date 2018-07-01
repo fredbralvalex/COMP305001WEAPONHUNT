@@ -14,7 +14,7 @@ public class HitController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {        
+	void FixedUpdate() {        
     }
 
 
@@ -64,28 +64,4 @@ public class HitController : MonoBehaviour {
         clone.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
         return clone;
     }
-
-    /*
-    private void ActionHitting (Collider2D other)
-    {
-        GameObject obj = transform.parent.gameObject;
-        HittableController objController = obj.GetComponent<HittableController>();
-        print("Hit: " + obj.gameObject.tag + " :: " + other.gameObject.tag);
-        if (objController.IsHitting())
-        {
-            HittableController oController = other.gameObject.GetComponent<HittableController>();
-            if (oController != null)
-            {
-                if (obj.gameObject.tag == "Gangman" && other.gameObject.tag == "Player")
-                {
-                    oController.GettingHit(GameController.ATTACK_POWER_1);
-                }
-                else if (obj.gameObject.tag == "Player" && other.gameObject.tag == "Gangman")
-                {
-                    oController.GettingHit(GameController.ATTACK_POWER_2);
-                }
-            }
-        }
-    }
-    */
 }

@@ -6,7 +6,7 @@ TextureImporter:
     21300002: Boss_01_l_03
     21300004: Boss_01_l_02
     21300006: Boss_01_l_01
-    21300008: Boss_01_l_4
+    21300008: Boss_01_l_w7
     21300010: Boss_01_l_w6
     21300012: Boss_01_l_w5
     21300014: Boss_01_l_w4
@@ -208,7 +208,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boss_01_l_4
+      name: Boss_01_l_w7
       rect:
         serializedVersion: 2
         x: 221
