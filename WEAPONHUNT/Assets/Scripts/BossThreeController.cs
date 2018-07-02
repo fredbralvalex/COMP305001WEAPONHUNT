@@ -130,8 +130,8 @@ class BossThreeController : EnemyController
 
     public const float SPEED_CONSTANT = 1f;
 
-    public const float TIME_ATTACK_1 = 0.4f;
-    public const float TIME_ATTACK_2 = 0.4f;
+    public const float TIME_ATTACK_1 = 0.8f;
+    public const float TIME_ATTACK_2 = 0.8f;
 
     public const string BOSS_ONE_IDLE = "Idle";
     public const string BOSS_ONE_IDLE_L = "Idle_l";

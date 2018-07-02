@@ -62,7 +62,7 @@ namespace Assets.Scripts
 
             LifeBarCanvas.transform.parent = LifeBarPosition.transform;
             LifeBarCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
-            //GenerateBoss(true);
+            GenerateBoss(true);
             //GenerateGangMan(true);
         }
 
@@ -248,7 +248,7 @@ namespace Assets.Scripts
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag == "BossOne")
+            if (other.tag == "BossOne" || other.tag == "BossThree" || other.tag == "BossTwo")
             {
                 FreezeCamera = true;
             }
