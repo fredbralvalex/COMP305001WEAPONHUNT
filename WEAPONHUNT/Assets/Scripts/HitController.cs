@@ -6,6 +6,7 @@ using UnityEngine;
 public class HitController : MonoBehaviour {
 
     public GameObject hit;
+    public float power = 1f;
     public bool Destroyed { get; set; }
 
     // Use this for initialization
@@ -20,22 +21,29 @@ public class HitController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //print("Hit Enter: " + other.gameObject.tag);
-            HitReacheable(other, true);
+        HittableController objController = other.GetComponent<HittableController>();
+        if (objController != null)
+        {
+            print("Hit Enter: " + other.gameObject.tag);
+            //GameObject obj = transform.parent.gameObject;
+            objController.Hit = GetActionHit(objController.HitPosition);
+            objController.GettingHit(power);
+        }
+            //HitReacheable(other, true);
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
         //print("Hit Stay: " + other.gameObject.tag);
-        HitReacheable(other, true);
+        //HitReacheable(other, true);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         //print("Hit Exit: " + other.gameObject.tag);
-        HitReacheable(other, false);
+        //HitReacheable(other, false);
     }
-
+    /*
     private void HitReacheable(Collider2D other, bool canHit)
     {
         GameObject obj = transform.parent.gameObject;
@@ -55,13 +63,13 @@ public class HitController : MonoBehaviour {
         //canHit = true;
         objController.CanHit = canHit;
         objController.AimHit = other.gameObject;
-    }
+    }*/
 
-    public GameObject GetActionHit()
+    public GameObject GetActionHit(Transform hitPosition)
     {
         GameObject clone;
         clone = Instantiate(hit, hit.transform.position, hit.transform.rotation) as GameObject;
-        clone.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+        clone.transform.position = new Vector3(hitPosition.position.x, hitPosition.position.y, hitPosition.position.z - 1);
         return clone;
     }
 }

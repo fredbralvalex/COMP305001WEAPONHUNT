@@ -24,6 +24,8 @@ TagManager:
   - LifeBar
   - BossTwo
   - BossThree
+  - Boundary
+  - HitPosition
   layers:
   - Default
   - TransparentFX

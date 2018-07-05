@@ -9,12 +9,16 @@ namespace Assets.Scripts
 {
     abstract class EnemyController : HittableController, IBoundaryElementController
     {
-        public enum EnemyAction { Move, MoveBack, Idle, Jump, Attack1, Attack2, Cooldown, Defeated, End };
+
+        public KeyInputController commandController;
+        public bool useControl;
+
+        public enum EnemyAction { Move, MoveBack, Idle, Jump, Attack1, Attack2, Cooldown, Bouncing, Defeated, End };
         public enum EnemyCommands { Move, MoveBack, Idle, Attack1, Attack2 };
         public EnemyAction EnemyState = EnemyAction.Idle;
         protected EnemyAction GangmanNextState = EnemyAction.Idle;
-        protected bool FacingRight = true;
-        protected EnemyCommands command = EnemyCommands.Idle;
+        public bool FacingRight = true;
+        public EnemyCommands command = EnemyCommands.Idle;
 
         public int Life = 0;
         private double time;
@@ -23,6 +27,8 @@ namespace Assets.Scripts
         void FixedUpdate()
         {
             //enemyRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+            GetInputCommand();
+
             Blinking();
             time += Time.deltaTime;
 
@@ -49,8 +55,43 @@ namespace Assets.Scripts
             {
                 Action();
                 Attack();
+            }            
+            //command = EnemyCommands.Idle;
+        }
+
+        private void GetInputCommand()
+        {
+            if (useControl)
+            {                
+                if (commandController.KeyCommand.Equals(GameController.LEFT))
+                {
+                    FaceLeftCommand();
+                    MoveCommand();
+                    print("press left");
+                }
+                else if (commandController.KeyCommand.Equals(GameController.RIGHT))
+                {
+                    FaceRightCommand();
+                    MoveCommand();
+                    print("press right");
+                }
+                else if (commandController.KeyCommand.Equals(GameController.JUMP))
+                {
+                    //do nothing
+                }
+                else if (commandController.KeyCommand.Equals(GameController.ATTACK_1))
+                {
+                    Attack1Command();
+                    print("press attack 1");
+                }
+                else if (commandController.KeyCommand.Equals(GameController.ATTACK_2))
+                {
+                    Attack2Command();
+                    print("press attack 2");
+                }                
             }
         }
+
 
         protected abstract void PlayDefeated();
         
@@ -61,9 +102,15 @@ namespace Assets.Scripts
         protected abstract void PlayIdle();
         protected abstract void PlayCoolDown();
 
+
+        protected bool CanHitPlayer()
+        {
+            return CanHit && !useControl;
+        }
+
         protected void Action()
         {
-            if (command == EnemyCommands.Move && !CanHit)
+            if (command == EnemyCommands.Move && !CanHitPlayer())
             {
                 //GangmanState = GangmanAction.Move;
                 if (FacingRight)
@@ -77,7 +124,7 @@ namespace Assets.Scripts
                     MoveTransform(Vector2.left);
                 }
                 PlayMove();
-            } else if (command == EnemyCommands.MoveBack && !CanHit)
+            } else if (command == EnemyCommands.MoveBack && !CanHitPlayer())
             {
                 if (FacingRight)
                 {
@@ -150,6 +197,7 @@ namespace Assets.Scripts
 
         protected void Attack(float power)
         {
+            /*
             HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
             HitController hcontrollerL = null;
             HitController hcontrollerR = null;
@@ -165,9 +213,9 @@ namespace Assets.Scripts
                     hcontrollerL = hcontroller;
                 }
             }
-
+            */
             PlayAttack();
-
+            /*
             if (CanHit && AimHit != null)
             {
                 HittableController hController = AimHit.GetComponent<HittableController>();
@@ -190,6 +238,7 @@ namespace Assets.Scripts
                     hController.GettingHit(power);
                 }
             }
+            */
             command = EnemyCommands.Idle;
         }
 
@@ -205,9 +254,9 @@ namespace Assets.Scripts
                 wait = time <= GetTimeAttack();
                 GangmanNextState = EnemyAction.Cooldown;
             }
-            else if (EnemyState == EnemyAction.Cooldown && command != EnemyCommands.Move && Life - Hits > 0)
+            else if (EnemyState == EnemyAction.Cooldown && Life - Hits > 0)//&& command != EnemyCommands.Move
             {
-                wait = time <= GameController.COOL_DOWN_TIME_ATTACK1 + GetTimeAttack();
+                wait = time <= GameController.COOL_DOWN_TIME_ATTACK1;
                 GangmanNextState = EnemyAction.Idle;
                 //print("waiting cooldown");
             }

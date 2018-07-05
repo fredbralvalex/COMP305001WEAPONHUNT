@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class EnemyBackwardController : MonoBehaviour {
 
-	void Start () {
+    public bool enable = true;
+
+    void Start () {
 		
 	}
 	
@@ -18,10 +20,10 @@ public class EnemyBackwardController : MonoBehaviour {
         KeepDistance(other, true);
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    /*private void OnTriggerStay2D(Collider2D other)
     {
         KeepDistance(other, true);
-    }
+    }*/
 
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -30,7 +32,7 @@ public class EnemyBackwardController : MonoBehaviour {
 
     private void KeepDistance(Collider2D other, bool entered)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && enable)
         {
             GameObject obj = transform.parent.gameObject;
             EnemyController objController = obj.GetComponent<EnemyController>();

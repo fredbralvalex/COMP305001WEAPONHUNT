@@ -14,9 +14,9 @@ public class BoundaryController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "BossThree" || other.tag == "BossTwo" || other.tag == "BossOne" || other.tag == "Gangman" || other.tag == "Player")
+        if (other.tag == "Boundary")
         {
-            IBoundaryElementController controller = other.GetComponent<IBoundaryElementController>();
+            IBoundaryElementController controller = other.GetComponentInParent<IBoundaryElementController>();
             controller.TouchesBoundaries();
             print("dont move");
         }

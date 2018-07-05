@@ -48,7 +48,7 @@ namespace Assets.Scripts
         public int qtdGangmen = 5;
         private int qtdGangmenGenerated = 0;
 
-        private bool FreezeCamera;
+        public bool FreezeCamera;
 
         private void Start()
         {
@@ -62,14 +62,14 @@ namespace Assets.Scripts
 
             LifeBarCanvas.transform.parent = LifeBarPosition.transform;
             LifeBarCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
-            GenerateBoss(true);
+            //GenerateBoss(true);
             //GenerateGangMan(true);
         }
 
         void FixedUpdate()
         {           
             PlayerScores.text = "" + PlayerScoreN;
-            GangmanScore.text = "" + EnemiesScoreN;
+            EnemyScore.text = "" + EnemiesScoreN;
             MountMenu();
         }
 
@@ -254,7 +254,7 @@ namespace Assets.Scripts
             }
         }
 
-        public Text GangmanScore;
+        public TextMeshProUGUI EnemyScore;
 
         public TextMeshProUGUI PlayerScores;
 

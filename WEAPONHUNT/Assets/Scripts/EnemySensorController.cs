@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class EnemySensorController : MonoBehaviour {
 
-	void Start () {
+    public bool enable = true;
+
+    void Start () {
 		
 	}
 	
@@ -15,21 +17,31 @@ public class EnemySensorController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        OnTrigger(other);
+        if (enable)
+        {
+            OnTrigger(other);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        OnTrigger(other);
+        if (enable)
+        {
+            OnTrigger(other);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        GameObject enemy = transform.parent.gameObject;
-        EnemyController eController = enemy.GetComponent<EnemyController>();
-        if (other.gameObject.tag == "Player")
+        if (enable)
         {
-            eController.IdleCommand();
+            GameObject enemy = transform.parent.gameObject;
+            EnemyController eController = enemy.GetComponent<EnemyController>();
+            if (other.gameObject.tag == "Player")
+            {
+                eController.IdleCommand();
+            }
+
         }
     }
 

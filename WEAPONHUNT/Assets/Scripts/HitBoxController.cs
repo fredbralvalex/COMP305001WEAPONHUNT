@@ -6,7 +6,10 @@ using UnityEngine;
 public class HitBoxController : MonoBehaviour {
     private double time = 0;
     private double timeCoolDown = 2;
-    private bool cooldown = false;
+    public bool Cooldown = false;
+    public bool CanHitPlayer = false;
+
+    public bool enable = true;
 
     void Start()
     {
@@ -15,7 +18,7 @@ public class HitBoxController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (cooldown)
+        if (Cooldown)
         {
             time += Time.deltaTime;
             if (time < timeCoolDown)
@@ -23,24 +26,29 @@ public class HitBoxController : MonoBehaviour {
                 return;
             }
             time = 0;
-            cooldown = false;
+            Cooldown = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!cooldown)
+        if (enable)
         {
             CommandAttack(other);
+
         }
+        CanHitPlayer = true;
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (!cooldown)
+        if (enable)
         {
             CommandAttack(other);
+
         }
+        CanHitPlayer = true;
+
     }
 
     private void CommandAttack(Collider2D other)
@@ -50,25 +58,29 @@ public class HitBoxController : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             PlayerController pController = other.gameObject.GetComponent<PlayerController>();
-            if (!cooldown
+            if (!Cooldown
                 && pController.playerState != PlayerController.PlayerAction.Defeated
                 && pController.playerState != PlayerController.PlayerAction.End)
             {
                 //Use random to determine the attack command
                 eController.Attack1Command();
-                cooldown = true;
+                Cooldown = true;
             }
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        GameObject enemy = transform.parent.gameObject;
-        EnemyController eController = enemy.GetComponent<EnemyController>();
-        if (other.gameObject.tag == "Player")
+        if (enable)
         {
-            //eController.MoveCommand();
-            cooldown = false;
+            GameObject enemy = transform.parent.gameObject;
+            EnemyController eController = enemy.GetComponent<EnemyController>();
+            if (other.gameObject.tag == "Player")
+            {
+                //eController.MoveCommand();
+                Cooldown = false;
+            }
         }
+        CanHitPlayer = false;
     }
 }

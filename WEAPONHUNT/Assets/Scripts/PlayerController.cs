@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerController: HittableController, IBoundaryElementController
 {
 
+    public bool Dummy;
     public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Fall, Defeated, End, GetUp };
     public PlayerAction playerState = PlayerAction.Idle;
     private double time;
@@ -115,7 +116,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     private void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        if (Input.GetKeyDown(GameController.LEFT) || moveHorizontal < 0)
+        if (!Dummy && (Input.GetKeyDown(GameController.LEFT) || moveHorizontal < 0))
         {
             playerState = PlayerAction.Move;
             //move left
@@ -124,7 +125,7 @@ public class PlayerController: HittableController, IBoundaryElementController
             animation.Play(RUN_L);
             MoveTransform(Vector2.left);
         }
-        else if (Input.GetKeyDown(GameController.RIGHT) || moveHorizontal > 0)
+        else if (!Dummy && (Input.GetKeyDown(GameController.RIGHT) || moveHorizontal > 0))
         {
             playerState = PlayerAction.Move;
             //move right
@@ -150,12 +151,12 @@ public class PlayerController: HittableController, IBoundaryElementController
 
     private void Attack()
     {        
-        if (Input.GetKeyDown(GameController.ATTACK_1))
+        if (!Dummy && Input.GetKeyDown(GameController.ATTACK_1))
         {
             playerState = PlayerAction.Punch;
             Attack(true);
         }
-        else if (Input.GetKeyDown(GameController.ATTACK_2))
+        else if (!Dummy && Input.GetKeyDown(GameController.ATTACK_2))
         {
             playerState = PlayerAction.Kick;
             Attack(false);
@@ -165,13 +166,36 @@ public class PlayerController: HittableController, IBoundaryElementController
     private void Attack(bool isPunch)
     {
         Animator animation = animator.GetComponent<Animator>();
+        if (facingRight)
+        {
+            if (isPunch)
+            {
+                animation.Play(PUNCH);
+            }
+            else
+            {
+                animation.Play(KICK);
+            }
+        }
+        else
+        {
+            if (isPunch)
+            {
+                animation.Play(PUNCH_L);
+            }
+            else
+            {
+                animation.Play(KICK_L);
+            }
+        }
+        /*
         HitController[] hcontrollers = gameObject.GetComponentsInChildren<HitController>();
         HitController hcontrollerL = null;
         HitController hcontrollerR = null;
 
         foreach (HitController hcontroller in hcontrollers)
         {
-
+            
             if (isPunch)
             {
                 if (hcontroller.gameObject.tag == "hitRightP")
@@ -194,31 +218,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                     hcontrollerL = hcontroller;
                 }
             }
-        }
-
-
-        if (facingRight)
-        {
-            if (isPunch)
-            {
-                animation.Play(PUNCH);
-            } else
-            {
-                animation.Play(KICK);
-            }
-        }
-        else
-        {
-            if (isPunch)
-            {
-                animation.Play(PUNCH_L);
-            }
-            else
-            {
-                animation.Play(KICK_L);
-            }
-        }
-
+        }            
         if (CanHit && AimHit != null)
         {
             HittableController hController = AimHit.GetComponent<HittableController>();
@@ -248,7 +248,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                     hController.GettingHit(GameController.POWER_ATTACK_2);
                 }
             }
-        }
+        }*/
     }
 
     private void MoveTransform(Vector2 direction)
@@ -275,7 +275,7 @@ public class PlayerController: HittableController, IBoundaryElementController
 
     private void Jump()
     {
-        if (Input.GetKeyDown(GameController.JUMP))
+        if (!Dummy && Input.GetKeyDown(GameController.JUMP))
         {
             //Jump
             playerState = PlayerAction.Jump;
@@ -330,7 +330,10 @@ public class PlayerController: HittableController, IBoundaryElementController
         }        
 
         transform.localPosition += (Vector3)nextPositionVertical;
-        Move(nextPositionHorizontal);
+        if (StateMovement)
+        {
+            Move(nextPositionHorizontal);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D other)
