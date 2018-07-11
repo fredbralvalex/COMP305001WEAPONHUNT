@@ -12,7 +12,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     public PlayerAction playerState = PlayerAction.Idle;
     private double time;
     float maxJumpHigh;
-
+    public bool moving = false;
     public bool facingRight = true;
     bool StateMovement = true;
     public int playerJumpPower = 1250;
@@ -92,6 +92,11 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
+    internal bool isMovingBack()
+    {
+        return moving && !facingRight;
+    }
+
     bool ValidateTimeToWait()
     {
         bool wait = false;
@@ -131,6 +136,7 @@ public class PlayerController: HittableController, IBoundaryElementController
             Animator animation = animator.GetComponent<Animator>();
             animation.Play(RUN_L);
             MoveTransform(Vector2.left);
+            moving = true;
         }
         else if (!Dummy && (Input.GetKeyDown(GameController.RIGHT) || moveHorizontal > 0))
         {
@@ -140,9 +146,11 @@ public class PlayerController: HittableController, IBoundaryElementController
             Animator animation = animator.GetComponent<Animator>();
             animation.Play(RUN);
             MoveTransform(Vector2.right);
+                        moving = true;
         }
         else
         {
+            moving = false;
             playerState = PlayerAction.Idle;
             Animator animation = animator.GetComponent<Animator>();
             if (facingRight)
@@ -306,15 +314,18 @@ public class PlayerController: HittableController, IBoundaryElementController
         if (Input.GetKey(GameController.LEFT))
         {
             facingRight = false;
+            moving = true;
             nextPositionHorizontal = Vector2.left * GameController.SPEED_CONSTANT * varRun * Time.deltaTime;
         }
         else if (Input.GetKey(GameController.RIGHT))
         {
             facingRight = true;
+            moving = true;
             nextPositionHorizontal = Vector2.right * GameController.SPEED_CONSTANT * varRun * Time.deltaTime;
         }
         else
         {
+            moving = false;
             nextPositionHorizontal = Vector2.zero;
         }
 

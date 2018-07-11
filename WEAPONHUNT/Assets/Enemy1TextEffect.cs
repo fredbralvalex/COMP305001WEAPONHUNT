@@ -6,8 +6,8 @@ using UnityEngine;
 public class Enemy1TextEffect : TextEffect {
     public string TextToEnemy = "";
     public TextMeshProUGUI TextMeshPro2;
-    private float time;
-    private float timeTowait = 7;
+    private float _time;
+    private float _timeTowait = 7;
 
     // Use this for initialization
     void Start () {
@@ -22,13 +22,15 @@ public class Enemy1TextEffect : TextEffect {
 
     protected override void ShowNextText()
     {
-        time += Time.deltaTime;
+        _time += Time.deltaTime;
 
         //TextMeshPro2.enabled = true;
-        if (time >= timeTowait * Time.deltaTime)
+        if (_time >= _timeTowait * Time.deltaTime)
         {
-            
+            if (TextToEnemy.Length > TextMeshPro2.text.Length)
+            {
                 TextMeshPro2.text = TextMeshPro2.text + TextToEnemy[TextMeshPro2.text.Length];
+            }
           
         }
 

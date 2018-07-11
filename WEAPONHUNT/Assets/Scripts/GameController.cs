@@ -11,11 +11,12 @@ namespace Assets.Scripts
 {
     class GameController :MonoBehaviour
     {
-        public List<GameObject> playerItems;
+        GameStateController gameState;        
         public GameObject Life;
         [Header ("Game Position Elements")]
         public GameObject RespawnLeft;
         public GameObject RespawnRight;
+        public GameObject PlayerInitialPosition;
 
         public GameObject GameElements;
         public GameObject MenuPosition;
@@ -40,8 +41,18 @@ namespace Assets.Scripts
         public float ItemOffset = 0.7f;
         public float CameraTop;
 
-        public static int Level = 1;
+        public int Level
+        {
+            get
+            {
+                return GameStateController.level;
+            }
+            set {
+                GameStateController.level = value;
+            }
+        }
 
+        public GameObject Player;
         public GameObject GangMan;
         public GameObject BossOne;
         public GameObject BossTwo;
@@ -52,24 +63,30 @@ namespace Assets.Scripts
 
         public bool FreezeCamera;
 
+        public List<GameObject> playerItems
+        {
+            get
+            {
+                return GameStateController.playerItems;
+            }
+            set
+            {
+                GameStateController.playerItems = value;
+            }
+        }
+
         private void Start()
         {
             playerItems = new List<GameObject>();
+            gameState = new GameStateController();
             Gangmen = new List<GameObject>();
-
-            //Add items
-            playerItems.Add(CreateLife());
-            playerItems.Add(CreateLife());
-            playerItems.Add(CreateLife());
-
 
             Canvas LifeBarCanvasClone;
             LifeBarCanvasClone = Instantiate(LifeBarCanvas, LifeBarCanvas.transform.position, LifeBarCanvas.transform.rotation) as Canvas;
 
             LifeBarCanvasClone.transform.parent = LifeBarPosition.transform;
             LifeBarCanvasClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
-            LifeBarCanvas = LifeBarCanvasClone;
-
+            LifeBarCanvas = LifeBarCanvasClone;            
 
             Image[] Images = LifeBarCanvas.GetComponentsInChildren<Image>();
             foreach (Image i in Images)
@@ -94,8 +111,20 @@ namespace Assets.Scripts
                 }
             }
 
+            StartLevelGame();
+        }
+
+        public void StartLevelGame()
+        {
+            //Add items
+            for(int i = 0; i < GameStateController.life; i++)
+            {
+                playerItems.Add(CreateLife());
+            }
+
             //GenerateBoss(true);
-            GenerateGangMan(true);
+            GeneratePlayer();
+            //GenerateGangMan(true);
         }
 
         void FixedUpdate()
@@ -103,6 +132,12 @@ namespace Assets.Scripts
             PlayerScores.text = "" + PlayerScoreN;
             EnemyScore.text = "" + EnemiesScoreN;
             MountMenu();
+        }
+
+        public void GeneratePlayer()
+        {
+            GameObject player = Instantiate(Player);
+            player.transform.localPosition = PlayerInitialPosition.transform.position;            
         }
 
         public void GenerateGangMan(bool right)
@@ -255,7 +290,7 @@ namespace Assets.Scripts
 
         GameObject CreateLife()
         {
-            GameObject clone;
+            GameObject clone = null;
             clone = Instantiate(Life, Life.transform.position, Life.transform.rotation) as GameObject;
             return clone;
         }
@@ -328,6 +363,7 @@ namespace Assets.Scripts
             if (life == null)
             {
                 //endGame();
+                gameState.TryAgainCommand();
                 return false;
             }
             else
@@ -357,8 +393,26 @@ namespace Assets.Scripts
 
         public TextMeshProUGUI PlayerScores;
 
-        public int PlayerScoreN { get; set; }
-        public int EnemiesScoreN { get; set; }
+        public int PlayerScoreN {
+            get
+            {
+                return GameStateController.playerScoreN;
+            }
+            set
+            {
+                GameStateController.playerScoreN = value;
+            }
+        }
+        public int EnemiesScoreN {
+            get
+            {
+                return GameStateController.enemiesScoreN;
+            }
+            set
+            {
+                GameStateController.enemiesScoreN = value;
+            }
+        }
 
         public const float POWER_ATTACK_1 = 1f;
         public const float POWER_ATTACK_2 = 2f;

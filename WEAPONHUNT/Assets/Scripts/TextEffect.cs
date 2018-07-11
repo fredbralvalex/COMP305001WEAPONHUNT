@@ -11,8 +11,6 @@ public class TextEffect : MonoBehaviour {
     private float timeTowait = 7;
 
     public string TextToExhibit = "";
-    Enemy1TextEffect enm;
-    //int lenghtText;
 
 	// Use this for initialization
 	void Start () {
