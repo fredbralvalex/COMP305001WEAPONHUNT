@@ -24,6 +24,14 @@ namespace Assets.Scripts
         private double time;
         protected bool StateMovement = true;
 
+        private Transform lastPosition;
+
+
+        private void LateUpdate()
+        {
+            lastPosition = transform;
+        }
+
         void FixedUpdate()
         {
             //enemyRB.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -353,7 +361,7 @@ namespace Assets.Scripts
             PushedBack(power);
         }
 
-        private void PushedBack(float power)
+        protected void PushedBack(float power)
         {
             Vector2 direction;
             if (FacingRight)
@@ -372,6 +380,11 @@ namespace Assets.Scripts
         void IBoundaryElementController.TouchesBoundaries()
         {
             StateMovement  = false;
+        }
+
+        Transform IBoundaryElementController.GetLastValidPosition()
+        {
+            return lastPosition;
         }
     }
 }

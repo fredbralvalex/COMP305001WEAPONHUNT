@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -12,6 +13,7 @@ namespace Assets.Scripts
     {
         public List<GameObject> playerItems;
         public GameObject Life;
+        [Header ("Game Position Elements")]
         public GameObject RespawnLeft;
         public GameObject RespawnRight;
 
@@ -38,7 +40,7 @@ namespace Assets.Scripts
         public float ItemOffset = 0.7f;
         public float CameraTop;
 
-        public int Level = 1;
+        public static int Level = 1;
 
         public GameObject GangMan;
         public GameObject BossOne;
@@ -60,10 +62,40 @@ namespace Assets.Scripts
             playerItems.Add(CreateLife());
             playerItems.Add(CreateLife());
 
-            LifeBarCanvas.transform.parent = LifeBarPosition.transform;
-            LifeBarCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
+
+            Canvas LifeBarCanvasClone;
+            LifeBarCanvasClone = Instantiate(LifeBarCanvas, LifeBarCanvas.transform.position, LifeBarCanvas.transform.rotation) as Canvas;
+
+            LifeBarCanvasClone.transform.parent = LifeBarPosition.transform;
+            LifeBarCanvasClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarPosition.transform.localPosition.y, LifeBarPosition.transform.localPosition.z);
+            LifeBarCanvas = LifeBarCanvasClone;
+
+
+            Image[] Images = LifeBarCanvas.GetComponentsInChildren<Image>();
+            foreach (Image i in Images)
+            {
+                if (i.tag == "LifeBar")
+                {
+                    LifeBar = i;
+                    break;
+                }
+            }
+
+            TextMeshProUGUI[] txts = LifeBarCanvas.GetComponentsInChildren<TextMeshProUGUI>();
+            foreach (TextMeshProUGUI t in txts)
+            {
+                if (t.tag == "PlayerScore")
+                {
+                    PlayerScores = t;
+                }
+                if (t.tag == "EnemyScore")
+                {
+                    EnemyScore = t;
+                }
+            }
+
             //GenerateBoss(true);
-            //GenerateGangMan(true);
+            GenerateGangMan(true);
         }
 
         void FixedUpdate()
@@ -93,22 +125,70 @@ namespace Assets.Scripts
             switch (Level)
             {
                 case 1:
-                    LifeBarBossOneCanvas.transform.parent = LifeBarBossPosition.transform;
-                    LifeBarBossOneCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    Canvas LifeBarCanvasBossOneClone;
+                    LifeBarCanvasBossOneClone = Instantiate(LifeBarBossOneCanvas, LifeBarBossOneCanvas.transform.position, LifeBarBossOneCanvas.transform.rotation) as Canvas;
+
+                    LifeBarCanvasBossOneClone.transform.parent = LifeBarPosition.transform;
+                    LifeBarCanvasBossOneClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
+                    LifeBarBossOneCanvas = LifeBarCanvasBossOneClone;
+
+                    foreach (Image i in LifeBarBossOneCanvas.GetComponentsInChildren<Image>())
+                    {
+                        if (i.tag == "LifeBar")
+                        {
+                            LifeBarBossOneImage = i;
+                            break;
+                        }
+                    }
+
                     boss = Instantiate(BossOne);
                     BossOneController controllerB1 = boss.GetComponent<BossOneController>();
                     controllerB1.LifeBar = LifeBarBossOneImage;
                     break;
                 case 2:
-                    LifeBarBossTwoCanvas.transform.parent = LifeBarBossPosition.transform;
-                    LifeBarBossTwoCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    Canvas LifeBarCanvasBossTwoClone;
+                    LifeBarCanvasBossTwoClone = Instantiate(LifeBarBossTwoCanvas, LifeBarBossTwoCanvas.transform.position, LifeBarBossTwoCanvas.transform.rotation) as Canvas;
+
+                    LifeBarCanvasBossTwoClone.transform.parent = LifeBarPosition.transform;
+                    LifeBarCanvasBossTwoClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
+                    LifeBarBossTwoCanvas = LifeBarCanvasBossTwoClone;
+
+                    foreach (Image i in LifeBarBossTwoCanvas.GetComponentsInChildren<Image>())
+                    {
+                        if (i.tag == "LifeBar")
+                        {
+                            LifeBarBossTwoImage = i;
+                            break;
+                        }
+                    }
+                    /*
+                        LifeBarBossTwoCanvas.transform.parent = LifeBarBossPosition.transform;
+                        LifeBarBossTwoCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    */
                     boss = Instantiate(BossTwo);
                     BossTwoController controllerB2 = boss.GetComponent<BossTwoController>();
                     controllerB2.LifeBar = LifeBarBossTwoImage;
                     break;
                 case 3:
-                    LifeBarBossThreeCanvas.transform.parent = LifeBarBossPosition.transform;
-                    LifeBarBossThreeCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    Canvas LifeBarCanvasBossThreeClone;
+                    LifeBarCanvasBossThreeClone = Instantiate(LifeBarBossThreeCanvas, LifeBarBossThreeCanvas.transform.position, LifeBarBossThreeCanvas.transform.rotation) as Canvas;
+
+                    LifeBarCanvasBossThreeClone.transform.parent = LifeBarPosition.transform;
+                    LifeBarCanvasBossThreeClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
+                    LifeBarBossThreeCanvas = LifeBarCanvasBossThreeClone;
+
+                    foreach (Image i in LifeBarBossThreeCanvas.GetComponentsInChildren<Image>())
+                    {
+                        if (i.tag == "LifeBar")
+                        {
+                            LifeBarBossThreeImage = i;
+                            break;
+                        }
+                    }
+                    /*
+                        LifeBarBossThreeCanvas.transform.parent = LifeBarBossPosition.transform;
+                        LifeBarBossThreeCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                    */
                     boss = Instantiate(BossThree);
                     BossThreeController controllerB3 = boss.GetComponent<BossThreeController>();
                     controllerB3.LifeBar = LifeBarBossThreeImage;
@@ -151,6 +231,25 @@ namespace Assets.Scripts
                 enemy.SetActive(false);
                 Destroy(enemy);
                 Destroy(LifeBarBossOneCanvas.gameObject);
+                Level = 2;
+                GenerateBoss(true);
+            }
+            else if (enemy.tag == "BossTwo")
+            {
+                enemy.SetActive(false);
+                Destroy(enemy);
+                Destroy(LifeBarBossTwoCanvas.gameObject);
+                Level = 3;
+                GenerateBoss(true);
+            }
+            else if (enemy.tag == "BossThree")
+
+            {
+                enemy.SetActive(false);
+                Destroy(enemy);
+                Destroy(LifeBarBossThreeCanvas.gameObject);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                //GenerateBoss(true);
             }
         }
 
@@ -248,7 +347,7 @@ namespace Assets.Scripts
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag == "BossOne" || other.tag == "BossThree" || other.tag == "BossTwo")
+            if (other.tag == "BossOne" || other.tag == "BossThree" || other.tag == "BossTwo" || other.tag == "Gangman")
             {
                 FreezeCamera = true;
             }

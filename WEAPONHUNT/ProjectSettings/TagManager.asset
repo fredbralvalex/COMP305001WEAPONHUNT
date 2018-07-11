@@ -26,6 +26,8 @@ TagManager:
   - BossThree
   - Boundary
   - HitPosition
+  - EnemyScore
+  - PlayerScore
   layers:
   - Default
   - TransparentFX

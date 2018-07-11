@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BoundaryController : MonoBehaviour {
 
-	void Start () {
+    void Start () {
 		
 	}
 	
@@ -18,6 +19,12 @@ public class BoundaryController : MonoBehaviour {
         {
             IBoundaryElementController controller = other.GetComponentInParent<IBoundaryElementController>();
             controller.TouchesBoundaries();
+            GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
+            GameController gameController = gObj.GetComponent<GameController>();
+            if (gameController.FreezeCamera)
+            {
+                //other.transform.position = controller.GetLastValidPosition().position;
+            }
             print("dont move");
         }
     }

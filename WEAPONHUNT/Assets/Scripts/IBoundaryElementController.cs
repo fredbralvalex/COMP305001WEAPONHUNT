@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IBoundaryElementController {
 
     void TouchesBoundaries();
+    Transform GetLastValidPosition();
 }

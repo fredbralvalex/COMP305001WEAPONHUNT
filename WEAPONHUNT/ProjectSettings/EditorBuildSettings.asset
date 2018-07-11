@@ -8,16 +8,25 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: c8dcf5ff6a957384082cbf28bc1b521e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StoryScene.unity
     guid: b792a3c38a79cb442b4d1f6a4349cfe8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StoryScene02.unity
     guid: 71fd08ae3dfcb6345bd60fa932757e6d
-  - enabled: 1
+  - enabled: 0
+    path: Assets/Scenes/lv01_city.unity
+    guid: 98825bf8cea11574397e8961e643b197
+  - enabled: 0
     path: Assets/Scenes/ScenePrototype.unity
     guid: d92ed098d91107d46af3b2120824f67c
+  - enabled: 1
+    path: Assets/Scenes/GameOverTryAgain.unity
+    guid: b6d34a75d14874c42bd5693b38dfc7e1
+  - enabled: 0
+    path: Assets/Scenes/CreditsGameOver.unity
+    guid: ca68f8e9497f5c343bb10924238ecb7e
   m_configObjects: {}

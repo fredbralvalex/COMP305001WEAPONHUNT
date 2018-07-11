@@ -22,6 +22,13 @@ public class PlayerController: HittableController, IBoundaryElementController
     Rigidbody2D playerRB;
     GameController gameController;
 
+    private Transform lastPosition;
+
+    private void LateUpdate()
+    {
+        lastPosition = transform;
+    }
+
     void Start() {
         animator = gameObject.GetComponent<Animator>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
@@ -457,6 +464,11 @@ public class PlayerController: HittableController, IBoundaryElementController
     void IBoundaryElementController.TouchesBoundaries()
     {
         StateMovement = false;
+    }
+
+    Transform IBoundaryElementController.GetLastValidPosition()
+    {
+        return lastPosition;
     }
 
     public const string IDLE = "CharIdle";
