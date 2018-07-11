@@ -11,6 +11,7 @@ public class TextEffect : MonoBehaviour {
     private float timeTowait = 7;
 
     public string TextToExhibit = "";
+    Enemy1TextEffect enm;
     //int lenghtText;
 
 	// Use this for initialization
@@ -27,10 +28,17 @@ public class TextEffect : MonoBehaviour {
             if (TextToExhibit.Length > TextMeshPro.text.Length)
             {
                 TextMeshPro.text = TextMeshPro.text + TextToExhibit[TextMeshPro.text.Length];
+            } else
+            {
+                ShowNextText();
             }
+          
             time = 0;
         }
 	}
+
+    protected virtual void ShowNextText()
+    { }
 
     public void ContinueEvent()
     {
