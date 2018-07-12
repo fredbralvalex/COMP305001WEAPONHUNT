@@ -9,14 +9,14 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    class GameController :MonoBehaviour
+    public class GameController :MonoBehaviour
     {
         GameStateController gameState;        
         public GameObject Life;
         [Header ("Game Position Elements")]
         public GameObject RespawnLeft;
         public GameObject RespawnRight;
-        public GameObject PlayerInitialPosition;
+        private GameObject PlayerInitialPosition;
 
         public GameObject GameElements;
         public GameObject MenuPosition;
@@ -76,10 +76,12 @@ namespace Assets.Scripts
         }
 
         private void Start()
-        {
+        {            
             playerItems = new List<GameObject>();
             gameState = new GameStateController();
             Gangmen = new List<GameObject>();
+
+            PlayerInitialPosition = GetComponentInParent<CameraController>().gameObject;
 
             Canvas LifeBarCanvasClone;
             LifeBarCanvasClone = Instantiate(LifeBarCanvas, LifeBarCanvas.transform.position, LifeBarCanvas.transform.rotation) as Canvas;
@@ -124,7 +126,7 @@ namespace Assets.Scripts
 
             //GenerateBoss(true);
             GeneratePlayer();
-            //GenerateGangMan(true);
+            GenerateGangMan(true);
         }
 
         void FixedUpdate()
@@ -137,7 +139,7 @@ namespace Assets.Scripts
         public void GeneratePlayer()
         {
             GameObject player = Instantiate(Player);
-            player.transform.localPosition = PlayerInitialPosition.transform.position;            
+            player.transform.localPosition = new Vector3 (PlayerInitialPosition.transform.position.x, PlayerInitialPosition.transform.position.y, - 1.34f);            
         }
 
         public void GenerateGangMan(bool right)
@@ -266,6 +268,7 @@ namespace Assets.Scripts
                 enemy.SetActive(false);
                 Destroy(enemy);
                 Destroy(LifeBarBossOneCanvas.gameObject);
+                FreezeCamera = false;
                 Level = 2;
                 GenerateBoss(true);
             }
@@ -274,11 +277,11 @@ namespace Assets.Scripts
                 enemy.SetActive(false);
                 Destroy(enemy);
                 Destroy(LifeBarBossTwoCanvas.gameObject);
+                FreezeCamera = false;
                 Level = 3;
                 GenerateBoss(true);
             }
             else if (enemy.tag == "BossThree")
-
             {
                 enemy.SetActive(false);
                 Destroy(enemy);
@@ -363,7 +366,7 @@ namespace Assets.Scripts
             if (life == null)
             {
                 //endGame();
-                gameState.TryAgainCommand();
+                gameState.LoadGameOverTryAgainScreen();
                 return false;
             }
             else

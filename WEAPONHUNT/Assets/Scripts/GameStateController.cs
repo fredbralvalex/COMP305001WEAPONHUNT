@@ -9,7 +9,7 @@ public class GameStateController : MonoBehaviour {
     public static int level = 1;
     public static int playerScoreN = 0;
     public static int enemiesScoreN = 0;
-    public static int life = 3;
+    public static int life = 0;
     public static List<GameObject> playerItems;
 
 
@@ -52,26 +52,37 @@ public class GameStateController : MonoBehaviour {
 
     public void LoadLevelThree()
     {
-        SceneManager.LoadScene("lv02");
-    }
-
-    public static void LoadCredits()
-    {
-        SceneManager.LoadScene("lv02");
+        SceneManager.LoadScene("lv03");
     }
 
     //
     public void StartPlayFromMenuscreen()
-    {
+    {        
         LoadStoryScreenOne();
     }
 
     public void PlayCommand() {
+        life = 0;
         LoadLevelOne();
     }
 
     public void TryAgainCommand()
     {
+        life = 0;
+        if (level == 1)
+        {
+            LoadLevelOne();
+        } else if (level == 2)
+        {
+            LoadLevelTwo();
+        } else if (level == 3)
+        {
+            LoadLevelThree();
+        } else
+        {
+            LoadGameOverCreditsScreen();
+        }
+
     }
 
     public void LoadStoryScreenOne()
@@ -86,6 +97,6 @@ public class GameStateController : MonoBehaviour {
 
     public void LoadStoryScreenThree()
     {
-        SceneManager.LoadScene("lv02");
+        SceneManager.LoadScene("StoryScene03");
     }
 }

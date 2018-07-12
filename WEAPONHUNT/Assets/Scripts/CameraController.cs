@@ -4,33 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-    /*
-    [SerializeField]
-    private float xMax;
-
-    [SerializeField]
-    private float yMax;
-
-    [SerializeField]
-    private float xMin;
-
-    [SerializeField]
-    private float yMin;
-    */
 
     private GameObject player;
     private PlayerController playerController;
+    public GameObject gameBarPrefab;
+    private GameObject gameBarInstatiated;
     private GameController gameController;
     private Vector3 offset;
     private float fixedY;
 
-    private Transform TmpTransform; 
     float horizontalPosition = 0;
 
     // Use this for initialization
     void Start () {
-        TmpTransform = transform;
-        gameController = GetComponentInChildren<GameController>();
+        gameBarInstatiated = Instantiate(gameBarPrefab, GetComponent<Camera>().transform);
+        gameController = gameBarInstatiated.GetComponent<GameController>();
+        //gameBarInstatiated.transform.parent = GetComponent<Camera>().transform;
+        gameController.transform.parent = gameBarInstatiated.transform;
+        //gameBarInstatiated.transform.position = new Vector3(0, 2.55f, 9);
         UpdateOffSetPlayer();
     }
 
@@ -52,7 +43,7 @@ public class CameraController : MonoBehaviour {
         if (player != null)
         {
             playerPosition = player.transform.position;
-            fixedY = player.transform.localPosition.y;
+            fixedY = player.transform.localPosition.y - 1.22f;
 
             playerController = player.GetComponent<PlayerController>();
         }        
@@ -73,6 +64,5 @@ public class CameraController : MonoBehaviour {
             transform.localPosition = new Vector3(horizontalPosition, fixedY, player.transform.localPosition.z) + offset;
 
         }
-        TmpTransform = transform;
 	}
 }

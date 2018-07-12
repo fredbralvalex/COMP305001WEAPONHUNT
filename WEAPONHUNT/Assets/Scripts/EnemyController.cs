@@ -49,7 +49,7 @@ namespace Assets.Scripts
             {
                 if (EnemyState == EnemyAction.End)
                 {
-                    GameObject gObject = GameObject.Find("GameBar");
+                    GameObject gObject = GameObject.FindGameObjectWithTag("GameBar");
                     GameController gameController = gObject.GetComponent<GameController>();
                     gameController.EliminateEnemy(gameObject);
                 }
@@ -358,7 +358,10 @@ namespace Assets.Scripts
                     GetLifeBar().color = Color.red;
                 }
             }
-            PushedBack(power);
+            if (StateMovement)
+            {
+                PushedBack(power);
+            }
         }
 
         protected void PushedBack(float power)

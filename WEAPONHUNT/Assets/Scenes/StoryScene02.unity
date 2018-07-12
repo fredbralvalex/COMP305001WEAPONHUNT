@@ -747,7 +747,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1721045083}
-        m_MethodName: LoadLevelOne
+        m_MethodName: PlayCommand
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
