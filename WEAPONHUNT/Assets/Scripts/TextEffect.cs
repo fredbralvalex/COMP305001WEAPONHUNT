@@ -11,15 +11,18 @@ public class TextEffect : MonoBehaviour {
     private float timeTowait = 7;
 
     public string TextToExhibit = "";
-
-	// Use this for initialization
-	void Start () {
+  
+    // Use this for initialization
+    void Start () {
         TextMeshPro.text = "";
+      
         //lenghtText = textToExhibit.Length;
     }
-	
-	// Update is called once per frame
-	void FixedUpdate() {
+    
+
+
+    // Update is called once per frame
+    void FixedUpdate() {
         time += Time.deltaTime;
         if (time >= timeTowait * Time.deltaTime)
         {
@@ -30,7 +33,7 @@ public class TextEffect : MonoBehaviour {
             {
                 ShowNextText();
             }
-          
+            
             time = 0;
         }
 	}

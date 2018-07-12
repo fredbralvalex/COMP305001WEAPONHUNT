@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameStateController : MonoBehaviour {
 
@@ -14,9 +15,15 @@ public class GameStateController : MonoBehaviour {
     public static List<GameObject> playerItems;
 
     public static int playerScoreN_0 = 0;
-    public static int enemiesScoreN_0 = 0;   
+    public static int enemiesScoreN_0 = 0;
     public static int coins_0 = 0;
 
+
+
+    public AudioClip Audio1;
+    private AudioSource source;
+    public Button btn1;
+    public int var;
     private void Start()
     {
         playerItems = new List<GameObject>();
@@ -107,16 +114,27 @@ public class GameStateController : MonoBehaviour {
 
     public void LoadStoryScreenOne()
     {
+
         SceneManager.LoadScene("StoryScene");
     }
 
     public void LoadStoryScreenTwo()
     {
+        gameObject.AddComponent<AudioSource>();
+        source.clip = Audio1;
+        source.playOnAwake = false;
+        btn1.onClick.AddListener(() => playSound());
         SceneManager.LoadScene("StoryScene02");
+
     }
 
     public void LoadStoryScreenThree()
     {
         SceneManager.LoadScene("StoryScene03");
+    }
+    void playSound()
+    {
+        source.PlayOneShot(Audio1);
+
     }
 }
