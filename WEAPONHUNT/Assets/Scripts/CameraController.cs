@@ -17,10 +17,14 @@ public class CameraController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        gameBarInstatiated = Instantiate(gameBarPrefab, GetComponent<Camera>().transform);
-        gameController = gameBarInstatiated.GetComponent<GameController>();
-        //gameBarInstatiated.transform.parent = GetComponent<Camera>().transform;
-        gameController.transform.parent = gameBarInstatiated.transform;
+        gameController = GetComponentInChildren<GameController>();
+        if (gameController == null)
+        {
+            gameBarInstatiated = Instantiate(gameBarPrefab, GetComponent<Camera>().transform);
+            gameController = gameBarInstatiated.GetComponent<GameController>();
+            //gameBarInstatiated.transform.parent = GetComponent<Camera>().transform;
+            gameController.transform.parent = gameBarInstatiated.transform;
+        }
         //gameBarInstatiated.transform.position = new Vector3(0, 2.55f, 9);
         UpdateOffSetPlayer();
     }

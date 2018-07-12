@@ -24,6 +24,7 @@ namespace Assets.Scripts
         public GameObject LifeBarPosition;
         public GameObject LifeBarBossPosition;
 
+        public Canvas CanvasCoins;
         public Canvas LifeBarCanvas;
         public Canvas LifeBarBossOneCanvas;
         public Canvas LifeBarBossTwoCanvas;
@@ -112,6 +113,10 @@ namespace Assets.Scripts
                     EnemyScore = t;
                 }
             }
+            Canvas clone = Instantiate(CanvasCoins, gameObject.transform);
+            CanvasCoins = clone;
+            CoinsCount = CanvasCoins.GetComponentInChildren<TextMeshProUGUI>();
+            CanvasCoins.transform.position = new Vector3(-7.75f + MenuOffset, LifeBarPosition.transform.localPosition.y + 3, LifeBarPosition.transform.localPosition.z);
 
             StartLevelGame();
         }
@@ -133,6 +138,7 @@ namespace Assets.Scripts
         {           
             PlayerScores.text = "" + PlayerScoreN;
             EnemyScore.text = "" + EnemiesScoreN;
+            CoinsCount.text = "" + Coins;
             MountMenu();
         }
 
@@ -396,6 +402,8 @@ namespace Assets.Scripts
 
         public TextMeshProUGUI PlayerScores;
 
+        public TextMeshProUGUI CoinsCount;
+
         public int PlayerScoreN {
             get
             {
@@ -414,6 +422,18 @@ namespace Assets.Scripts
             set
             {
                 GameStateController.enemiesScoreN = value;
+            }
+        }
+
+        public int Coins
+        {
+            get
+            {
+                return GameStateController.coins;
+            }
+            set
+            {
+                GameStateController.coins = value;
             }
         }
 
@@ -443,5 +463,11 @@ namespace Assets.Scripts
         public const float COOL_DOWN_TIME = 0.3f;
         public const float TIME_DEFEATED = 2f;
         public const float TIME_GET_UP = 0.6f;
+
+        public const int HitPoints = 10;
+        public const int HitBossPoints = 15;
+        public const int BossOnePoints = 150;
+        public const int BossTwoPoints = 250;
+        public const int BossThreePoints = 350;
     }
 }

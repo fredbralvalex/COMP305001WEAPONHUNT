@@ -28,6 +28,8 @@ TagManager:
   - HitPosition
   - EnemyScore
   - PlayerScore
+  - CoinsCount
+  - Coin
   layers:
   - Default
   - TransparentFX

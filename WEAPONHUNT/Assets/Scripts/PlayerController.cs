@@ -375,6 +375,12 @@ public class PlayerController: HittableController, IBoundaryElementController
             other.gameObject.SetActive(false);
             Destroy(other.gameObject);
         }
+        else if (other.gameObject.tag == "Coin")
+        {
+            GameStateController.coins++;
+            other.gameObject.SetActive(false);
+            Destroy(other.gameObject);
+        }
     }
 
     private void CalcMaxJumpHigh()
