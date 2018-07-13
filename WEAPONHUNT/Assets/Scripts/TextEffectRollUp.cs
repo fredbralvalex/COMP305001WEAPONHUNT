@@ -71,7 +71,7 @@ public class TextEffectRollUp : MonoBehaviour {
 
     public void ExitGame()
     {
-        print("Exit Game");
+        //print("Exit Game");
         Application.Quit();
     }
 }

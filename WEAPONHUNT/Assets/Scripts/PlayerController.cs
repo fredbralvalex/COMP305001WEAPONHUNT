@@ -79,7 +79,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                     {
                         return;
                     }
-                    print("Won!!!");
+                    //print("Won!!!");
                     playerDummyState = PlayerDummyAction.Won;
                     playerState = PlayerAction.Idle;
                     //goto to the next level
@@ -481,7 +481,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         Move(nextPosition);
     }
 
-    private void UpdateLifeBar()
+    public void UpdateLifeBar()
     {
         GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
         GameController gController = gObj.GetComponent<GameController>();

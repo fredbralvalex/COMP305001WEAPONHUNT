@@ -127,11 +127,12 @@ namespace Assets.Scripts
         public void StartLevelGame()
         {
             //Add items
-            for(int i = 0; i < GameStateController.life; i++)
+            for(int i = 0; i < GameSaveStateController.GetInstance().life; i++)
             {
                 playerItems.Add(CreateLife());
             }
-
+            
+            print("On Load Level Lives: " + GameSaveStateController.GetInstance().life);
             //GenerateBoss(true);
             GeneratePlayer();
             GenerateGangMan(true);
@@ -148,6 +149,10 @@ namespace Assets.Scripts
                 Player.GetComponent<PlayerController>().Dummy &&
                 Player.GetComponent<PlayerController>().playerDummyState == PlayerController.PlayerDummyAction.Won)
             {
+                //updating hits for the next level
+                GameStateController.hits = Player.GetComponent<PlayerController>().Hits;
+                print("G - On Finishing Level Lives: " + GameSaveStateController.GetInstance().life);
+
                 GameStateController.LoadNextStoryScreen();
             }
         }
@@ -161,6 +166,8 @@ namespace Assets.Scripts
                 player.transform.localPosition = new Vector3 (RespawnLeft.transform.position.x, PlayerInitialPosition.transform.position.y, - 1.34f);
                 player.GetComponent<PlayerController>().Dummy = true;
                 player.GetComponent<PlayerController>().playerDummyState = PlayerController.PlayerDummyAction.MoveToCenter;
+                player.GetComponent<PlayerController>().Hits = GameStateController.hits;
+                player.GetComponent<PlayerController>().UpdateLifeBar();
                 Player = player;
 
             } else
@@ -406,6 +413,7 @@ namespace Assets.Scripts
                 playerItems.Remove(life);
                 life.SetActive(false);
                 Destroy(life);
+                GameSaveStateController.GetInstance().life--;
                 return true;
             }
         }

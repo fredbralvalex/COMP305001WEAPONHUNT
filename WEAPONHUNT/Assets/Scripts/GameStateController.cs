@@ -7,10 +7,12 @@ using UnityEngine.UI;
 
 public class GameStateController : MonoBehaviour {
 
+    public GameSaveStateController saver;
     public static int level = 1;
     public static int playerScoreN = 0;
     public static int enemiesScoreN = 0;
-    public static int life = 0;
+    //public static int life = 0;
+    public static int hits = 0;
     public static int coins = 0;
     public static List<GameObject> playerItems;
 
@@ -27,7 +29,8 @@ public class GameStateController : MonoBehaviour {
 
     private void Start()
     {
-        playerItems = new List<GameObject>();
+        saver = GameSaveStateController.GetInstance();
+        playerItems = new List<GameObject>();        
         //Add items        
     }   
 
@@ -50,14 +53,16 @@ public class GameStateController : MonoBehaviour {
     public void LaodNextScreen()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
+    }    
+    
     public void LoadLevelOne()
     {
         level = 1;
         playerScoreN_0 = playerScoreN;
         enemiesScoreN_0 = enemiesScoreN;
         coins_0 = coins;
+        saver.life = 3;
+        
         SceneManager.LoadScene("lv01_city");
     }
 
@@ -85,8 +90,7 @@ public class GameStateController : MonoBehaviour {
         LoadStoryScreenOne();
     }
 
-    public void PlayCommand() {
-        life = 3;
+    public void PlayCommand() {        
         LoadLevelOne();
     }
 
@@ -96,7 +100,7 @@ public class GameStateController : MonoBehaviour {
         enemiesScoreN = enemiesScoreN_0;
         coins = coins_0;
 
-        life = 0;
+        saver.life = 3;
         if (level == 1)
         {
             LoadLevelOne();
