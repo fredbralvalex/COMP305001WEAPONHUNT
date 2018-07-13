@@ -21,6 +21,7 @@ namespace Assets.Scripts
         public GameObject GameElements;
         public GameObject MenuPosition;
         public GameObject ItemsPosition;
+        public GameObject CoinsPosition;
         public GameObject LifeBarPosition;
         public GameObject LifeBarBossPosition;
 
@@ -113,10 +114,12 @@ namespace Assets.Scripts
                     EnemyScore = t;
                 }
             }
-            Canvas clone = Instantiate(CanvasCoins, gameObject.transform);
+            Canvas clone = Instantiate(CanvasCoins, CoinsPosition.transform.position, CoinsPosition.transform.rotation) as Canvas;
+            clone.transform.parent = CoinsPosition.transform;
+            clone.transform.position = new Vector3(-7.75f + MenuOffset, CoinsPosition.transform.localPosition.y + 2, CoinsPosition.transform.localPosition.z);
             CanvasCoins = clone;
+
             CoinsCount = CanvasCoins.GetComponentInChildren<TextMeshProUGUI>();
-            CanvasCoins.transform.position = new Vector3(-7.75f + MenuOffset, LifeBarPosition.transform.localPosition.y + 3, LifeBarPosition.transform.localPosition.z);
 
             StartLevelGame();
         }
@@ -140,12 +143,30 @@ namespace Assets.Scripts
             EnemyScore.text = "" + EnemiesScoreN;
             CoinsCount.text = "" + Coins;
             MountMenu();
+
+            if (Player!= null && Player.GetComponent<PlayerController>() != null &&
+                Player.GetComponent<PlayerController>().Dummy &&
+                Player.GetComponent<PlayerController>().playerDummyState == PlayerController.PlayerDummyAction.Won)
+            {
+                GameStateController.LoadNextStoryScreen();
+            }
         }
 
         public void GeneratePlayer()
         {
-            GameObject player = Instantiate(Player);
-            player.transform.localPosition = new Vector3 (PlayerInitialPosition.transform.position.x, PlayerInitialPosition.transform.position.y, - 1.34f);            
+            GameObject PlayerTmp = GameObject.Find("/Player");
+            if (PlayerTmp == null)
+            {
+                GameObject player = Instantiate(Player);
+                player.transform.localPosition = new Vector3 (RespawnLeft.transform.position.x, PlayerInitialPosition.transform.position.y, - 1.34f);
+                player.GetComponent<PlayerController>().Dummy = true;
+                player.GetComponent<PlayerController>().playerDummyState = PlayerController.PlayerDummyAction.MoveToCenter;
+                Player = player;
+
+            } else
+            {
+                Player = PlayerTmp;
+            }
         }
 
         public void GenerateGangMan(bool right)
@@ -253,6 +274,7 @@ namespace Assets.Scripts
 
         public void EliminateEnemy(GameObject enemy)
         {
+            PlayerScoreN+=enemy.GetComponent<EnemyController>().GetDefeatPoints();
             if (enemy.tag == "Gangman")
             {
                 Gangmen.Remove(enemy);
@@ -276,7 +298,8 @@ namespace Assets.Scripts
                 Destroy(LifeBarBossOneCanvas.gameObject);
                 FreezeCamera = false;
                 Level = 2;
-                GenerateBoss(true);
+                Player.GetComponent<PlayerController>().PlayWinning();
+                //GenerateBoss(true);
             }
             else if (enemy.tag == "BossTwo")
             {
@@ -285,14 +308,17 @@ namespace Assets.Scripts
                 Destroy(LifeBarBossTwoCanvas.gameObject);
                 FreezeCamera = false;
                 Level = 3;
-                GenerateBoss(true);
+                Player.GetComponent<PlayerController>().PlayWinning();
+                //GenerateBoss(true);
             }
             else if (enemy.tag == "BossThree")
             {
                 enemy.SetActive(false);
                 Destroy(enemy);
                 Destroy(LifeBarBossThreeCanvas.gameObject);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                Level = 4;
+                Player.GetComponent<PlayerController>().PlayWinning();
                 //GenerateBoss(true);
             }
         }

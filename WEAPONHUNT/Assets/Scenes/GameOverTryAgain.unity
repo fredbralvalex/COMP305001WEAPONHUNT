@@ -1075,7 +1075,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 0
       - m_Target: {fileID: 599895947}
-        m_MethodName: QuitCommand
+        m_MethodName: LoadGameOverCreditsScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

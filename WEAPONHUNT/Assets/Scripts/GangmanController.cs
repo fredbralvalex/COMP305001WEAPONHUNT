@@ -133,6 +133,16 @@ namespace Assets.Scripts
             return SPEED_CONSTANT;
         }
 
+        protected override int GetHitPoints()
+        {
+            return GameController.HitPoints;
+        }
+
+        public override int GetDefeatPoints()
+        {
+            return GameController.HitPoints;
+        }
+
         public const float SPEED_CONSTANT = 1.5f;
 
         public const float TIME_ATTACK_1 = 0.5f;

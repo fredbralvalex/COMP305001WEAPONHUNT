@@ -25,7 +25,7 @@ public class BoundaryController : MonoBehaviour {
             {
                 //other.transform.position = controller.GetLastValidPosition().position;
             }
-            print("dont move");
+            //print("dont move");
         }
     }
 }

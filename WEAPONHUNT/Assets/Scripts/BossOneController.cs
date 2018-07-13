@@ -127,6 +127,16 @@ class BossOneController : EnemyController
         return SPEED_CONSTANT;
     }
 
+    protected override int GetHitPoints()
+    {
+        return GameController.HitBossPoints;
+    }
+
+    public override int GetDefeatPoints()
+    {
+        return GameController.BossOnePoints;
+    }
+
     public const float SPEED_CONSTANT = 1f;
 
     public const float TIME_ATTACK_1 = 0.4f;

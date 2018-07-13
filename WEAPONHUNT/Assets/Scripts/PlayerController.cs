@@ -8,8 +8,18 @@ public class PlayerController: HittableController, IBoundaryElementController
 {
 
     public bool Dummy;
-    public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Fall, Defeated, End, GetUp };
+    public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Fall, Defeated, End, GetUp, Won };
+
+    public enum PlayerDummyAction { MoveToCenter, Won, Nothing };
+
+    public PlayerDummyAction playerDummyState = PlayerDummyAction.Nothing;
+    public float PlayerInitialPosition = 0;
+
+
     public PlayerAction playerState = PlayerAction.Idle;
+
+    public bool InPosition = false;
+
     private double time;
     float maxJumpHigh;
     public bool moving = false;
@@ -23,6 +33,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     GameController gameController;
 
     private Transform lastPosition;
+    private Boolean grounded = false;
 
     private void LateUpdate()
     {
@@ -33,62 +44,106 @@ public class PlayerController: HittableController, IBoundaryElementController
         animator = gameObject.GetComponent<Animator>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
         playerRB = gameObject.GetComponent<Rigidbody2D>();
-        GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
-        gameController = gObj.GetComponent<GameController>();
+        FindGameBarInScene();
     }
 	
+
+    private void FindGameBarInScene()
+    {
+        GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
+        if (gObj != null)
+        {
+            gameController = gObj.GetComponent<GameController>();
+        }
+    }
+
 	void FixedUpdate() {
-        Blinking();
-        //playerRB.mass = 1;
-        //playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
-        if (playerState == PlayerAction.Jump)
-        {
-
-            PerformeJumpFall();
-        }
         time += Time.deltaTime;
-        if (ValidateTimeToWait())
-        {
-            return;
-        }
-        time = 0;
 
-        if (playerState == PlayerAction.Defeated)
+        if (gameController == null)
         {
-            playerState = PlayerAction.End;
-        }
-        if (playerState == PlayerAction.GetUp && Hits == 0)
-        {
-            //New Chancd
-            playerState = PlayerAction.Idle;
+            FindGameBarInScene();
         }
 
-        if (gameController.LifeAmount - Hits <= 0)
+        if (Dummy)
         {
-            if (playerState == PlayerAction.End)
+            if (playerDummyState == PlayerDummyAction.MoveToCenter)
             {
-                //gameObject.SetActive(false);
-                //Destroy(gameObject);
-                if (gameController.NewChancePlayer())
-                {
-                    playerState = PlayerAction.GetUp;
-                    Hits = 0;
-                    UpdateLifeBar();
-                    PlayGetUp();
-                }
-
+                PutPlayerInPosition();
             }
             else
             {
-                playerState = PlayerAction.Defeated;
-                PlayDefeated();
+                if (playerState == PlayerAction.Won)
+                {
+                    if(time <= 3)
+                    {
+                        return;
+                    }
+                    print("Won!!!");
+                    playerDummyState = PlayerDummyAction.Won;
+                    playerState = PlayerAction.Idle;
+                    //goto to the next level
+                }
+                /*
+                if (playerState == PlayerAction.Won)
+                {
+                    playerDummyState = PlayerDummyAction.Won;
+
+
+                }*/
             }
-        }
-        else
-        {
-            Move();
-            Attack();
-            Jump();
+         } else {
+            Blinking();
+            //playerRB.mass = 1;
+            //playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+            if (playerState == PlayerAction.Jump)
+            {
+                PerformeJumpFall();
+            }
+            
+            if (ValidateTimeToWait())
+            {
+                return;
+            }
+            time = 0;
+
+            if (playerState == PlayerAction.Defeated)
+            {
+                playerState = PlayerAction.End;
+            }
+            if (playerState == PlayerAction.GetUp && Hits == 0)
+            {
+                //New Chancd
+                playerState = PlayerAction.Idle;
+            }
+
+            if (gameController!= null && gameController.LifeAmount - Hits <= 0)
+            {
+                if (playerState == PlayerAction.End)
+                {
+                    //gameObject.SetActive(false);
+                    //Destroy(gameObject);
+                    if (gameController.NewChancePlayer())
+                    {
+                        playerState = PlayerAction.GetUp;
+                        Hits = 0;
+                        UpdateLifeBar();
+                        PlayGetUp();
+                    }
+
+                }
+                else
+                {
+                    playerState = PlayerAction.Defeated;
+                    PlayDefeated();
+                }
+            }
+            else
+            {
+                Move();
+                Attack();
+                Jump();
+            }
         }
     }
 
@@ -116,7 +171,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         else if (playerState == PlayerAction.GetUp)
         {
             wait = time <= GameController.TIME_GET_UP;
-        }
+        }        
         else
         {
             time = 0;
@@ -146,7 +201,7 @@ public class PlayerController: HittableController, IBoundaryElementController
             Animator animation = animator.GetComponent<Animator>();
             animation.Play(RUN);
             MoveTransform(Vector2.right);
-                        moving = true;
+            moving = true;
         }
         else
         {
@@ -335,6 +390,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         {
             if (maxJumpHigh >= sprite.transform.localPosition.y)
             {
+                grounded = false;
                 //going high       
                 //state = Movement.Jump;
                 nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime * 1.2f;
@@ -361,6 +417,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         {
             CalcMaxJumpHigh();
             playerState= PlayerAction.Idle;
+            grounded = true;
         }
         else if (other.gameObject.tag == "Gangman")
         {
@@ -478,6 +535,15 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
+    public void PlayWinning()
+    {
+        playerState = PlayerAction.Won;
+        //playerDummyState = PlayerDummyAction.Won;
+        Animator animation = animator.GetComponent<Animator>();
+        Dummy = true;
+        animation.Play(CHAR_WINNING);
+    }
+
     void IBoundaryElementController.TouchesBoundaries()
     {
         StateMovement = false;
@@ -488,6 +554,31 @@ public class PlayerController: HittableController, IBoundaryElementController
         return lastPosition;
     }
 
+    //public CameraController.OffSetPlayer delegat;
+
+    public void PutPlayerInPosition()
+    {
+        if (transform.position.x < 0 && grounded)
+        {
+            playerState = PlayerAction.Move;
+            //move right
+            facingRight = true;
+            Animator animation = animator.GetComponent<Animator>();
+            animation.Play(RUN);
+            MoveTransform(Vector2.right);
+            moving = true;
+        } else if (transform.position.x >= 0 && grounded)
+        {
+            playerState = PlayerAction.Idle;
+            playerDummyState = PlayerDummyAction.Nothing;
+            Dummy = false;
+            InPosition = true;
+            offsetdel.Invoke();
+            //GameObject.Find("/MainCamera").GetComponent<CameraController>().UpdateOffSetPlayer();
+            //GetComponent<Camera>().GetComponent<CameraController>().UpdateOffSetPlayer();
+        }
+    }
+    public CameraController.OffSetPlayer offsetdel;
     public const string IDLE = "CharIdle";
     public const string IDLE_L = "CharIdle_l";
 
@@ -508,4 +599,6 @@ public class PlayerController: HittableController, IBoundaryElementController
 
     public const string CHAR_GET_UP = "CharGetUp";
     public const string CHAR_GET_UP_L = "CharGetUp_l";
+
+    public const string CHAR_WINNING = "CharWon";
 }

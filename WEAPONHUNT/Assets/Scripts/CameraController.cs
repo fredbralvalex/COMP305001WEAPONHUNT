@@ -25,8 +25,10 @@ public class CameraController : MonoBehaviour {
             //gameBarInstatiated.transform.parent = GetComponent<Camera>().transform;
             gameController.transform.parent = gameBarInstatiated.transform;
         }
+        //transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1.22f, transform.transform.localPosition.z);
         //gameBarInstatiated.transform.position = new Vector3(0, 2.55f, 9);
-        UpdateOffSetPlayer();
+        //offset = transform.position - new Vector3(0,0,0);
+        //UpdateOffSetPlayer();
     }
 
     private void FixedUpdate()
@@ -36,22 +38,28 @@ public class CameraController : MonoBehaviour {
             player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
-                UpdateOffSetPlayer();
+                
+                OffSetPlayer offsetdel = UpdateOffSetPlayer;
+                PlayerController controller = player.GetComponent<PlayerController>();
+                controller.offsetdel = offsetdel;
+                //UpdateOffSetPlayer();
             }
-        }        
+        }
     }
 
-    private void UpdateOffSetPlayer()
+    public delegate void OffSetPlayer();
+
+    public void UpdateOffSetPlayer()
     {
-        Vector3 playerPosition = new Vector3();
-        if (player != null)
+        if (player != null)// && (playerController != null && !playerController.InPosition)
         {
+            Vector3 playerPosition = new Vector3();
             playerPosition = player.transform.position;
-            fixedY = player.transform.localPosition.y - 1.22f;
+            fixedY = player.transform.localPosition.y;// - 1.22f;
 
             playerController = player.GetComponent<PlayerController>();
+            offset = transform.position - playerPosition;
         }        
-        offset = transform.position - playerPosition;
         //Debug.Log(offset);
 
     }
@@ -59,7 +67,7 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate () {
 
-        if (!gameController.FreezesCamera() && player != null && !playerController.isMovingBack())
+        if (!gameController.FreezesCamera() && player != null && playerController != null && !playerController.isMovingBack())
         {
             if (player.transform.position.x + offset.x >= transform.localPosition.x )
             {

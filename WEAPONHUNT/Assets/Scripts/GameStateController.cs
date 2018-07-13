@@ -24,6 +24,7 @@ public class GameStateController : MonoBehaviour {
     private AudioSource source;
     public Button btn1;
     public int var;
+
     private void Start()
     {
         playerItems = new List<GameObject>();
@@ -66,7 +67,7 @@ public class GameStateController : MonoBehaviour {
         enemiesScoreN_0 = enemiesScoreN;
         coins_0 = coins;
         level = 2;
-        SceneManager.LoadScene("lv02");
+        SceneManager.LoadScene("lv02_cave");
     }
 
     public void LoadLevelThree()
@@ -75,7 +76,7 @@ public class GameStateController : MonoBehaviour {
         playerScoreN_0 = playerScoreN;
         enemiesScoreN_0 = enemiesScoreN;
         coins_0 = coins;
-        SceneManager.LoadScene("lv03");
+        SceneManager.LoadScene("lv03_snow");
     }
 
     //
@@ -85,7 +86,7 @@ public class GameStateController : MonoBehaviour {
     }
 
     public void PlayCommand() {
-        life = 0;
+        life = 3;
         LoadLevelOne();
     }
 
@@ -120,10 +121,10 @@ public class GameStateController : MonoBehaviour {
 
     public void LoadStoryScreenTwo()
     {
-        gameObject.AddComponent<AudioSource>();
+        /*gameObject.AddComponent<AudioSource>();
         source.clip = Audio1;
         source.playOnAwake = false;
-        btn1.onClick.AddListener(() => playSound());
+        btn1.onClick.AddListener(() => playSound());*/
         SceneManager.LoadScene("StoryScene02");
 
     }
@@ -132,9 +133,35 @@ public class GameStateController : MonoBehaviour {
     {
         SceneManager.LoadScene("StoryScene03");
     }
+
     void playSound()
     {
         source.PlayOneShot(Audio1);
+    }
 
+    public void LoadStoryScreenFour()
+    {
+        SceneManager.LoadScene("StoryScene04");
+    }
+
+    public void LoadStoryScreenFive()
+    {
+        SceneManager.LoadScene("StoryScene05");
+    }
+
+    public static void LoadNextStoryScreen()
+    {
+        if (level == 2)
+        {
+            new GameStateController().LoadStoryScreenThree();        
+        }
+        else if (level == 3)
+        {
+            new GameStateController().LoadStoryScreenFour();
+        }
+        else if (level == 4)
+        {
+            new GameStateController().LoadStoryScreenFive();
+        }
     }
 }

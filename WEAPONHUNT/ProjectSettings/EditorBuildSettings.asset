@@ -29,4 +29,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CreditsGameOver.unity
     guid: ca68f8e9497f5c343bb10924238ecb7e
+  - enabled: 1
+    path: Assets/Scenes/lv02_cave.unity
+    guid: 5481f582ba29903469739d2422b11131
+  - enabled: 1
+    path: Assets/Scenes/lv03_snow.unity
+    guid: 27b5704fdd9922a43860716a37170f4b
+  - enabled: 1
+    path: Assets/Scenes/StoryScene03.unity
+    guid: ea583edb20a766a48bd1af68abea6400
+  - enabled: 1
+    path: Assets/Scenes/StoryScene04.unity
+    guid: 4dbdd9cb92cb34e4b9ff69c99b84ad52
+  - enabled: 1
+    path: Assets/Scenes/StoryScene05.unity
+    guid: 45e6e3a6a4593f74389f2ca35bf92da9
   m_configObjects: {}

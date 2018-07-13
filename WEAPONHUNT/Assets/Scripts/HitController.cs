@@ -24,7 +24,7 @@ public class HitController : MonoBehaviour {
         HittableController objController = other.GetComponent<HittableController>();
         if (objController != null)
         {
-            print("Hit Enter: " + other.gameObject.tag);
+            //print("Hit Enter: " + other.gameObject.tag);
             //GameObject obj = transform.parent.gameObject;
             objController.Hit = GetActionHit(objController.HitPosition);
             objController.GettingHit(power);

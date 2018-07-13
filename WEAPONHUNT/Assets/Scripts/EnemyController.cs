@@ -181,7 +181,7 @@ namespace Assets.Scripts
             }
             else
             {
-                print("NOT state movement");
+                //print("NOT state movement");
                 transform.localPosition -= (Vector3)nextPosition;
                 //gameObject.SetActive(false);
                 StateMovement = true;
@@ -253,6 +253,9 @@ namespace Assets.Scripts
         protected abstract float GetTimeAttack();
         protected abstract float GetPowerAttack();
         protected abstract float GetSpeedMovement();
+
+        protected abstract int GetHitPoints();
+        public abstract int GetDefeatPoints();
 
         bool ValidateTimeToWait()
         {
@@ -337,7 +340,7 @@ namespace Assets.Scripts
         {
             GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
             GameController gController = gObj.GetComponent<GameController>();
-            gController.PlayerScoreN++;
+            gController.PlayerScoreN+=GetHitPoints();
             Hits++;
             //print(gameObject.tag + " is getting Hit : " + power);
             Blink = true;
