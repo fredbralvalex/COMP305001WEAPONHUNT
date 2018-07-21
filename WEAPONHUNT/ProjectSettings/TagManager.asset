@@ -30,6 +30,9 @@ TagManager:
   - PlayerScore
   - CoinsCount
   - Coin
+  - BarePosition
+  - PikePosition
+  - AxePosition
   layers:
   - Default
   - TransparentFX

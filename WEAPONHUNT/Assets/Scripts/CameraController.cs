@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour {
     private GameController gameController;
     private Vector3 offset;
     private float fixedY;
+    public int Level;
 
     float horizontalPosition = 0;
 
@@ -22,6 +23,11 @@ public class CameraController : MonoBehaviour {
         {
             gameBarInstatiated = Instantiate(gameBarPrefab, GetComponent<Camera>().transform);
             gameController = gameBarInstatiated.GetComponent<GameController>();
+            if (Level != 0)
+            {
+                GameStateController.level = Level;
+
+            }
             //gameBarInstatiated.transform.parent = GetComponent<Camera>().transform;
             gameController.transform.parent = gameBarInstatiated.transform;
         }

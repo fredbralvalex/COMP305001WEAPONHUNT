@@ -18,25 +18,44 @@ namespace Assets.Scripts
         public GameObject RespawnRight;
         private GameObject PlayerInitialPosition;
 
+        [Header("Game Menu Position Elements")]
         public GameObject GameElements;
         public GameObject MenuPosition;
         public GameObject ItemsPosition;
         public GameObject CoinsPosition;
         public GameObject LifeBarPosition;
         public GameObject LifeBarBossPosition;
+        public GameObject WeaponPosition;
+        public GameObject BarePosition;
+        public GameObject PikePosition;
+        public GameObject AxePosition;
 
+
+        [Header("Game Menu Canvas Elements")]
         public Canvas CanvasCoins;
         public Canvas LifeBarCanvas;
+        public Canvas WeaponCanvas;
         public Canvas LifeBarBossOneCanvas;
         public Canvas LifeBarBossTwoCanvas;
         public Canvas LifeBarBossThreeCanvas;
 
+        [Header("Game Images Elements")]
         public Image LifeBar;
         public Image LifeBarBossOneImage;
         public Image LifeBarBossTwoImage;
         public Image LifeBarBossThreeImage;
 
 
+        public Image Bare;
+        public Image Bare_Selected;
+
+        public Image Pike;
+        public Image Pike_Selected;
+
+        public Image Axe;
+        public Image Axe_Selected;
+
+        public int lives = 0;
         public int LifeAmount = 10;
 
         public float MenuOffset = 2.5f;
@@ -83,6 +102,11 @@ namespace Assets.Scripts
             gameState = new GameStateController();
             Gangmen = new List<GameObject>();
 
+            if (lives != 0)
+            {
+                GameSaveStateController.GetInstance().life = lives;
+            }
+            
             PlayerInitialPosition = GetComponentInParent<CameraController>().gameObject;
 
             Canvas LifeBarCanvasClone;
@@ -121,7 +145,55 @@ namespace Assets.Scripts
 
             CoinsCount = CanvasCoins.GetComponentInChildren<TextMeshProUGUI>();
 
+            BuildWeaponMenu();
             StartLevelGame();
+        }
+
+        private void BuildWeaponMenu()
+        {
+            Canvas Weaponclone = Instantiate(WeaponCanvas, WeaponPosition.transform.position, WeaponPosition.transform.rotation) as Canvas;
+            Weaponclone.transform.parent = WeaponPosition.transform;
+            Weaponclone.transform.position = new Vector3(WeaponPosition.transform.localPosition.x, WeaponPosition.transform.localPosition.y, WeaponPosition.transform.localPosition.z);
+            WeaponCanvas = Weaponclone;
+            
+            Image bareImage = Instantiate(Bare, BarePosition.transform.position, BarePosition.transform.rotation) as Image;
+            Image bareImageS = Instantiate(Bare_Selected, BarePosition.transform.position, BarePosition.transform.rotation) as Image;
+            Bare = bareImage;
+            Bare_Selected = bareImageS;
+
+            Bare.transform.parent = WeaponCanvas.transform;
+            Bare_Selected.transform.parent = WeaponCanvas.transform;
+
+            Image pikeImage = Instantiate(Pike, PikePosition.transform.position, PikePosition.transform.rotation) as Image;
+            Image pikeImageS = Instantiate(Pike_Selected, PikePosition.transform.position, PikePosition.transform.rotation) as Image;
+            Pike = pikeImage;
+            Pike_Selected = pikeImageS;
+            if (GameStateController.level > 1)
+            {
+                Pike.transform.parent = WeaponCanvas.transform;
+                Pike_Selected.transform.parent = WeaponCanvas.transform;
+            }
+
+            Image axeImage = Instantiate(Axe, AxePosition.transform.position, AxePosition.transform.rotation) as Image;
+            Image axeImageS = Instantiate(Axe_Selected, AxePosition.transform.position, AxePosition.transform.rotation) as Image;
+            Axe = axeImage;
+            Axe_Selected = axeImageS;
+            if (GameStateController.level > 2)
+            {
+                Axe.transform.parent = WeaponCanvas.transform;
+                Axe_Selected.transform.parent = WeaponCanvas.transform;
+            }
+
+            WeaponPosition.transform.position = new Vector3(WeaponPosition.transform.localPosition.x, WeaponPosition.transform.localPosition.y + 3, WeaponPosition.transform.localPosition.z);
+
+            Bare.enabled = GameStateController.level >= 1;
+            Bare_Selected.enabled = GameStateController.level >= 1;
+            Pike.enabled = GameStateController.level > 1;
+            Pike_Selected.enabled = false;//GameStateController.level > 1;
+            Axe.enabled = GameStateController.level > 2;
+            Axe_Selected.enabled = false; //GameStateController.level > 2;
+            
+            
         }
 
         public void StartLevelGame()
@@ -154,6 +226,35 @@ namespace Assets.Scripts
                 print("G - On Finishing Level Lives: " + GameSaveStateController.GetInstance().life);
 
                 GameStateController.LoadNextStoryScreen();
+            }
+
+            if (Player != null && Player.GetComponent<PlayerController>() != null)
+            {
+                if (PlayerController.Weapon.Bare == Player.GetComponent<PlayerController>().chosenWeapon)
+                {
+                    Bare.enabled = false;
+                    Bare_Selected.enabled = true;
+                    Pike.enabled = true;
+                    Pike_Selected.enabled = false;
+                    Axe.enabled = true;
+                    Axe_Selected.enabled = false;
+                } else if (PlayerController.Weapon.Pike == Player.GetComponent<PlayerController>().chosenWeapon)
+                {
+                    Bare.enabled = true;
+                    Bare_Selected.enabled = false;
+                    Pike.enabled = false;
+                    Pike_Selected.enabled = true;
+                    Axe.enabled = true;
+                    Axe_Selected.enabled = false;
+                } else if (PlayerController.Weapon.Axe == Player.GetComponent<PlayerController>().chosenWeapon)
+                {
+                    Bare.enabled = true;
+                    Bare_Selected.enabled = false;
+                    Pike.enabled = true;
+                    Pike_Selected.enabled = false;
+                    Axe.enabled = false;
+                    Axe_Selected.enabled = true;
+                }
             }
         }
 
@@ -486,12 +587,18 @@ namespace Assets.Scripts
 
         public const KeyCode JUMP = KeyCode.J;
         public const KeyCode ATTACK_1 = KeyCode.K;
-        public const KeyCode ATTACK_2 = KeyCode.L;                
+        public const KeyCode ATTACK_2 = KeyCode.L;
+
+        public const KeyCode NO_WEAPON = KeyCode.U;
+        public const KeyCode WEAPON_1 = KeyCode.I;
+        public const KeyCode WEAPON_2 = KeyCode.O;
 
         public const string HITTING = "Hitting";
 
         public const float TIME_PUNCH = 0.5f;
         public const float TIME_KICK = 0.5f;
+        public const float TIME_PIKE = 0.4f;
+        public const float TIME_AXE = 0.5f;
         public const float TIME_JUMP = 1.2f;
         public const float COOL_DOWN_TIME_ATTACK1 = 1f;
         public const float COOL_DOWN_TIME = 0.3f;

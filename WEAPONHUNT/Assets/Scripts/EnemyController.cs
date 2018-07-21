@@ -341,9 +341,16 @@ namespace Assets.Scripts
             GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
             GameController gController = gObj.GetComponent<GameController>();
             gController.PlayerScoreN+=GetHitPoints();
-            Hits++;
+            //Hits++;
+            Hits+=Convert.ToInt16(power);
             //print(gameObject.tag + " is getting Hit : " + power);
             Blink = true;
+
+            //keep black the bar
+            if ((float)Hits / Life > 1)
+            {
+                Hits = Life;
+            }
 
             if ((float)Hits / Life <= 1)
             {

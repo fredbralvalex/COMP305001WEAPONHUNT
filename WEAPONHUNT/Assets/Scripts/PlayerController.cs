@@ -8,7 +8,10 @@ public class PlayerController: HittableController, IBoundaryElementController
 {
 
     public bool Dummy;
-    public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Fall, Defeated, End, GetUp, Won };
+    public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Pike, Axe, Fall, Defeated, End, GetUp, Won };
+
+    public enum Weapon { Bare, Pike, Axe};
+    public Weapon chosenWeapon = Weapon.Bare;
 
     public enum PlayerDummyAction { MoveToCenter, Won, Nothing };
 
@@ -93,6 +96,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                 }*/
             }
          } else {
+            ChooseWeapon();
             Blinking();
             //playerRB.mass = 1;
             //playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -147,6 +151,20 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
+    private void ChooseWeapon()
+    {
+        if (Input.GetKeyDown(GameController.NO_WEAPON))
+        {
+            chosenWeapon = Weapon.Bare;
+        } else if (Input.GetKeyDown(GameController.WEAPON_1) && GameStateController.level > 1)
+        {
+            chosenWeapon = Weapon.Pike;
+        } else if (Input.GetKeyDown(GameController.WEAPON_2) && GameStateController.level > 2)
+        {
+            chosenWeapon = Weapon.Axe;
+        }
+    }
+
     internal bool isMovingBack()
     {
         return moving && !facingRight;
@@ -161,7 +179,15 @@ public class PlayerController: HittableController, IBoundaryElementController
         } else if (playerState == PlayerAction.Kick && gameController.LifeAmount - Hits > 0)
         {
             wait = time <= GameController.TIME_KICK;
-        } else if (playerState == PlayerAction.Jump && gameController.LifeAmount - Hits > 0) {
+        }else if (playerState == PlayerAction.Pike && gameController.LifeAmount - Hits > 0)
+        {
+            wait = time <= GameController.TIME_PIKE;
+        }
+        else if (playerState == PlayerAction.Axe && gameController.LifeAmount - Hits > 0)
+        {
+            wait = time <= GameController.TIME_AXE;
+        }
+        else if (playerState == PlayerAction.Jump && gameController.LifeAmount - Hits > 0) {
             wait = time <= GameController.TIME_JUMP;
         }
         else if (playerState == PlayerAction.Defeated)
@@ -220,20 +246,69 @@ public class PlayerController: HittableController, IBoundaryElementController
     }
 
     private void Attack()
-    {        
-        if (!Dummy && Input.GetKeyDown(GameController.ATTACK_1))
+    {
+        if (!Dummy)
         {
-            playerState = PlayerAction.Punch;
-            Attack(true);
-        }
-        else if (!Dummy && Input.GetKeyDown(GameController.ATTACK_2))
-        {
-            playerState = PlayerAction.Kick;
-            Attack(false);
+            if (Weapon.Bare == chosenWeapon)
+            {
+                if (Input.GetKeyDown(GameController.ATTACK_1))
+                {
+                    playerState = PlayerAction.Punch;
+                    Attack(true);
+
+                }
+                else if (Input.GetKeyDown(GameController.ATTACK_2))
+                {
+                    playerState = PlayerAction.Kick;
+                    Attack(false);
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(GameController.ATTACK_1) || Input.GetKeyDown(GameController.ATTACK_2))
+                {
+                    if (Weapon.Pike == chosenWeapon)
+                    {
+                        
+                        playerState = PlayerAction.Pike;
+                        AttackWeapon(true);
+                    } else
+                    {
+                        playerState = PlayerAction.Axe;
+                        AttackWeapon(false);
+                    }
+                }
+            }
         }        
     }
 
-    private void Attack(bool isPunch)
+    private void AttackWeapon(bool isPike)
+    {
+        Animator animation = animator.GetComponent<Animator>();
+        if (facingRight)
+        {
+            if (isPike)
+            {
+                animation.Play(PIKE);
+            }
+            else
+            {
+                animation.Play(AXE);
+            }
+        }
+        else
+        {
+            if (isPike)
+            {
+                animation.Play(PIKE_L);
+            }
+            else
+            {
+                animation.Play(AXE_L);
+            }
+        }
+    }
+        private void Attack(bool isPunch)
     {
         Animator animation = animator.GetComponent<Animator>();
         if (facingRight)
@@ -593,6 +668,12 @@ public class PlayerController: HittableController, IBoundaryElementController
 
     public const string KICK = "CharKick";
     public const string KICK_L = "CharKick_l";
+
+    public const string PIKE = "CharPike";
+    public const string PIKE_L = "CharPike_l";
+
+    public const string AXE = "CharAxe";
+    public const string AXE_L = "CharAxe_l";
 
     public const string CHAR_FALL = "CharDefeated";
     public const string CHAR_FALL_L = "CharDefeated_l";

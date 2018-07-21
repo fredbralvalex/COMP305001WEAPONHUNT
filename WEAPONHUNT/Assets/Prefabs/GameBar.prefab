@@ -89,6 +89,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1705739396530006
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224798925147646764}
+  m_Layer: 10
+  m_Name: WeaponsPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1864837029865126
 GameObject:
   m_ObjectHideFlags: 1
@@ -298,9 +313,18 @@ MonoBehaviour:
   CoinsPosition: {fileID: 1864837029865126}
   LifeBarPosition: {fileID: 1592238023862582}
   LifeBarBossPosition: {fileID: 1466311621034376}
+  WeaponPosition: {fileID: 1705739396530006}
+  BarePosition: {fileID: 1922136641661206, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
+    type: 2}
+  PikePosition: {fileID: 1606132016763686, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
+    type: 2}
+  AxePosition: {fileID: 1853586998231216, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
+    type: 2}
   CanvasCoins: {fileID: 223759157461452672, guid: d305b86219ade834aad6310bb7e6082a,
     type: 2}
   LifeBarCanvas: {fileID: 223776477558459188, guid: 89c62fab0f3eb0c4a9897060a95dd5e6,
+    type: 2}
+  WeaponCanvas: {fileID: 223939588718616074, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
     type: 2}
   LifeBarBossOneCanvas: {fileID: 223330965484100734, guid: f896003b4c4995546b27116f20c9841d,
     type: 2}
@@ -315,6 +339,16 @@ MonoBehaviour:
     type: 2}
   LifeBarBossThreeImage: {fileID: 114091778658912010, guid: 8ccf571306d955545983e66b10d2d86e,
     type: 2}
+  Bare: {fileID: 114729479828866312, guid: b890951c0ddedbb44abc3da85d9885c3, type: 2}
+  Bare_Selected: {fileID: 114492134505701074, guid: 2806b94cc1a85024d9cc79bc5e14ae4d,
+    type: 2}
+  Pike: {fileID: 114344817174458376, guid: 76e3f9420180d494998c7c0e0aa27605, type: 2}
+  Pike_Selected: {fileID: 114784403767251550, guid: 8712d26e9a256c84987f789fdf251072,
+    type: 2}
+  Axe: {fileID: 114220103342613820, guid: d3707ef0e1484524b92f91b1ab62d4f4, type: 2}
+  Axe_Selected: {fileID: 114410280672027990, guid: 7094703dd16952e46ab943ce7e51cac2,
+    type: 2}
+  lives: 3
   LifeAmount: 10
   MenuOffset: 2.5
   ItemOffset: 0.7
@@ -350,6 +384,7 @@ RectTransform:
   - {fileID: 224441474077431120}
   - {fileID: 224855552175878020}
   - {fileID: 224874728380381424}
+  - {fileID: 224798925147646764}
   m_Father: {fileID: 224811586389136912}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -393,6 +428,24 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.25}
   m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224798925147646764
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1705739396530006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224046110481449910}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224806079253476460
 RectTransform:
