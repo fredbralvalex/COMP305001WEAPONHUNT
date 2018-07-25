@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TextEffectRollUp : MonoBehaviour {
 
@@ -17,8 +17,8 @@ public class TextEffectRollUp : MonoBehaviour {
 
     public Transform BeginPosition;
     public Transform EndPosition;
-    public TextMeshProUGUI TextToGo;
-    public List<TextMeshProUGUI> CreditsListText;
+    public Text TextToGo;
+    public List<Text> CreditsListText;
     public Canvas CanvasToShow;
     private float time;
     private float timeTowait = 10;
@@ -26,7 +26,7 @@ public class TextEffectRollUp : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        CreditsListText = new List<TextMeshProUGUI>();
+        CreditsListText = new List<Text>();
 
     }
 	
@@ -37,16 +37,19 @@ public class TextEffectRollUp : MonoBehaviour {
         {
             if (Position < CreditsList.Count)
             {
-                TextMeshProUGUI newT = CloneText(CreditsList[Position]);
+                Text newT = CloneText(CreditsList[Position]);
                 CreditsListText.Add(newT);
                 Position++;
             }
             time = 0;
 
-            foreach (TextMeshProUGUI txt in CreditsListText)
+            foreach (Text txt in CreditsListText)
             {
                 //Time.deltaTime*10
-                txt.transform.position = new Vector3(txt.transform.position.x, txt.transform.position.y + 1, txt.transform.position.z);
+                if (txt.transform.position.y < EndPosition.localPosition.y)
+                {
+                    txt.transform.position = new Vector3(txt.transform.position.x, txt.transform.position.y + 1, txt.transform.position.z);
+                }
                 if (txt.transform.position.y > BeginPosition.localPosition.y - 1 && txt.transform.position.y < EndPosition.localPosition.y - 1)
                 {
                     txt.enabled = true;
@@ -58,14 +61,15 @@ public class TextEffectRollUp : MonoBehaviour {
         }
     }
 
-    private TextMeshProUGUI CloneText (string text)
+    private Text CloneText (string text)
     {
-        TextMeshProUGUI textToGo;
-        textToGo = Instantiate(TextToGo, TextToGo.transform.position, TextToGo.transform.rotation) as TextMeshProUGUI;
+        Text textToGo;
+        textToGo = Instantiate(TextToGo, TextToGo.transform.position, TextToGo.transform.rotation) as Text;
 
         textToGo.transform.parent = CanvasToShow.transform;
         //textToGo.transform.localPosition = new Vector3(BeginPosition.localPosition.y, BeginPosition.localPosition.y, BeginPosition.localPosition.z);
         textToGo.text = text;
+        textToGo.transform.localScale = new Vector3(1, 1, 1);
         return textToGo;
     }
 

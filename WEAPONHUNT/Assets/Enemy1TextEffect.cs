@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy1TextEffect : TextEffect {
     public string TextToEnemy = "";
-    public TextMeshProUGUI TextMeshPro2;
+    public Text Text2;
     private float _time;
     private float _timeTowait = 7;
 
     // Use this for initialization
     void Start () {
-        TextMeshPro2.text = "";
+        Text2.text = "";
         //TextMeshPro2.enabled = false;
     }
 	
@@ -27,9 +27,9 @@ public class Enemy1TextEffect : TextEffect {
         //TextMeshPro2.enabled = true;
         if (_time >= _timeTowait * Time.deltaTime)
         {
-            if (TextToEnemy.Length > TextMeshPro2.text.Length)
+            if (TextToEnemy.Length > Text2.text.Length)
             {
-                TextMeshPro2.text = TextMeshPro2.text + TextToEnemy[TextMeshPro2.text.Length];
+                Text2.text = Text2.text + TextToEnemy[Text2.text.Length];
             }
           
         }

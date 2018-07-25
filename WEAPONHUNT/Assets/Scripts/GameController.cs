@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -126,16 +125,16 @@ namespace Assets.Scripts
                 }
             }
 
-            TextMeshProUGUI[] txts = LifeBarCanvas.GetComponentsInChildren<TextMeshProUGUI>();
-            foreach (TextMeshProUGUI t in txts)
+            Text[] txts = LifeBarCanvas.GetComponentsInChildren<Text>();
+            foreach (Text t in txts)
             {
                 if (t.tag == "PlayerScore")
                 {
-                    PlayerScores = t;
+                    PlayerScoresTxt = t;
                 }
                 if (t.tag == "EnemyScore")
                 {
-                    EnemyScore = t;
+                    EnemyScoreTxt = t;
                 }
             }
             Canvas clone = Instantiate(CanvasCoins, CoinsPosition.transform.position, CoinsPosition.transform.rotation) as Canvas;
@@ -143,7 +142,7 @@ namespace Assets.Scripts
             clone.transform.position = new Vector3(-7.75f + MenuOffset, CoinsPosition.transform.localPosition.y + 2, CoinsPosition.transform.localPosition.z);
             CanvasCoins = clone;
 
-            CoinsCount = CanvasCoins.GetComponentInChildren<TextMeshProUGUI>();
+            CoinsCountTxt = CanvasCoins.GetComponentInChildren<Text>();
 
             BuildWeaponMenu();
             StartLevelGame();
@@ -211,10 +210,12 @@ namespace Assets.Scripts
         }
 
         void FixedUpdate()
-        {           
-            PlayerScores.text = "" + PlayerScoreN;
-            EnemyScore.text = "" + EnemiesScoreN;
-            CoinsCount.text = "" + Coins;
+        {
+
+            PlayerScoresTxt.text = "" + PlayerScoreN;
+            EnemyScoreTxt.text = "" + EnemiesScoreN;
+            CoinsCountTxt.text = "" + Coins;
+
             MountMenu();
 
             if (Player!= null && Player.GetComponent<PlayerController>() != null &&
@@ -533,11 +534,9 @@ namespace Assets.Scripts
             }
         }
 
-        public TextMeshProUGUI EnemyScore;
-
-        public TextMeshProUGUI PlayerScores;
-
-        public TextMeshProUGUI CoinsCount;
+        public Text EnemyScoreTxt;
+        public Text PlayerScoresTxt;
+        public Text CoinsCountTxt;
 
         public int PlayerScoreN {
             get

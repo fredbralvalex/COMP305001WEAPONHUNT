@@ -367,6 +367,12 @@ MonoBehaviour:
     type: 2}
   CoinsCount: {fileID: 114051272975436758, guid: d305b86219ade834aad6310bb7e6082a,
     type: 2}
+  EnemyScoreTxt: {fileID: 114430006782723702, guid: 89c62fab0f3eb0c4a9897060a95dd5e6,
+    type: 2}
+  PlayerScoresTxt: {fileID: 114316898703567820, guid: 89c62fab0f3eb0c4a9897060a95dd5e6,
+    type: 2}
+  CoinsCountTxt: {fileID: 114997474257966566, guid: d305b86219ade834aad6310bb7e6082a,
+    type: 2}
 --- !u!224 &224046110481449910
 RectTransform:
   m_ObjectHideFlags: 1

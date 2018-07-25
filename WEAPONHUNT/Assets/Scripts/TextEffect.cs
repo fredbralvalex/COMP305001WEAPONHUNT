@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TextEffect : MonoBehaviour {
 
-    public TextMeshProUGUI TextMeshPro;
+    public Text Text;
     private float time;
     private float timeTowait = 7;
 
@@ -14,7 +14,7 @@ public class TextEffect : MonoBehaviour {
   
     // Use this for initialization
     void Start () {
-        TextMeshPro.text = "";
+        Text.text = "";
       
         //lenghtText = textToExhibit.Length;
     }
@@ -26,9 +26,9 @@ public class TextEffect : MonoBehaviour {
         time += Time.deltaTime;
         if (time >= timeTowait * Time.deltaTime)
         {
-            if (TextToExhibit.Length > TextMeshPro.text.Length)
+            if (TextToExhibit.Length > Text.text.Length)
             {
-                TextMeshPro.text = TextMeshPro.text + TextToExhibit[TextMeshPro.text.Length];
+                Text.text = Text.text + TextToExhibit[Text.text.Length];
             } else
             {
                 ShowNextText();
