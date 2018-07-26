@@ -23,6 +23,6 @@ public class StoneSpawner : MonoBehaviour {
 
      void SpawnStone()
     {
-        Instantiate(stone);
-    }
+        Instantiate(stone, gameObject.transform.position, gameObject.transform.rotation);
+    }    
 }

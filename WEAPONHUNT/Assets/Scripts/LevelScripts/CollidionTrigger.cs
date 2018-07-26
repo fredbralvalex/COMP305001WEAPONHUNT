@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CollidionTrigger : MonoBehaviour {
 
+    private GameObject player;
     private BoxCollider2D playerCollider;
 
     [SerializeField]
@@ -14,13 +15,27 @@ public class CollidionTrigger : MonoBehaviour {
 	
 
 	void Start () {
+        player = GameObject.Find("Player");
+        if (player != null)
+        {
+            playerCollider = player.GetComponent<BoxCollider2D>();
+            Physics2D.IgnoreCollision(playerCollider, platformTrigger, true);
+        }
+    }
 
-        playerCollider = GameObject.Find("Player").GetComponent<BoxCollider2D>();
-        Physics2D.IgnoreCollision(playerCollider, platformTrigger, true);
-		
-	}
-	
-	void OnTriggerEnter2D(Collider2D other)
+    private void Update()
+    {
+        if (player == null)
+        {
+            player = GameObject.Find("Player");
+            if (player != null)
+            {
+                playerCollider = player.GetComponent<BoxCollider2D>();
+                Physics2D.IgnoreCollision(playerCollider, platformTrigger, true);
+            }
+        }
+    }
+    void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.name=="Player")
         {

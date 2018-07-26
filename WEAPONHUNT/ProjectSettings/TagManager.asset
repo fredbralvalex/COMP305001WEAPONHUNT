@@ -33,6 +33,9 @@ TagManager:
   - BarePosition
   - PikePosition
   - AxePosition
+  - Water
+  - Fire
+  - Mush
   layers:
   - Default
   - TransparentFX

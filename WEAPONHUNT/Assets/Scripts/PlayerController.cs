@@ -400,7 +400,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     {
         float var = 1;
 
-        Vector2 nextPosition = direction * var * GameController.SPEED_CONSTANT * Time.deltaTime;
+        Vector2 nextPosition = direction * var * GameController.SPEED_CONSTANT * (gameObject.transform.localScale) * Time.deltaTime;
         Move(nextPosition);
     }
     private void Move(Vector3 nextPosition)
@@ -445,13 +445,13 @@ public class PlayerController: HittableController, IBoundaryElementController
         {
             facingRight = false;
             moving = true;
-            nextPositionHorizontal = Vector2.left * GameController.SPEED_CONSTANT * varRun * Time.deltaTime;
+            nextPositionHorizontal = Vector2.left * GameController.SPEED_CONSTANT * varRun * Time.deltaTime * gameObject.transform.localScale;
         }
         else if (Input.GetKey(GameController.RIGHT))
         {
             facingRight = true;
             moving = true;
-            nextPositionHorizontal = Vector2.right * GameController.SPEED_CONSTANT * varRun * Time.deltaTime;
+            nextPositionHorizontal = Vector2.right * GameController.SPEED_CONSTANT * varRun * Time.deltaTime * gameObject.transform.localScale;
         }
         else
         {
@@ -468,7 +468,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                 grounded = false;
                 //going high       
                 //state = Movement.Jump;
-                nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime * 1.2f;
+                nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime * gameObject.transform.localScale * 1.2f;
                 //print("Up");
             }
             else
@@ -519,7 +519,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     {
         float varRun = 2;
         float varSlide = 1;
-        maxJumpHigh = transform.localPosition.y + sprite.bounds.size.y * varRun * varSlide;
+        maxJumpHigh = transform.localPosition.y + sprite.bounds.size.y * varRun * varSlide * gameObject.transform.localScale.y;
        
     }
 

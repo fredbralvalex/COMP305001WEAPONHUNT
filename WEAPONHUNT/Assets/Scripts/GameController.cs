@@ -139,7 +139,7 @@ namespace Assets.Scripts
             }
             Canvas clone = Instantiate(CanvasCoins, CoinsPosition.transform.position, CoinsPosition.transform.rotation) as Canvas;
             clone.transform.parent = CoinsPosition.transform;
-            clone.transform.position = new Vector3(-7.75f + MenuOffset, CoinsPosition.transform.localPosition.y + 2, CoinsPosition.transform.localPosition.z);
+            clone.transform.position = new Vector3(-8.1f + MenuOffset, CoinsPosition.transform.localPosition.y + 2.5f, CoinsPosition.transform.localPosition.z);
             CanvasCoins = clone;
 
             CoinsCountTxt = CanvasCoins.GetComponentInChildren<Text>();
@@ -183,7 +183,7 @@ namespace Assets.Scripts
                 Axe_Selected.transform.parent = WeaponCanvas.transform;
             }
 
-            WeaponPosition.transform.position = new Vector3(WeaponPosition.transform.localPosition.x, WeaponPosition.transform.localPosition.y + 3, WeaponPosition.transform.localPosition.z);
+            WeaponPosition.transform.position = new Vector3(WeaponPosition.transform.localPosition.x, WeaponPosition.transform.localPosition.y + 5, WeaponPosition.transform.localPosition.z);
 
             Bare.enabled = GameStateController.level >= 1;
             Bare_Selected.enabled = GameStateController.level >= 1;
@@ -206,7 +206,7 @@ namespace Assets.Scripts
             print("On Load Level Lives: " + GameSaveStateController.GetInstance().life);
             //GenerateBoss(true);
             GeneratePlayer();
-            GenerateGangMan(true);
+            //GenerateGangMan(true);
         }
 
         void FixedUpdate()
@@ -575,8 +575,8 @@ namespace Assets.Scripts
         public const float POWER_ATTACK_2 = 2f;
         public const float POWER_ATTACK_3 = 3f;
 
-        public const float SPEED_CONSTANT = 2f;        
-        public const float SPEED_JUMP_CONSTANT = 4f;
+        public const float SPEED_CONSTANT = 1f;        
+        public const float SPEED_JUMP_CONSTANT = 2f;
         public const float SPEED_FALL_CONSTANT = 4f;
 
         //public const KeyCode UP = KeyCode.W;

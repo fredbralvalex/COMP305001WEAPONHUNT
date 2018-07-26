@@ -14,4 +14,24 @@ public class StoneBlock : MonoBehaviour {
         rb.MovePosition(rb.position + Vector2.down * Time.fixedDeltaTime * speed);
 		
 	}
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        print(other.collider.gameObject.tag);
+        if (other.collider.gameObject.tag == "Ground")
+        {
+            enabled = false;
+            Destroy(this);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        //print("Trigger :: " + other.gameObject.tag);
+        if (other.gameObject.tag == "Ground")
+        {
+            enabled = false;
+            Destroy(gameObject);
+        }
+    }
 }
