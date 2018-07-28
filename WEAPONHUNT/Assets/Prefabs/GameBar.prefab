@@ -207,7 +207,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.4578981, y: -3.316615}
+  m_Offset: {x: -0.70230055, y: -3.316615}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -218,7 +218,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.245222, y: 5.2246933}
+  m_Size: {x: 7.7564173, y: 5.2246933}
   m_EdgeRadius: 0
 --- !u!61 &61054103379911210
 BoxCollider2D:
@@ -232,7 +232,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -9.204432, y: 1.5331167}
+  m_Offset: {x: -9.204432, y: 1.8237379}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -243,7 +243,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.3565674, y: 3.1407735}
+  m_Size: {x: 2.3565674, y: 8.061972}
   m_EdgeRadius: 0
 --- !u!61 &61460984140545886
 BoxCollider2D:
@@ -257,7 +257,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 8.988191, y: 1.559185}
+  m_Offset: {x: 8.988191, y: 1.8885573}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -268,7 +268,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.962717, y: 3.2033472}
+  m_Size: {x: 1.962717, y: 7.9695454}
   m_EdgeRadius: 0
 --- !u!65 &65142398687392720
 BoxCollider:
@@ -320,6 +320,7 @@ MonoBehaviour:
     type: 2}
   AxePosition: {fileID: 1853586998231216, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
     type: 2}
+  Blood: {fileID: 1741718522494394, guid: 689ee8b594acf3c4dba36b46ec9ed4f0, type: 2}
   CanvasCoins: {fileID: 223759157461452672, guid: d305b86219ade834aad6310bb7e6082a,
     type: 2}
   LifeBarCanvas: {fileID: 223776477558459188, guid: 89c62fab0f3eb0c4a9897060a95dd5e6,
@@ -353,6 +354,7 @@ MonoBehaviour:
   MenuOffset: 2.5
   ItemOffset: 0.7
   CameraTop: 0
+  endPositionX: 0
   Player: {fileID: 1264314774880438, guid: 0f00f1334a1e57f4e8006e38bfc6938e, type: 2}
   GangMan: {fileID: 1429371635921834, guid: dbdda3f0e0e034f48a96ccc75e8a0132, type: 2}
   BossOne: {fileID: 1727100595258194, guid: dbed6b9a397645942b92877707dd41d3, type: 2}

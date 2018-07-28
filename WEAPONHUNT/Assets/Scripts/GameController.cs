@@ -28,6 +28,7 @@ namespace Assets.Scripts
         public GameObject BarePosition;
         public GameObject PikePosition;
         public GameObject AxePosition;
+        public GameObject Blood;
 
 
         [Header("Game Menu Canvas Elements")]
@@ -61,6 +62,7 @@ namespace Assets.Scripts
         public float ItemOffset = 0.7f;
         public float CameraTop;
 
+        public float endPositionX;
         public int Level
         {
             get
@@ -209,6 +211,19 @@ namespace Assets.Scripts
             //GenerateGangMan(true);
         }
 
+        private double time;
+        private void VerifyWinning()
+        {
+            time += Time.deltaTime;
+
+            if (Player != null && Player.GetComponent<PlayerController>() != null &&
+               Player.GetComponent<PlayerController>().Dummy &&
+               Player.GetComponent<PlayerController>().playerDummyState == PlayerController.PlayerDummyAction.Won)
+            {
+                //TODO
+            }
+        }
+
         void FixedUpdate()
         {
 
@@ -265,7 +280,7 @@ namespace Assets.Scripts
             if (PlayerTmp == null)
             {
                 GameObject player = Instantiate(Player);
-                player.transform.localPosition = new Vector3 (RespawnLeft.transform.position.x, PlayerInitialPosition.transform.position.y, - 1.34f);
+                player.transform.localPosition = new Vector3 (RespawnLeft.transform.position.x, 0, - 1.34f);
                 player.GetComponent<PlayerController>().Dummy = true;
                 player.GetComponent<PlayerController>().playerDummyState = PlayerController.PlayerDummyAction.MoveToCenter;
                 player.GetComponent<PlayerController>().Hits = GameStateController.hits;
@@ -276,23 +291,44 @@ namespace Assets.Scripts
             {
                 Player = PlayerTmp;
             }
+            endPositionX = Player.transform.position.x;
         }
 
-        public void GenerateGangMan(bool right)
+        [Obsolete("Not using fixed position")]
+        private void GenerateGangMan(bool right)
+        {            
+            if(right)
+            {
+                GenerateGangMan(RespawnRight.transform);
+            } else
+            {
+                GenerateGangMan(RespawnLeft.transform);
+            }
+        }
+
+
+        public void GenerateGangMan(Transform transformPosition)
         {
             GameObject gangman = Instantiate(GangMan);
             qtdGangmenGenerated++;
             Gangmen.Add(gangman);
-            if(right)
+            gangman.transform.localPosition = new Vector3 (transformPosition.position.x, transformPosition.position.y, 0);
+        }
+
+        [Obsolete("Not using fixed position")]
+        private void GenerateBoss(bool right)
+        {
+            if (right)
             {
-                gangman.transform.localPosition = RespawnRight.transform.position;
-            } else
+                GenerateBoss(RespawnRight.transform);
+            }
+            else
             {
-                gangman.transform.localPosition = RespawnLeft.transform.position;
+                GenerateBoss(RespawnLeft.transform);
             }
         }
 
-        public void GenerateBoss(bool right)
+        public void GenerateBoss(Transform transformPosition)
         {
             GameObject boss = null;
             switch (Level)
@@ -370,15 +406,9 @@ namespace Assets.Scripts
 
             if (boss != null)
             {
-                if (right)
-                {
-                    boss.transform.localPosition = RespawnRight.transform.position;
-                }
-                else
-                {
-                    boss.transform.localPosition = RespawnLeft.transform.position;
-                }
+                boss.transform.localPosition = new Vector3(transformPosition.position.x, transformPosition.position.y, 0);                
             }
+
         }
 
         public void EliminateEnemy(GameObject enemy)
@@ -390,7 +420,9 @@ namespace Assets.Scripts
                 enemy.SetActive(false);
                 Destroy(enemy);
                 FreezeCamera = false;
-
+                GameObject blood = Instantiate(Blood);
+                blood.transform.localPosition = new Vector3(enemy.transform.position.x, enemy.transform.position.y, enemy.transform.position.z);
+                /*
                 if (qtdGangmenGenerated < qtdGangmen)
                 {
                     GenerateGangMan(true);
@@ -398,7 +430,7 @@ namespace Assets.Scripts
                 else
                 {
                     GenerateBoss(true);
-                }
+                }*/
             }
             else if (enemy.tag == "BossOne")
             {
@@ -525,6 +557,10 @@ namespace Assets.Scripts
             return FreezeCamera;
         }
 
+        public float GetEndPositionX()
+        {
+            return endPositionX;
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {

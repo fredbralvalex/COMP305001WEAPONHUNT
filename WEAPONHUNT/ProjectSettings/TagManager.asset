@@ -36,6 +36,7 @@ TagManager:
   - Water
   - Fire
   - Mush
+  - PlayerReaches
   layers:
   - Default
   - TransparentFX

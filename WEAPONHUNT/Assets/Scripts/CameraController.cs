@@ -18,6 +18,7 @@ public class CameraController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        transform.position = new Vector3(0, transform.position.y, transform.position.z);
         gameController = GetComponentInChildren<GameController>();
         if (gameController == null)
         {
@@ -73,12 +74,23 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate () {
 
-        if (!gameController.FreezesCamera() && player != null && playerController != null && !playerController.isMovingBack())
+        if (!gameController.FreezesCamera() && player != null && playerController != null)// && !playerController.isMovingBack()
         {
-            if (player.transform.position.x + offset.x >= transform.localPosition.x )
+            if (player.transform.position.x + offset.x >= transform.localPosition.x)// gameController.GetEndPositionX()
             {
                 horizontalPosition = player.transform.position.x;
             }
+
+            /*
+            if (horizontalPosition >= player.transform.position.x)
+            {
+                horizontalPosition = horizontalPosition - 0.1f;
+            }
+            else if (horizontalPosition < player.transform.position.x)
+            {
+                horizontalPosition = horizontalPosition + 0.1f;
+
+            }*/
             transform.localPosition = new Vector3(horizontalPosition, fixedY, player.transform.localPosition.z) + offset;
 
         }
