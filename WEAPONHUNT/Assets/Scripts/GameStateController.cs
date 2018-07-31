@@ -32,12 +32,30 @@ public class GameStateController : MonoBehaviour {
         saver = GameSaveStateController.GetInstance();
         playerItems = new List<GameObject>();        
         //Add items        
-    }   
+    }
+
+
+    private void FixedUpdate()
+    {
+        if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Return))
+        {
+            //LaodNextScreen();
+        }
+    }
 
     //Funtions
     public void QuitCommand()
     {
         Application.Quit();
+    }
+
+    public void LoadMainMenuScreen()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void LoadMainControlsScreen()
+    {
+        SceneManager.LoadScene("MainControls");
     }
 
     public void LoadGameOverTryAgainScreen()
@@ -63,7 +81,7 @@ public class GameStateController : MonoBehaviour {
         coins_0 = coins;
         saver.life = 3;
         
-        SceneManager.LoadScene("lv01_city");
+        SceneManager.LoadScene("Level_1");
     }
 
     public void LoadLevelTwo()
@@ -72,7 +90,7 @@ public class GameStateController : MonoBehaviour {
         enemiesScoreN_0 = enemiesScoreN;
         coins_0 = coins;
         level = 2;
-        SceneManager.LoadScene("lv02_cave");
+        SceneManager.LoadScene("Level_2");
     }
 
     public void LoadLevelThree()
@@ -81,7 +99,7 @@ public class GameStateController : MonoBehaviour {
         playerScoreN_0 = playerScoreN;
         enemiesScoreN_0 = enemiesScoreN;
         coins_0 = coins;
-        SceneManager.LoadScene("lv03_snow");
+        SceneManager.LoadScene("Level_3");
     }
 
     //

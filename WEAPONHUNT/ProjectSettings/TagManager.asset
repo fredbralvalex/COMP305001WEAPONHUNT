@@ -37,6 +37,7 @@ TagManager:
   - Fire
   - Mush
   - PlayerReaches
+  - FallingStone
   layers:
   - Default
   - TransparentFX

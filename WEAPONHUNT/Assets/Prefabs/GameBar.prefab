@@ -42,6 +42,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1509287782222998
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224777597816270588}
+  m_Layer: 10
+  m_Name: WeaponsPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1510240431352176
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224798925147646764}
   m_Layer: 10
-  m_Name: WeaponsPosition
+  m_Name: LevelTitlePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -313,7 +328,7 @@ MonoBehaviour:
   CoinsPosition: {fileID: 1864837029865126}
   LifeBarPosition: {fileID: 1592238023862582}
   LifeBarBossPosition: {fileID: 1466311621034376}
-  WeaponPosition: {fileID: 1705739396530006}
+  WeaponPosition: {fileID: 1509287782222998}
   BarePosition: {fileID: 1922136641661206, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
     type: 2}
   PikePosition: {fileID: 1606132016763686, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
@@ -321,7 +336,10 @@ MonoBehaviour:
   AxePosition: {fileID: 1853586998231216, guid: d3f5d14051fd4ef49a0df8e3e24e34e4,
     type: 2}
   Blood: {fileID: 1741718522494394, guid: 689ee8b594acf3c4dba36b46ec9ed4f0, type: 2}
+  LevelTitlePosition: {fileID: 1705739396530006}
   CanvasCoins: {fileID: 223759157461452672, guid: d305b86219ade834aad6310bb7e6082a,
+    type: 2}
+  LevelTitle: {fileID: 223219749714109704, guid: 54ecd1996cebc774a9bc5c10797abd8e,
     type: 2}
   LifeBarCanvas: {fileID: 223776477558459188, guid: 89c62fab0f3eb0c4a9897060a95dd5e6,
     type: 2}
@@ -369,6 +387,8 @@ MonoBehaviour:
     type: 2}
   CoinsCountTxt: {fileID: 114997474257966566, guid: d305b86219ade834aad6310bb7e6082a,
     type: 2}
+  LevelTitleText: {fileID: 114223606327839412, guid: 54ecd1996cebc774a9bc5c10797abd8e,
+    type: 2}
 --- !u!224 &224046110481449910
 RectTransform:
   m_ObjectHideFlags: 1
@@ -386,6 +406,7 @@ RectTransform:
   - {fileID: 224441474077431120}
   - {fileID: 224855552175878020}
   - {fileID: 224874728380381424}
+  - {fileID: 224777597816270588}
   - {fileID: 224798925147646764}
   m_Father: {fileID: 224811586389136912}
   m_RootOrder: 0
@@ -431,12 +452,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.25}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &224798925147646764
+--- !u!224 &224777597816270588
 RectTransform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1705739396530006}
+  m_GameObject: {fileID: 1509287782222998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -447,6 +468,24 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224798925147646764
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1705739396530006}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224046110481449910}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -0.00000023841858}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224806079253476460

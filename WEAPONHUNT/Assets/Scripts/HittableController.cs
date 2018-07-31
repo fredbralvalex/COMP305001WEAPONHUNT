@@ -18,6 +18,7 @@ namespace Assets.Scripts
 
         public abstract bool IsHitting();
         public abstract void GettingHit(float power);
+        public abstract void GettingHit(int hits);
 
         private double timeToBlink;
         private double timeToColor;

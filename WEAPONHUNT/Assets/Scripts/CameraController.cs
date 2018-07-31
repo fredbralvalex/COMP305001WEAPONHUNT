@@ -71,28 +71,49 @@ public class CameraController : MonoBehaviour {
 
     }
 
+    private Vector3 PositionDiff;
     // Update is called once per frame
     void LateUpdate () {
 
-        if (!gameController.FreezesCamera() && player != null && playerController != null)// && !playerController.isMovingBack()
+        if (player != null && playerController != null)
         {
-            if (player.transform.position.x + offset.x >= transform.localPosition.x)// gameController.GetEndPositionX()
+            if (gameController.FreezesCamera() || player.transform.position.x < 0)// && playerController.isMovingBack()
             {
-                horizontalPosition = player.transform.position.x;
+                PositionDiff = transform.localPosition - player.transform.position;
+            } else
+            {
+                if (player.transform.position.x + offset.x >= transform.localPosition.x)// gameController.GetEndPositionX()
+                {
+                }
+
+
+                if (PositionDiff.x == offset.x || (PositionDiff.x < offset.x + 0.1f && PositionDiff.x > offset.x - 0.1f))
+                {
+                    horizontalPosition = player.transform.position.x;
+
+                } else if(PositionDiff.x > offset.x)
+                {
+                    horizontalPosition = transform.position.x - 0.1f;
+                } else if (PositionDiff.x < offset.x)
+                {
+                    horizontalPosition = transform.position.x + 0.1f;
+                } else
+                {
+                    //
+                }
+                PositionDiff = transform.localPosition - player.transform.position;
+                /*
+                if (horizontalPosition >= player.transform.position.x)
+                {
+                    horizontalPosition = horizontalPosition - 0.1f;
+                }
+                else if (horizontalPosition < player.transform.position.x)
+                {
+                    horizontalPosition = horizontalPosition + 0.1f;
+
+                }*/
+                transform.localPosition = new Vector3(horizontalPosition, fixedY, player.transform.localPosition.z) + offset;                
             }
-
-            /*
-            if (horizontalPosition >= player.transform.position.x)
-            {
-                horizontalPosition = horizontalPosition - 0.1f;
-            }
-            else if (horizontalPosition < player.transform.position.x)
-            {
-                horizontalPosition = horizontalPosition + 0.1f;
-
-            }*/
-            transform.localPosition = new Vector3(horizontalPosition, fixedY, player.transform.localPosition.z) + offset;
-
         }
 	}
 }

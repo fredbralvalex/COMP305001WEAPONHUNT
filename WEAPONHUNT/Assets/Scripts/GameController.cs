@@ -29,10 +29,12 @@ namespace Assets.Scripts
         public GameObject PikePosition;
         public GameObject AxePosition;
         public GameObject Blood;
+        public GameObject LevelTitlePosition;
 
 
         [Header("Game Menu Canvas Elements")]
         public Canvas CanvasCoins;
+        public Canvas LevelTitle;
         public Canvas LifeBarCanvas;
         public Canvas WeaponCanvas;
         public Canvas LifeBarBossOneCanvas;
@@ -56,7 +58,7 @@ namespace Assets.Scripts
         public Image Axe_Selected;
 
         public int lives = 0;
-        public int LifeAmount = 10;
+        public const int LifeAmount = 10;
 
         public float MenuOffset = 2.5f;
         public float ItemOffset = 0.7f;
@@ -147,7 +149,30 @@ namespace Assets.Scripts
             CoinsCountTxt = CanvasCoins.GetComponentInChildren<Text>();
 
             BuildWeaponMenu();
+            BuildLevelTitle();
             StartLevelGame();
+        }
+
+        private void BuildLevelTitle()
+        {
+            Canvas clone = Instantiate(LevelTitle, LevelTitlePosition.transform.position, LevelTitlePosition.transform.rotation) as Canvas;
+            clone.transform.parent = LevelTitlePosition.transform;
+            clone.transform.position = new Vector3(LevelTitlePosition.transform.localPosition.x, LevelTitlePosition.transform.localPosition.y, LevelTitlePosition.transform.localPosition.z);
+            LevelTitle = clone;
+
+            LevelTitleText = LevelTitle.GetComponentInChildren<Text>();
+            switch (Level)
+            {
+                case 1:
+                    LevelTitleText.text = Level01_Title;
+                    break;
+                case 2:
+                    LevelTitleText.text = Level02_Title;
+                    break;
+                case 3:
+                    LevelTitleText.text = Level03_Title;
+                    break;
+            }
         }
 
         private void BuildWeaponMenu()
@@ -232,6 +257,16 @@ namespace Assets.Scripts
             CoinsCountTxt.text = "" + Coins;
 
             MountMenu();
+
+            if (Player != null && Player.GetComponent<PlayerController>() != null &&
+               Player.GetComponent<PlayerController>().Dummy &&
+               Player.GetComponent<PlayerController>().playerDummyState == PlayerController.PlayerDummyAction.MoveToCenter)
+            {
+                LevelTitle.enabled = true;
+            } else
+            {
+                LevelTitle.enabled = false ;
+            }
 
             if (Player!= null && Player.GetComponent<PlayerController>() != null &&
                 Player.GetComponent<PlayerController>().Dummy &&
@@ -476,11 +511,6 @@ namespace Assets.Scripts
             playerItems.Add(item);
         }
 
-        public void AddBood()
-        {
-            LifeAmount++;
-        }
-
         void MountMenu()
         {
 
@@ -574,6 +604,8 @@ namespace Assets.Scripts
         public Text PlayerScoresTxt;
         public Text CoinsCountTxt;
 
+        public Text LevelTitleText;
+
         public int PlayerScoreN {
             get
             {
@@ -645,5 +677,9 @@ namespace Assets.Scripts
         public const int BossOnePoints = 150;
         public const int BossTwoPoints = 250;
         public const int BossThreePoints = 350;
+
+        public const string Level01_Title = "The Suburb's Park";
+        public const string Level02_Title = "Axel's Caves";
+        public const string Level03_Title = "Frozen Heart";
     }
 }

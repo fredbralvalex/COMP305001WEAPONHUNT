@@ -36,6 +36,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     GameController gameController;
 
     private Transform lastPosition;
+    private Vector3 lastGroundPosition;
     private Boolean grounded = false;
 
     private void LateUpdate()
@@ -121,7 +122,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                 playerState = PlayerAction.Idle;
             }
 
-            if (gameController!= null && gameController.LifeAmount - Hits <= 0)
+            if (gameController!= null && GameController.LifeAmount - Hits <= 0)
             {
                 if (playerState == PlayerAction.End)
                 {
@@ -173,21 +174,21 @@ public class PlayerController: HittableController, IBoundaryElementController
     bool ValidateTimeToWait()
     {
         bool wait = false;
-        if (playerState == PlayerAction.Punch && gameController.LifeAmount - Hits > 0)
+        if (playerState == PlayerAction.Punch && GameController.LifeAmount - Hits > 0)
         {
             wait = time <= GameController.TIME_PUNCH;
-        } else if (playerState == PlayerAction.Kick && gameController.LifeAmount - Hits > 0)
+        } else if (playerState == PlayerAction.Kick && GameController.LifeAmount - Hits > 0)
         {
             wait = time <= GameController.TIME_KICK;
-        }else if (playerState == PlayerAction.Pike && gameController.LifeAmount - Hits > 0)
+        }else if (playerState == PlayerAction.Pike && GameController.LifeAmount - Hits > 0)
         {
             wait = time <= GameController.TIME_PIKE;
         }
-        else if (playerState == PlayerAction.Axe && gameController.LifeAmount - Hits > 0)
+        else if (playerState == PlayerAction.Axe && GameController.LifeAmount - Hits > 0)
         {
             wait = time <= GameController.TIME_AXE;
         }
-        else if (playerState == PlayerAction.Jump && gameController.LifeAmount - Hits > 0) {
+        else if (playerState == PlayerAction.Jump && GameController.LifeAmount - Hits > 0) {
             wait = time <= GameController.TIME_JUMP;
         }
         else if (playerState == PlayerAction.Defeated)
@@ -485,14 +486,24 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionExit2D(Collision2D other)
+    {
+        //print(other.gameObject.tag);
+        if (other.gameObject.tag == "Ground")
+        {
+            lastGroundPosition = gameObject.transform.localPosition;
+            print("last" + lastGroundPosition);
+        }
+    }
+
+        void OnCollisionEnter2D(Collision2D other)
     {
         //print(other.gameObject.tag);
         if (other.gameObject.tag == "Ground")
         {
             CalcMaxJumpHigh();
             playerState= PlayerAction.Idle;
-            grounded = true;
+            grounded = true;            
         }
         else if (other.gameObject.tag == "Gangman")
         {
@@ -512,6 +523,30 @@ public class PlayerController: HittableController, IBoundaryElementController
             GameStateController.coins++;
             other.gameObject.SetActive(false);
             Destroy(other.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Water")
+        {
+            GettingHit(GameController.LifeAmount);//Remove all life
+            print("older" + gameObject.transform.position);
+            gameObject.transform.position = new Vector3(lastGroundPosition.x, lastGroundPosition.y, lastGroundPosition.z);
+            print("new" + gameObject.transform.position);
+            //
+        }
+        else if (other.gameObject.tag == "Fire")
+        {
+            GettingHit(1);
+        }
+        else if (other.gameObject.tag == "Mush")
+        {
+            GettingHit(1);
+        }
+        else if (other.gameObject.tag == "FallingStone")
+        {
+            GettingHit(1);
         }
     }
 
@@ -540,6 +575,18 @@ public class PlayerController: HittableController, IBoundaryElementController
         PushedBack(power);
     }
 
+    public override void GettingHit(int hits)
+    {
+        GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
+        GameController gController = gObj.GetComponent<GameController>();
+        gController.EnemiesScoreN++;
+        Hits = Hits + hits;
+        //print(gameObject.tag + " is getting Hit : " + power);
+        Blink = true;
+        UpdateLifeBar();
+        PushedBack(1);
+    }
+
     private void PushedBack(float power)
     {
         Vector2 direction;
@@ -561,9 +608,9 @@ public class PlayerController: HittableController, IBoundaryElementController
         GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
         GameController gController = gObj.GetComponent<GameController>();
 
-        if ((float)Hits / gController.LifeAmount <= 1)
+        if ((float)Hits / GameController.LifeAmount <= 1)
         {
-            gController.LifeBar.fillAmount = 1.0f - (float)Hits / gController.LifeAmount;
+            gController.LifeBar.fillAmount = 1.0f - (float)Hits / GameController.LifeAmount;
             if (gController.LifeBar.fillAmount > 0.75)
             {
                 gController.LifeBar.color = Color.green;

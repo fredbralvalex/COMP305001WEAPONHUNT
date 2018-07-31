@@ -336,6 +336,9 @@ namespace Assets.Scripts
 
         protected abstract Image GetLifeBar();
 
+        public override void GettingHit(int power)
+        {
+        }
         public override void GettingHit(float power)
         {
             GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");

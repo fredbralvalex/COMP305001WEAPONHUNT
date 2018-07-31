@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4467878799727872}
   - component: {fileID: 212483163216517964}
   - component: {fileID: 61634352197022332}
+  - component: {fileID: 61597342599585634}
   m_Layer: 0
   m_Name: Water
   m_TagString: Water
@@ -35,12 +36,37 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1849494336254956}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.8369994, y: -4.605, z: 10.01}
-  m_LocalScale: {x: 2.09293, y: 2.516, z: 2}
+  m_LocalPosition: {x: 7.822, y: -4.605, z: 10.01}
+  m_LocalScale: {x: 2.1159525, y: 2.516, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61597342599585634
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849494336254956}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.045980513, y: -0.10355523}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 0.99}
+    newSize: {x: 1.28, y: 0.99}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.188039, y: 0.78288954}
+  m_EdgeRadius: 0
 --- !u!61 &61634352197022332
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -53,7 +79,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.27351466}
+  m_Offset: {x: 0.042444408, y: -0.38194942}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -64,7 +90,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 0.4429707}
+  m_Size: {x: 1.3648888, y: 0.22610116}
   m_EdgeRadius: 0
 --- !u!212 &212483163216517964
 SpriteRenderer:
