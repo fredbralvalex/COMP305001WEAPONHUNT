@@ -33,6 +33,7 @@ namespace Assets.Scripts
 
 
         [Header("Game Menu Canvas Elements")]
+        public Canvas PauseCanvas;
         public Canvas CanvasCoins;
         public Canvas LevelTitle;
         public Canvas LifeBarCanvas;
@@ -149,8 +150,16 @@ namespace Assets.Scripts
             CoinsCountTxt = CanvasCoins.GetComponentInChildren<Text>();
 
             BuildWeaponMenu();
+            BuildPauseAction();
             BuildLevelTitle();
             StartLevelGame();
+        }
+
+        private void BuildPauseAction()
+        {
+            Canvas clone = Instantiate(PauseCanvas) as Canvas;
+            PauseCanvas = clone;
+            
         }
 
         private void BuildLevelTitle()
@@ -679,7 +688,7 @@ namespace Assets.Scripts
         public const int BossThreePoints = 350;
 
         public const string Level01_Title = "The Suburb's Park";
-        public const string Level02_Title = "Axel's Caves";
-        public const string Level03_Title = "Frozen Heart";
+        public const string Level02_Title = "Axel's Cave";
+        public const string Level03_Title = "Frozen Hearts";
     }
 }

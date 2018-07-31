@@ -17,7 +17,7 @@ public class StoneBlock : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        print(other.collider.gameObject.tag);
+        //print(other.collider.gameObject.tag);
         if (other.collider.gameObject.tag == "Ground")
         {
             enabled = false;

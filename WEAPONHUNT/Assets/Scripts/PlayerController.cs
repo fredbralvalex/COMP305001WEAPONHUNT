@@ -491,12 +491,24 @@ public class PlayerController: HittableController, IBoundaryElementController
         //print(other.gameObject.tag);
         if (other.gameObject.tag == "Ground")
         {
-            lastGroundPosition = gameObject.transform.localPosition;
-            print("last" + lastGroundPosition);
+            Vector3 boundsSize = gameObject.GetComponent<Renderer>().bounds.size;
+            lastGroundPosition = new Vector3 (gameObject.transform.localPosition.x - boundsSize.x, gameObject.transform.localPosition.y + boundsSize.y, gameObject.transform.localPosition.z);
+            //print("last" + lastGroundPosition);
         }
     }
 
-        void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionStay2D(Collision2D other)
+    {
+        //print(other.gameObject.tag);
+        if (other.gameObject.tag == "Ground")
+        {
+            Vector3 boundsSize = gameObject.GetComponent<Renderer>().bounds.size;
+            lastGroundPosition = new Vector3(gameObject.transform.localPosition.x - boundsSize.x, gameObject.transform.localPosition.y + boundsSize.y, gameObject.transform.localPosition.z);
+            //print("last" + lastGroundPosition);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
     {
         //print(other.gameObject.tag);
         if (other.gameObject.tag == "Ground")

@@ -20,7 +20,7 @@ public class PauseController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Backspace))
         {
             Pause();
         }
@@ -58,5 +58,11 @@ public class PauseController : MonoBehaviour {
     public Scene ReturnScene()
     {
         return ActualScene;
+    }
+
+    public void QuitGame()
+    {
+        //SceneManager.LoadScene("MainMenu");        
+        Application.Quit();
     }
 }

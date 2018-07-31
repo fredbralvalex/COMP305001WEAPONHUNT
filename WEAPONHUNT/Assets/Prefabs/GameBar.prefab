@@ -337,6 +337,8 @@ MonoBehaviour:
     type: 2}
   Blood: {fileID: 1741718522494394, guid: 689ee8b594acf3c4dba36b46ec9ed4f0, type: 2}
   LevelTitlePosition: {fileID: 1705739396530006}
+  PauseCanvas: {fileID: 223871575080328366, guid: 132d9a7635c942746950b071de49d6fc,
+    type: 2}
   CanvasCoins: {fileID: 223759157461452672, guid: d305b86219ade834aad6310bb7e6082a,
     type: 2}
   LevelTitle: {fileID: 223219749714109704, guid: 54ecd1996cebc774a9bc5c10797abd8e,
@@ -368,7 +370,6 @@ MonoBehaviour:
   Axe_Selected: {fileID: 114410280672027990, guid: 7094703dd16952e46ab943ce7e51cac2,
     type: 2}
   lives: 3
-  LifeAmount: 10
   MenuOffset: 2.5
   ItemOffset: 0.7
   CameraTop: 0
