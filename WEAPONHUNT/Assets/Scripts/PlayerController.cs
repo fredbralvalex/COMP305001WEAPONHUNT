@@ -295,7 +295,7 @@ public class PlayerController: HittableController, IBoundaryElementController
             else
             {
                 animation.Play(AXE);
-            }
+            }            
         }
         else
         {
@@ -308,8 +308,22 @@ public class PlayerController: HittableController, IBoundaryElementController
                 animation.Play(AXE_L);
             }
         }
+        DrawBack();
     }
-        private void Attack(bool isPunch)
+
+    public void DrawBack ()
+    {
+        GettingHit(1);
+        GameObject gObj = GameObject.FindGameObjectWithTag("GameBar");
+        GameController gController = gObj.GetComponent<GameController>();
+        GameObject blood = gController.CreateBlood();
+        blood.transform.localPosition = new Vector3(gameObject.transform.position.x - 1, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
+        Vector3 force = new Vector3(gameObject.transform.position.x - 5, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
+        Rigidbody2D rb = blood.GetComponent<Rigidbody2D>();
+        rb.AddForceAtPosition(force, blood.transform.localPosition);
+    }
+
+    private void Attack(bool isPunch)
     {
         Animator animation = animator.GetComponent<Animator>();
         if (facingRight)
@@ -543,9 +557,13 @@ public class PlayerController: HittableController, IBoundaryElementController
         if (other.gameObject.tag == "Water")
         {
             GettingHit(GameController.LifeAmount);//Remove all life
-            print("older" + gameObject.transform.position);
+
+            Position gameRespawnPosition = other.gameObject.GetComponent<Position>();
+            //Transform respawnPosition = gameRespawnPosition.GetComponent<Transform>();
+            gameObject.transform.localPosition = new Vector3(gameRespawnPosition.TransformPosition.position.x, gameRespawnPosition.TransformPosition.position.y, gameObject.transform.position.z);
+            /*print("older" + gameObject.transform.position);
             gameObject.transform.position = new Vector3(lastGroundPosition.x, lastGroundPosition.y, lastGroundPosition.z);
-            print("new" + gameObject.transform.position);
+            print("new" + gameObject.transform.position);*/
             //
         }
         else if (other.gameObject.tag == "Fire")

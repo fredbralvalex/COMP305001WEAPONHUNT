@@ -455,6 +455,11 @@ namespace Assets.Scripts
 
         }
 
+        public GameObject CreateBlood()
+        {
+            GameObject blood = Instantiate(Blood);
+            return blood;
+        }
         public void EliminateEnemy(GameObject enemy)
         {
             PlayerScoreN+=enemy.GetComponent<EnemyController>().GetDefeatPoints();
@@ -464,7 +469,7 @@ namespace Assets.Scripts
                 enemy.SetActive(false);
                 Destroy(enemy);
                 FreezeCamera = false;
-                GameObject blood = Instantiate(Blood);
+                GameObject blood = CreateBlood();
                 blood.transform.localPosition = new Vector3(enemy.transform.position.x, enemy.transform.position.y, enemy.transform.position.z);
                 /*
                 if (qtdGangmenGenerated < qtdGangmen)

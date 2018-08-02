@@ -11,6 +11,21 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1849494336254956}
   m_IsPrefabAsset: 1
+--- !u!1 &1252809048691558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4344078827564740}
+  m_Layer: 0
+  m_Name: respawnPosition
+  m_TagString: RespawnPosition
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1849494336254956
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,6 +34,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4467878799727872}
+  - component: {fileID: 114173955572821004}
   - component: {fileID: 212483163216517964}
   - component: {fileID: 61634352197022332}
   - component: {fileID: 61597342599585634}
@@ -29,6 +45,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4344078827564740
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1252809048691558}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4, y: 0, z: -1.34}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4467878799727872}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4467878799727872
 Transform:
   m_ObjectHideFlags: 1
@@ -36,9 +65,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1849494336254956}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.822, y: -4.605, z: 10.01}
+  m_LocalPosition: {x: 2.81, y: -2, z: 10.01}
   m_LocalScale: {x: 2.1159525, y: 2.516, z: 2}
-  m_Children: []
+  m_Children:
+  - {fileID: 4344078827564740}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -92,6 +122,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.3648888, y: 0.22610116}
   m_EdgeRadius: 0
+--- !u!114 &114173955572821004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849494336254956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ff3f254f9b552419b238b57ec2416f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransformPosition: {fileID: 4344078827564740}
 --- !u!212 &212483163216517964
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -38,6 +38,7 @@ TagManager:
   - Mush
   - PlayerReaches
   - FallingStone
+  - RespawnPosition
   layers:
   - Default
   - TransparentFX
