@@ -262,6 +262,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                 {
                     playerState = PlayerAction.Kick;
                     Attack(false);
+                    MoveTransform(facingRight? Vector2.right: Vector2.left, 3);
                 }
             }
             else
@@ -411,9 +412,9 @@ public class PlayerController: HittableController, IBoundaryElementController
         }*/
     }
 
-    private void MoveTransform(Vector2 direction)
-    {
-        float var = 1;
+    private void MoveTransform(Vector2 direction, float var = 1)
+    {        
+        //float var = 1;
 
         Vector2 nextPosition = direction * var * GameController.SPEED_CONSTANT * (gameObject.transform.localScale) * Time.deltaTime;
         Move(nextPosition);
@@ -476,22 +477,22 @@ public class PlayerController: HittableController, IBoundaryElementController
 
         Vector2 nextPositionVertical = Vector2.zero;
 
-        if (playerState == PlayerAction.Jump)
+        //if (playerState == PlayerAction.Jump)
+        //{
+        //}        
+        if (maxJumpHigh >= nextPositionVertical.y)
         {
-            if (maxJumpHigh >= sprite.transform.localPosition.y)
-            {
-                grounded = false;
-                //going high       
-                //state = Movement.Jump;
-                nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime * gameObject.transform.localScale * 1.2f;
-                //print("Up");
-            }
-            else
-            {
-                print("Down");
-                //Falling
-            }
-        }        
+            grounded = false;
+            //going high       
+            //state = Movement.Jump;
+            nextPositionVertical = Vector2.up * GameController.SPEED_JUMP_CONSTANT * Time.deltaTime * gameObject.transform.localScale * 1.2f;
+            //print("Up");
+        }
+        else
+        {
+            print("Down");
+            //Falling
+        }
 
         transform.localPosition += (Vector3)nextPositionVertical;
         if (StateMovement)

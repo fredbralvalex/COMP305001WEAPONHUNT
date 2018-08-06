@@ -18,7 +18,7 @@ public class StoneBlock : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other)
     {
         //print(other.collider.gameObject.tag);
-        if (other.collider.gameObject.tag == "Ground")
+        if (other.collider.gameObject.tag == "Ground" || other.collider.gameObject.tag == "Water")
         {
             enabled = false;
             Destroy(this);
@@ -28,7 +28,7 @@ public class StoneBlock : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other)
     {
         //print("Trigger :: " + other.gameObject.tag);
-        if (other.gameObject.tag == "Ground")
+        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Water")
         {
             enabled = false;
             Destroy(gameObject);

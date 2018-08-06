@@ -157,10 +157,8 @@ namespace Assets.Scripts
             }
         }
 
-        private void MoveTransform(Vector2 direction)
+        protected void MoveTransform(Vector2 direction, float var = 1)
         {
-            float var = 1;
-
             Vector2 nextPosition = direction * var * GetSpeedMovement() * Time.deltaTime;
             Move(nextPosition);
         }
@@ -313,7 +311,7 @@ namespace Assets.Scripts
             command = EnemyCommands.MoveBack;
         }
 
-        public void Attack1Command()
+        public virtual void Attack1Command()
         {
             if (EnemyState != EnemyAction.Cooldown)
             {
@@ -321,7 +319,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void Attack2Command()
+        public virtual void Attack2Command()
         {
             if (EnemyState != EnemyAction.Cooldown)
             {

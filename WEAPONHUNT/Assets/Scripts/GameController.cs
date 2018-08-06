@@ -12,6 +12,9 @@ namespace Assets.Scripts
     {
         GameStateController gameState;        
         public GameObject Life;
+        [Header("Game Settings")]
+        public bool GenerateEnemies = true;
+
         [Header ("Game Position Elements")]
         public GameObject RespawnLeft;
         public GameObject RespawnRight;
@@ -353,10 +356,14 @@ namespace Assets.Scripts
 
         public void GenerateGangMan(Transform transformPosition)
         {
-            GameObject gangman = Instantiate(GangMan);
-            qtdGangmenGenerated++;
-            Gangmen.Add(gangman);
-            gangman.transform.localPosition = new Vector3 (transformPosition.position.x, transformPosition.position.y, 0);
+
+            if (GenerateEnemies)
+            {
+                GameObject gangman = Instantiate(GangMan);
+                qtdGangmenGenerated++;
+                Gangmen.Add(gangman);
+                gangman.transform.localPosition = new Vector3 (transformPosition.position.x, transformPosition.position.y, 0);
+            }
         }
 
         [Obsolete("Not using fixed position")]
@@ -374,83 +381,86 @@ namespace Assets.Scripts
 
         public void GenerateBoss(Transform transformPosition)
         {
-            GameObject boss = null;
-            switch (Level)
+            if (GenerateEnemies)
             {
-                case 1:
-                    Canvas LifeBarCanvasBossOneClone;
-                    LifeBarCanvasBossOneClone = Instantiate(LifeBarBossOneCanvas, LifeBarBossOneCanvas.transform.position, LifeBarBossOneCanvas.transform.rotation) as Canvas;
+                GameObject boss = null;
+                switch (Level)
+                {
+                    case 1:
+                        Canvas LifeBarCanvasBossOneClone;
+                        LifeBarCanvasBossOneClone = Instantiate(LifeBarBossOneCanvas, LifeBarBossOneCanvas.transform.position, LifeBarBossOneCanvas.transform.rotation) as Canvas;
 
-                    LifeBarCanvasBossOneClone.transform.parent = LifeBarPosition.transform;
-                    LifeBarCanvasBossOneClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
-                    LifeBarBossOneCanvas = LifeBarCanvasBossOneClone;
+                        LifeBarCanvasBossOneClone.transform.parent = LifeBarPosition.transform;
+                        LifeBarCanvasBossOneClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
+                        LifeBarBossOneCanvas = LifeBarCanvasBossOneClone;
 
-                    foreach (Image i in LifeBarBossOneCanvas.GetComponentsInChildren<Image>())
-                    {
-                        if (i.tag == "LifeBar")
+                        foreach (Image i in LifeBarBossOneCanvas.GetComponentsInChildren<Image>())
                         {
-                            LifeBarBossOneImage = i;
-                            break;
+                            if (i.tag == "LifeBar")
+                            {
+                                LifeBarBossOneImage = i;
+                                break;
+                            }
                         }
-                    }
 
-                    boss = Instantiate(BossOne);
-                    BossOneController controllerB1 = boss.GetComponent<BossOneController>();
-                    controllerB1.LifeBar = LifeBarBossOneImage;
-                    break;
-                case 2:
-                    Canvas LifeBarCanvasBossTwoClone;
-                    LifeBarCanvasBossTwoClone = Instantiate(LifeBarBossTwoCanvas, LifeBarBossTwoCanvas.transform.position, LifeBarBossTwoCanvas.transform.rotation) as Canvas;
+                        boss = Instantiate(BossOne);
+                        BossOneController controllerB1 = boss.GetComponent<BossOneController>();
+                        controllerB1.LifeBar = LifeBarBossOneImage;
+                        break;
+                    case 2:
+                        Canvas LifeBarCanvasBossTwoClone;
+                        LifeBarCanvasBossTwoClone = Instantiate(LifeBarBossTwoCanvas, LifeBarBossTwoCanvas.transform.position, LifeBarBossTwoCanvas.transform.rotation) as Canvas;
 
-                    LifeBarCanvasBossTwoClone.transform.parent = LifeBarPosition.transform;
-                    LifeBarCanvasBossTwoClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
-                    LifeBarBossTwoCanvas = LifeBarCanvasBossTwoClone;
+                        LifeBarCanvasBossTwoClone.transform.parent = LifeBarPosition.transform;
+                        LifeBarCanvasBossTwoClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
+                        LifeBarBossTwoCanvas = LifeBarCanvasBossTwoClone;
 
-                    foreach (Image i in LifeBarBossTwoCanvas.GetComponentsInChildren<Image>())
-                    {
-                        if (i.tag == "LifeBar")
+                        foreach (Image i in LifeBarBossTwoCanvas.GetComponentsInChildren<Image>())
                         {
-                            LifeBarBossTwoImage = i;
-                            break;
+                            if (i.tag == "LifeBar")
+                            {
+                                LifeBarBossTwoImage = i;
+                                break;
+                            }
                         }
-                    }
-                    /*
-                        LifeBarBossTwoCanvas.transform.parent = LifeBarBossPosition.transform;
-                        LifeBarBossTwoCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
-                    */
-                    boss = Instantiate(BossTwo);
-                    BossTwoController controllerB2 = boss.GetComponent<BossTwoController>();
-                    controllerB2.LifeBar = LifeBarBossTwoImage;
-                    break;
-                case 3:
-                    Canvas LifeBarCanvasBossThreeClone;
-                    LifeBarCanvasBossThreeClone = Instantiate(LifeBarBossThreeCanvas, LifeBarBossThreeCanvas.transform.position, LifeBarBossThreeCanvas.transform.rotation) as Canvas;
+                        /*
+                            LifeBarBossTwoCanvas.transform.parent = LifeBarBossPosition.transform;
+                            LifeBarBossTwoCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                        */
+                        boss = Instantiate(BossTwo);
+                        BossTwoController controllerB2 = boss.GetComponent<BossTwoController>();
+                        controllerB2.LifeBar = LifeBarBossTwoImage;
+                        break;
+                    case 3:
+                        Canvas LifeBarCanvasBossThreeClone;
+                        LifeBarCanvasBossThreeClone = Instantiate(LifeBarBossThreeCanvas, LifeBarBossThreeCanvas.transform.position, LifeBarBossThreeCanvas.transform.rotation) as Canvas;
 
-                    LifeBarCanvasBossThreeClone.transform.parent = LifeBarPosition.transform;
-                    LifeBarCanvasBossThreeClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
-                    LifeBarBossThreeCanvas = LifeBarCanvasBossThreeClone;
+                        LifeBarCanvasBossThreeClone.transform.parent = LifeBarPosition.transform;
+                        LifeBarCanvasBossThreeClone.transform.localPosition = new Vector3(-7.25f + MenuOffset, LifeBarBossPosition.transform.localPosition.y, LifeBarBossPosition.transform.localPosition.z);
+                        LifeBarBossThreeCanvas = LifeBarCanvasBossThreeClone;
 
-                    foreach (Image i in LifeBarBossThreeCanvas.GetComponentsInChildren<Image>())
-                    {
-                        if (i.tag == "LifeBar")
+                        foreach (Image i in LifeBarBossThreeCanvas.GetComponentsInChildren<Image>())
                         {
-                            LifeBarBossThreeImage = i;
-                            break;
+                            if (i.tag == "LifeBar")
+                            {
+                                LifeBarBossThreeImage = i;
+                                break;
+                            }
                         }
-                    }
-                    /*
-                        LifeBarBossThreeCanvas.transform.parent = LifeBarBossPosition.transform;
-                        LifeBarBossThreeCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
-                    */
-                    boss = Instantiate(BossThree);
-                    BossThreeController controllerB3 = boss.GetComponent<BossThreeController>();
-                    controllerB3.LifeBar = LifeBarBossThreeImage;
-                    break;
-            }
+                        /*
+                            LifeBarBossThreeCanvas.transform.parent = LifeBarBossPosition.transform;
+                            LifeBarBossThreeCanvas.transform.localPosition = new Vector3(-7.25f + MenuOffset, 0, LifeBarBossPosition.transform.localPosition.z);
+                        */
+                        boss = Instantiate(BossThree);
+                        BossThreeController controllerB3 = boss.GetComponent<BossThreeController>();
+                        controllerB3.LifeBar = LifeBarBossThreeImage;
+                        break;
+                }
 
-            if (boss != null)
-            {
-                boss.transform.localPosition = new Vector3(transformPosition.position.x, transformPosition.position.y, 0);                
+                if (boss != null)
+                {
+                    boss.transform.localPosition = new Vector3(transformPosition.position.x, transformPosition.position.y, 0);                
+                }
             }
 
         }
@@ -657,7 +667,7 @@ namespace Assets.Scripts
         public const float POWER_ATTACK_2 = 2f;
         public const float POWER_ATTACK_3 = 3f;
 
-        public const float SPEED_CONSTANT = 1f;        
+        public const float SPEED_CONSTANT = 1.3f;        
         public const float SPEED_JUMP_CONSTANT = 2f;
         public const float SPEED_FALL_CONSTANT = 4f;
 
@@ -680,7 +690,7 @@ namespace Assets.Scripts
         public const float TIME_KICK = 0.5f;
         public const float TIME_PIKE = 0.4f;
         public const float TIME_AXE = 0.5f;
-        public const float TIME_JUMP = 1.2f;
+        public const float TIME_JUMP = 1f;
         public const float COOL_DOWN_TIME_ATTACK1 = 1f;
         public const float COOL_DOWN_TIME = 0.3f;
         public const float TIME_DEFEATED = 2f;

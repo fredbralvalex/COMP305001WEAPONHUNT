@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Life: {fileID: 1865394251840796, guid: a2c30c26f3aadec4b83fd0ce868f7212, type: 2}
+  GenerateEnemies: 0
   RespawnLeft: {fileID: 1900635210932240}
   RespawnRight: {fileID: 1039793329180380}
   GameElements: {fileID: 1577832357847792}

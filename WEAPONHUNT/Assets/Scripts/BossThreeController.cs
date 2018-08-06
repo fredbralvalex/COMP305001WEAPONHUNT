@@ -155,4 +155,12 @@ class BossThreeController : EnemyController
     public const string BOSS_ONE_FALL = "Defeated";
     public const string BOSS_ONE_FALL_L = "Defeated_l";
 
+    public override void Attack1Command()
+    {
+        if (EnemyState != EnemyAction.Cooldown)
+        {
+            command = EnemyCommands.Attack1;
+            MoveTransform(FacingRight ? Vector2.right : Vector2.left, 20);
+        }
+    }
 }
