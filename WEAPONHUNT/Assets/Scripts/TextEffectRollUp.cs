@@ -21,7 +21,7 @@ public class TextEffectRollUp : MonoBehaviour {
     public List<Text> CreditsListText;
     public Canvas CanvasToShow;
     private float time;
-    private float timeTowait = 10;
+    private float timeTowait = 20;
     int Position = 0;
 
     // Use this for initialization

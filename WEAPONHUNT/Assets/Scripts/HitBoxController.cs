@@ -74,7 +74,7 @@ public class HitBoxController : MonoBehaviour {
         if (enable)
         {
             GameObject enemy = transform.parent.gameObject;
-            EnemyController eController = enemy.GetComponent<EnemyController>();
+            //EnemyController eController = enemy.GetComponent<EnemyController>();
             if (other.gameObject.tag == "Player")
             {
                 //eController.MoveCommand();

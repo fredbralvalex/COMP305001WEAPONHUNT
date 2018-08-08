@@ -399,6 +399,101 @@ Prefab:
       value: 
       objectReference: {fileID: 12800000, guid: 871a741d83bb5d84b8563688ce729cea,
         type: 3}
+    - target: {fileID: 114214745501272362, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: TextToEnemy
+      value: Axel is waiting Prince inside his cave. He will not give up this new
+        precious Weapon!
+      objectReference: {fileID: 0}
+    - target: {fileID: 224789084742834136, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -127
+      objectReference: {fileID: 0}
+    - target: {fileID: 224789084742834136, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 224432702055505578, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224432702055505578, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 224432702055505578, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114283167967647842, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Text
+      value: Continue...
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836229203320024, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836229203320024, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836229203320024, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114836229203320024, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bba3b0adf836cfd40b6228ffbd8b93f3,
+        type: 3}
+    - target: {fileID: 114836229203320024, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114628239613993858, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_Transition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114628239613993858, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 22ad86474b4b13341810624637b07c85,
+        type: 3}
+    - target: {fileID: 114628239613993858, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f7acae9b2c6b70e4eabd74ccee04ba1b,
+        type: 3}
+    - target: {fileID: 114628239613993858, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SpriteState.m_DisabledSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f7acae9b2c6b70e4eabd74ccee04ba1b,
+        type: 3}
+    - target: {fileID: 114214745501272362, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: TextToExhibit
+      value: Several gangmen to fight.
+      objectReference: {fileID: 0}
+    - target: {fileID: 224789084742834136, guid: f80d0f05b8cd79e44861d529c5e43958,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f80d0f05b8cd79e44861d529c5e43958, type: 2}
   m_IsPrefabAsset: 0
@@ -609,6 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b6eb8ac3798a746857aa3ea3ef8122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tryAgainText: {fileID: 0}
   Audio1: {fileID: 8300000, guid: 1f1a92ddefffd0a41827bce89f2b5b4f, type: 3}
   btn1: {fileID: 0}
   var: 0
@@ -633,12 +729,13 @@ AudioSource:
   m_GameObject: {fileID: 1721045082}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243567627349459862, guid: ed8c414f95b5160428bcdb239fff19ea,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 1f1a92ddefffd0a41827bce89f2b5b4f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -19,7 +19,9 @@ public class GameStateController : MonoBehaviour {
     public static int playerScoreN_0 = 0;
     public static int enemiesScoreN_0 = 0;
     public static int coins_0 = 0;
+    public static int TriesAgain = 1;
 
+    public Text tryAgainText;
 
 
     public AudioClip Audio1;
@@ -27,13 +29,28 @@ public class GameStateController : MonoBehaviour {
     public Button btn1;
     public int var;
 
+    public const int coinsTryAgain = 30;
+
     private void Start()
     {
         saver = GameSaveStateController.GetInstance();
-        playerItems = new List<GameObject>();        
+        playerItems = new List<GameObject>();
+        if (tryAgainText != null)
+        {
+            tryAgainText.text = (TriesAgain * coinsTryAgain) + " x";
+        }
         //Add items        
     }
 
+
+    private void StopMenuMusic()
+    {
+        if (MyUnitySingletonAudio.Instance.gameObject != null)
+        {
+            Destroy(MyUnitySingletonAudio.Instance.gameObject);        
+
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -46,6 +63,7 @@ public class GameStateController : MonoBehaviour {
     //Funtions
     public void QuitCommand()
     {
+        StopMenuMusic();
         Application.Quit();
     }
 
@@ -59,8 +77,19 @@ public class GameStateController : MonoBehaviour {
     }
 
     public void LoadGameOverTryAgainScreen()
-    {        
-        SceneManager.LoadScene("GameOverTryAgain");
+    {
+        playerScoreN_0 = playerScoreN;
+        enemiesScoreN_0 = enemiesScoreN;
+        coins_0 = coins;
+
+        if (TriesAgain * coinsTryAgain > coins)
+        {
+            LoadGameOverCreditsScreen();
+        } else
+        {
+            //tryAgainText.text = (TriesAgain * coinsTryAgain) + " x";
+            SceneManager.LoadScene("GameOverTryAgain");
+        }
     }
 
     public void LoadGameOverCreditsScreen()
@@ -81,6 +110,7 @@ public class GameStateController : MonoBehaviour {
         coins_0 = coins;
         saver.life = 3;
         
+        StopMenuMusic();
         SceneManager.LoadScene("Level_1");
     }
 
@@ -113,10 +143,11 @@ public class GameStateController : MonoBehaviour {
     }
 
     public void TryAgainCommand()
-    {
+    {        
         playerScoreN = playerScoreN_0;
         enemiesScoreN = enemiesScoreN_0;
-        coins = coins_0;
+        coins = coins_0 - TriesAgain*(coinsTryAgain);
+        TriesAgain++;
 
         saver.life = 3;
         if (level == 1)

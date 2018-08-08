@@ -39,6 +39,17 @@ public class PlayerController: HittableController, IBoundaryElementController
     private Vector3 lastGroundPosition;
     private Boolean grounded = false;
 
+    [Header("Audio Sources")]
+    public AudioSource PunchAudio;
+    public AudioSource kickAudio;
+    public AudioSource SwordAudio;
+    public AudioSource PikeAudio;
+    public AudioSource AxeAudio;
+    public AudioSource JumpAudio;
+    public AudioSource Coin;
+    public AudioSource Blood;
+
+
     private void LateUpdate()
     {
         lastPosition = transform;
@@ -439,6 +450,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         if (!Dummy && Input.GetKeyDown(GameController.JUMP))
         {
             //Jump
+            JumpAudio.Play();
             playerState = PlayerAction.Jump;
             Animator animation = animator.GetComponent<Animator>();
             if (facingRight)
@@ -534,7 +546,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
         else if (other.gameObject.tag == "Gangman")
         {
-            Rigidbody2D rigidbody = other.gameObject.GetComponent<Rigidbody2D>();
+            //Rigidbody2D rigidbody = other.gameObject.GetComponent<Rigidbody2D>();
             //rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             //playerRB.mass = 100;
         }

@@ -21,7 +21,7 @@ public class StoneBlock : MonoBehaviour {
         if (other.collider.gameObject.tag == "Ground" || other.collider.gameObject.tag == "Water")
         {
             enabled = false;
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 

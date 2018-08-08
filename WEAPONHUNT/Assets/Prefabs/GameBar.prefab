@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Life: {fileID: 1865394251840796, guid: a2c30c26f3aadec4b83fd0ce868f7212, type: 2}
-  GenerateEnemies: 0
+  GenerateEnemies: 1
   RespawnLeft: {fileID: 1900635210932240}
   RespawnRight: {fileID: 1039793329180380}
   GameElements: {fileID: 1577832357847792}
@@ -370,7 +370,7 @@ MonoBehaviour:
   Axe: {fileID: 114220103342613820, guid: d3707ef0e1484524b92f91b1ab62d4f4, type: 2}
   Axe_Selected: {fileID: 114410280672027990, guid: 7094703dd16952e46ab943ce7e51cac2,
     type: 2}
-  lives: 3
+  lives: 0
   MenuOffset: 2.5
   ItemOffset: 0.7
   CameraTop: 0

@@ -52,6 +52,8 @@ namespace Assets.Scripts
         public Image LifeBarBossThreeImage;
 
 
+        
+
         public Image Bare;
         public Image Bare_Selected;
 
@@ -601,7 +603,7 @@ namespace Assets.Scripts
                 playerItems.Remove(life);
                 life.SetActive(false);
                 Destroy(life);
-                GameSaveStateController.GetInstance().life--;
+                GameSaveStateController.GetInstance().life = GameSaveStateController.GetInstance().life - 1;
                 return true;
             }
         }
@@ -705,5 +707,6 @@ namespace Assets.Scripts
         public const string Level01_Title = "The Suburb's Park";
         public const string Level02_Title = "Axel's Cave";
         public const string Level03_Title = "Frozen Hearts";
+
     }
 }
