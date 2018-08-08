@@ -201,6 +201,27 @@ namespace Assets.Scripts
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.tag == "Water")
+            {
+                gameObject.SetActive(false);
+                Destroy(gameObject);
+            }
+            else if (other.gameObject.tag == "Fire")
+            {
+                GettingHit(1);
+            }
+            else if (other.gameObject.tag == "Mush")
+            {
+                GettingHit(1);
+            }
+            else if (other.gameObject.tag == "FallingStone")
+            {
+                GettingHit(1);
+            }
+        }
+
         protected void Attack(float power)
         {
             /*

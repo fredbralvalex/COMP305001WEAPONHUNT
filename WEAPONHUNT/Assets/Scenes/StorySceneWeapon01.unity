@@ -190,7 +190,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 96.71, y: 44.19}
+  m_SizeDelta: {x: 100, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &455520907
 MonoBehaviour:
@@ -425,7 +425,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 189, y: -127}
-  m_SizeDelta: {x: 100, y: 40}
+  m_SizeDelta: {x: 100, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &787177577
 MonoBehaviour:
@@ -709,8 +709,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 1303677121}
-  TextToExhibit: Prince felt unconfortable when using the Weapon. Prince's blood seems
-    like fire, but he desired use more.
+  TextToExhibit: Prince felt unconfortable when using a Precious Weapon. Prince's
+    blood seems like fire, but he desired use more.
 --- !u!1 &1652519801
 GameObject:
   m_ObjectHideFlags: 0

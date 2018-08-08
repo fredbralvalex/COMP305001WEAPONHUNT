@@ -65,4 +65,10 @@ public class PauseController : MonoBehaviour {
         //SceneManager.LoadScene("MainMenu");        
         Application.Quit();
     }
+
+    public void RestartLevel()
+    {
+        //StopMenuMusic();
+        //Application.Quit();
+    }
 }

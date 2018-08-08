@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class GameStateController : MonoBehaviour {
 
-    public GameSaveStateController saver;
     public static int level = 1;
     public static int playerScoreN = 0;
     public static int enemiesScoreN = 0;
@@ -33,7 +32,6 @@ public class GameStateController : MonoBehaviour {
 
     private void Start()
     {
-        saver = GameSaveStateController.GetInstance();
         playerItems = new List<GameObject>();
         if (tryAgainText != null)
         {
@@ -108,7 +106,7 @@ public class GameStateController : MonoBehaviour {
         playerScoreN_0 = playerScoreN;
         enemiesScoreN_0 = enemiesScoreN;
         coins_0 = coins;
-        saver.life = 3;
+        GameSaveStateController.Life = 3;
         
         StopMenuMusic();
         SceneManager.LoadScene("Level_1");
@@ -138,7 +136,8 @@ public class GameStateController : MonoBehaviour {
         LoadStoryScreenOne();
     }
 
-    public void PlayCommand() {        
+    public void PlayCommand() {
+        GameSaveStateController.Life = 3;
         LoadLevelOne();
     }
 
@@ -149,7 +148,7 @@ public class GameStateController : MonoBehaviour {
         coins = coins_0 - TriesAgain*(coinsTryAgain);
         TriesAgain++;
 
-        saver.life = 3;
+        GameSaveStateController.Life = 3;
         if (level == 1)
         {
             LoadLevelOne();

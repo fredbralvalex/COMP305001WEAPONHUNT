@@ -113,7 +113,7 @@ namespace Assets.Scripts
 
             if (lives != 0)
             {
-                GameSaveStateController.GetInstance().life = lives;
+                GameSaveStateController.Life = lives;
             }
             
             PlayerInitialPosition = GetComponentInParent<CameraController>().gameObject;
@@ -239,28 +239,28 @@ namespace Assets.Scripts
         public void StartLevelGame()
         {
             //Add items
-            for(int i = 0; i < GameSaveStateController.GetInstance().life; i++)
+            for(int i = 0; i < GameSaveStateController.Life; i++)
             {
                 playerItems.Add(CreateLife());
             }
             
-            print("On Load Level Lives: " + GameSaveStateController.GetInstance().life);
+            print("On Load Level Lives: " + GameSaveStateController.Life);
             //GenerateBoss(true);
             GeneratePlayer();
             //GenerateGangMan(true);
         }
 
-        private double time;
-        private void VerifyWinning()
-        {
-            time += Time.deltaTime;
+        private double Time;
 
-            if (Player != null && Player.GetComponent<PlayerController>() != null &&
-               Player.GetComponent<PlayerController>().Dummy &&
-               Player.GetComponent<PlayerController>().playerDummyState == PlayerController.PlayerDummyAction.Won)
-            {
-                //TODO
-            }
+        public delegate void PassNextLevelDelegate ();
+
+        private void GoToNextLevel()
+        {
+            //updating hits for the next level
+            GameStateController.hits = Player.GetComponent<PlayerController>().Hits;
+            print("G - On Finishing Level Lives: " + GameSaveStateController.Life);
+
+            GameStateController.LoadNextStoryScreen();
         }
 
         void FixedUpdate()
@@ -281,17 +281,13 @@ namespace Assets.Scripts
             {
                 LevelTitle.enabled = false ;
             }
-
+            /*
             if (Player!= null && Player.GetComponent<PlayerController>() != null &&
                 Player.GetComponent<PlayerController>().Dummy &&
                 Player.GetComponent<PlayerController>().playerDummyState == PlayerController.PlayerDummyAction.Won)
             {
-                //updating hits for the next level
-                GameStateController.hits = Player.GetComponent<PlayerController>().Hits;
-                print("G - On Finishing Level Lives: " + GameSaveStateController.GetInstance().life);
-
-                GameStateController.LoadNextStoryScreen();
-            }
+                
+            }*/
 
             if (Player != null && Player.GetComponent<PlayerController>() != null)
             {
@@ -335,7 +331,7 @@ namespace Assets.Scripts
                 player.GetComponent<PlayerController>().Hits = GameStateController.hits;
                 player.GetComponent<PlayerController>().UpdateLifeBar();
                 Player = player;
-
+                player.GetComponent<PlayerController>().Del = GoToNextLevel;
             } else
             {
                 Player = PlayerTmp;
@@ -603,7 +599,7 @@ namespace Assets.Scripts
                 playerItems.Remove(life);
                 life.SetActive(false);
                 Destroy(life);
-                GameSaveStateController.GetInstance().life = GameSaveStateController.GetInstance().life - 1;
+                GameSaveStateController.Life = GameSaveStateController.Life - 1;
                 return true;
             }
         }

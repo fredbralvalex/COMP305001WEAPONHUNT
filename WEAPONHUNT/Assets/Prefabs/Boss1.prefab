@@ -509,6 +509,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hit: {fileID: 1657018466536438, guid: 3a247ecbe2ecbf544b6a06d1759e993f, type: 2}
   power: 3
+  controller: {fileID: 114514384977827808, guid: 1556b20b6e06da44cb20416255624025,
+    type: 2}
 --- !u!114 &114135240652039492
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -548,6 +550,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hit: {fileID: 1657018466536438, guid: 3a247ecbe2ecbf544b6a06d1759e993f, type: 2}
   power: 3
+  controller: {fileID: 114514384977827808, guid: 1556b20b6e06da44cb20416255624025,
+    type: 2}
 --- !u!114 &114641793342202736
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -39,16 +39,9 @@ public class PlayerController: HittableController, IBoundaryElementController
     private Vector3 lastGroundPosition;
     private Boolean grounded = false;
 
-    [Header("Audio Sources")]
-    public AudioSource PunchAudio;
-    public AudioSource kickAudio;
-    public AudioSource SwordAudio;
-    public AudioSource PikeAudio;
-    public AudioSource AxeAudio;
-    public AudioSource JumpAudio;
-    public AudioSource Coin;
-    public AudioSource Blood;
+    //[Header("Audio Sources")]
 
+    public GameController.PassNextLevelDelegate Del { get; set; }
 
     private void LateUpdate()
     {
@@ -97,7 +90,9 @@ public class PlayerController: HittableController, IBoundaryElementController
                     //print("Won!!!");
                     playerDummyState = PlayerDummyAction.Won;
                     playerState = PlayerAction.Idle;
+                    Del.Invoke();
                     //goto to the next level
+
                 }
                 /*
                 if (playerState == PlayerAction.Won)
@@ -450,7 +445,8 @@ public class PlayerController: HittableController, IBoundaryElementController
         if (!Dummy && Input.GetKeyDown(GameController.JUMP))
         {
             //Jump
-            JumpAudio.Play();
+            GameSaveStateController.GetInstance().GeneratePlayJumpAudio();
+            //obj.GetComponent<PlaySoundController>().PlayAudioSource();
             playerState = PlayerAction.Jump;
             Animator animation = animator.GetComponent<Animator>();
             if (facingRight)
@@ -552,16 +548,20 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
         else if (other.gameObject.tag == "Blood")
         {
+            PlaySoundController c = other.gameObject.GetComponent<PlaySoundController>();
+            c.PlayAudioSource();
             Hits--;
             UpdateLifeBar();
-            other.gameObject.SetActive(false);
-            Destroy(other.gameObject);
+            //other.gameObject.SetActive(false);
+            //Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "Coin")
         {
+            PlaySoundController c = other.gameObject.GetComponent<PlaySoundController>();
+            c.PlayAudioSource();
             GameStateController.coins++;
-            other.gameObject.SetActive(false);
-            Destroy(other.gameObject);
+            //other.gameObject.SetActive(false);
+            //Destroy(other.gameObject);
         }
     }
 

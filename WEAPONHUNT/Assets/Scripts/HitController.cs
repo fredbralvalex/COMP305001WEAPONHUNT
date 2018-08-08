@@ -8,6 +8,7 @@ public class HitController : MonoBehaviour {
     public GameObject hit;
     public float power = 1f;
     public bool Destroyed { get; set; }
+    public PlaySoundController controller;
 
     // Use this for initialization
     void Start () {
@@ -28,6 +29,11 @@ public class HitController : MonoBehaviour {
             //GameObject obj = transform.parent.gameObject;
             objController.Hit = GetActionHit(objController.HitPosition);
             objController.GettingHit(power);
+
+            if (controller!= null)
+            {
+                Instantiate(controller).PlayAudioSource();
+            }
         }
             //HitReacheable(other, true);
     }
