@@ -403,6 +403,7 @@ namespace Assets.Scripts
 
                         boss = Instantiate(BossOne);
                         BossOneController controllerB1 = boss.GetComponent<BossOneController>();
+                        controllerB1.BossMix.TransitionTo(0.001f);
                         controllerB1.LifeBar = LifeBarBossOneImage;
                         break;
                     case 2:
@@ -427,6 +428,7 @@ namespace Assets.Scripts
                         */
                         boss = Instantiate(BossTwo);
                         BossTwoController controllerB2 = boss.GetComponent<BossTwoController>();
+                        controllerB2.BossMix.TransitionTo(0.001f);
                         controllerB2.LifeBar = LifeBarBossTwoImage;
                         break;
                     case 3:
@@ -451,6 +453,7 @@ namespace Assets.Scripts
                         */
                         boss = Instantiate(BossThree);
                         BossThreeController controllerB3 = boss.GetComponent<BossThreeController>();
+                        controllerB3.BossMix.TransitionTo(0.001f);
                         controllerB3.LifeBar = LifeBarBossThreeImage;
                         break;
                 }
@@ -470,7 +473,12 @@ namespace Assets.Scripts
         }
         public void EliminateEnemy(GameObject enemy)
         {
-            PlayerScoreN+=enemy.GetComponent<EnemyController>().GetDefeatPoints();
+            EnemyController controller = enemy.GetComponent<EnemyController>();
+            if(controller.RegularMix != null)
+            {
+                controller.RegularMix.TransitionTo(0.001f);
+            }
+            PlayerScoreN += controller.GetDefeatPoints();
             if (enemy.tag == "Gangman")
             {
                 Gangmen.Remove(enemy);

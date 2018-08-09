@@ -52,5 +52,11 @@ namespace Assets.Scripts
             GameObject prefab = Resources.Load<GameObject>("Audio/audioAxe") as GameObject;
             Instantiate(prefab).GetComponent<PlaySoundController>().PlayAudioSource();
         }
+
+        public void GeneratePlayWinAudio()
+        {
+            GameObject prefab = Resources.Load<GameObject>("Audio/audioWin") as GameObject;
+            Instantiate(prefab).GetComponent<PlaySoundController>().PlayAudioSource();
+        }
     }
 }

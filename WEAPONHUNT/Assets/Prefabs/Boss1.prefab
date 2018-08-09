@@ -582,6 +582,8 @@ MonoBehaviour:
   FacingRight: 1
   command: 2
   Life: 15
+  BossMix: {fileID: 245524907685391584, guid: ed8c414f95b5160428bcdb239fff19ea, type: 2}
+  RegularMix: {fileID: 24500006, guid: ed8c414f95b5160428bcdb239fff19ea, type: 2}
   LifeBar: {fileID: 0}
 --- !u!114 &114916640826986682
 MonoBehaviour:

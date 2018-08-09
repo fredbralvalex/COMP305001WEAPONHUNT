@@ -865,6 +865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db55e138ee014fc4cb7495842cadb29b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Paused: {fileID: 245731639041837094, guid: ed8c414f95b5160428bcdb239fff19ea, type: 2}
+  Unpaused: {fileID: 24500006, guid: ed8c414f95b5160428bcdb239fff19ea, type: 2}
 --- !u!114 &114902493380970214
 MonoBehaviour:
   m_ObjectHideFlags: 1

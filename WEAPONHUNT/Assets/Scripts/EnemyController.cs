@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -25,6 +26,9 @@ namespace Assets.Scripts
         protected bool StateMovement = true;
 
         private Transform lastPosition;
+
+        public AudioMixerSnapshot BossMix;
+        public AudioMixerSnapshot RegularMix;
 
 
         private void LateUpdate()

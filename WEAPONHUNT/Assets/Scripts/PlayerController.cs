@@ -83,7 +83,7 @@ public class PlayerController: HittableController, IBoundaryElementController
             {
                 if (playerState == PlayerAction.Won)
                 {
-                    if(time <= 3)
+                    if(time <= 4)
                     {
                         return;
                     }
@@ -702,6 +702,7 @@ public class PlayerController: HittableController, IBoundaryElementController
 
     public void PlayWinning()
     {
+        GameSaveStateController.GetInstance().GeneratePlayWinAudio();
         playerState = PlayerAction.Won;
         //playerDummyState = PlayerDummyAction.Won;
         Animator animation = animator.GetComponent<Animator>();

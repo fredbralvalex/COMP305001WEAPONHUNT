@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class PauseController : MonoBehaviour {
 
 
-    //public AudioMixerSnapshot Paused;
-    //public AudioMixerSnapshot Unpaused;
+    public AudioMixerSnapshot Paused;
+    public AudioMixerSnapshot Unpaused;
     private Canvas canvas;
     public Scene ActualScene;
 
@@ -34,10 +35,11 @@ public class PauseController : MonoBehaviour {
         //Pause Game
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         //change sound
+        ChangeSound();
     }
 
     public void ChangeSound()
-    {/*
+    {
         if (Time.timeScale == 0)
         {
             //Paused
@@ -47,7 +49,7 @@ public class PauseController : MonoBehaviour {
         {
             //unpaused
             Unpaused.TransitionTo(0.001f);
-        }*/
+        }
     }
 
     public void ReturnToMenu()
