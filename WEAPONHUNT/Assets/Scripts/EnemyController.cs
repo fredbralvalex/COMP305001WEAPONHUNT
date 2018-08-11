@@ -209,20 +209,20 @@ namespace Assets.Scripts
         {
             if (other.gameObject.tag == "Water")
             {
-                gameObject.SetActive(false);
-                Destroy(gameObject);
+                //gameObject.SetActive(false);
+                GettingHit(1000);
             }
             else if (other.gameObject.tag == "Fire")
             {
-                GettingHit(1);
+                //GettingHit(1);
             }
             else if (other.gameObject.tag == "Mush")
             {
-                GettingHit(1);
+                //GettingHit(1);
             }
             else if (other.gameObject.tag == "FallingStone")
             {
-                GettingHit(1);
+                //GettingHit(1);
             }
         }
 
@@ -361,6 +361,7 @@ namespace Assets.Scripts
 
         public override void GettingHit(int power)
         {
+            GettingHit((float)power);
         }
         public override void GettingHit(float power)
         {

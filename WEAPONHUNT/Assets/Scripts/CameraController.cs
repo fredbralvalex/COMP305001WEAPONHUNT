@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour {
     private float fixedY;
     public int Level;
 
+    public bool StopCamera { get; set; }
     float horizontalPosition = 0;
 
     // Use this for initialization
@@ -77,7 +78,7 @@ public class CameraController : MonoBehaviour {
 
         if (player != null && playerController != null)
         {
-            if (gameController.FreezesCamera() || player.transform.position.x < 0)// && playerController.isMovingBack()
+            if (gameController.FreezesCamera() || player.transform.position.x < 0 || StopCamera)// && playerController.isMovingBack()
             {
                 PositionDiff = transform.localPosition - player.transform.position;
             } else

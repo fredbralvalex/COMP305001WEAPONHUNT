@@ -5,6 +5,7 @@ using UnityEngine;
 public class StoneBlock : MonoBehaviour {
 
     public Rigidbody2D rb;
+    public PlaySoundController controller;
 
     [SerializeField]
     public float speed = 1f;
@@ -18,20 +19,40 @@ public class StoneBlock : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other)
     {
         //print(other.collider.gameObject.tag);
-        if (other.collider.gameObject.tag == "Ground" || other.collider.gameObject.tag == "Water")
+        if (other.collider.gameObject.tag == "Water")
         {
             enabled = false;
             Destroy(gameObject);
+        }
+        else if (other.gameObject.tag == "Ground")
+        {
+            if (controller != null)
+            {
+                Instantiate(controller).PlayAudioSource();                
+            }
+                enabled = false;
+                Destroy(gameObject);
+
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         //print("Trigger :: " + other.gameObject.tag);
-        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Water")
+        if (other.gameObject.tag == "Water")
         {
             enabled = false;
             Destroy(gameObject);
+        } else if (other.gameObject.tag == "Ground")
+        {
+            if (controller != null)
+            {
+                Instantiate(controller).PlayAudioSource();
+            } 
+
+                enabled = false;
+                Destroy(gameObject);
+
         }
     }
 }

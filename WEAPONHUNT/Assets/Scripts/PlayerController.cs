@@ -7,13 +7,13 @@ using UnityEngine;
 public class PlayerController: HittableController, IBoundaryElementController
 {
 
-    public bool Dummy;
+    public bool Dummy { get; set; }
     public enum PlayerAction { Move, Idle, Jump, Punch, Kick, Pike, Axe, Fall, Defeated, End, GetUp, Won };
 
     public enum Weapon { Bare, Pike, Axe};
     public Weapon chosenWeapon = Weapon.Bare;
 
-    public enum PlayerDummyAction { MoveToCenter, Won, Nothing };
+    public enum PlayerDummyAction { MoveToCenter, Won, Nothing, Tutorial };
 
     public PlayerDummyAction playerDummyState = PlayerDummyAction.Nothing;
     public float PlayerInitialPosition = 0;
@@ -24,6 +24,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     public bool InPosition = false;
 
     private double time;
+    private double timeBackup;
     float maxJumpHigh;
     public bool moving = false;
     public bool facingRight = true;
@@ -40,6 +41,7 @@ public class PlayerController: HittableController, IBoundaryElementController
     private Boolean grounded = false;
 
     //[Header("Audio Sources")]
+    public TutorialController TutorialController { get; set; }
 
     public GameController.PassNextLevelDelegate Del { get; set; }
 
@@ -65,6 +67,25 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
+    public void ActionsTutorial()
+    {
+        time += Time.deltaTime;
+        ChooseWeapon();
+        Move();
+        Attack();
+        Jump();
+        if (playerState == PlayerAction.Jump)
+        {
+            PerformeJumpFall();
+        }
+
+        if (ValidateTimeToWait())
+        {
+            return;
+        }
+        time = 0;
+    }
+
 	void FixedUpdate() {
         time += Time.deltaTime;
 
@@ -78,12 +99,30 @@ public class PlayerController: HittableController, IBoundaryElementController
             if (playerDummyState == PlayerDummyAction.MoveToCenter)
             {
                 PutPlayerInPosition();
+            } else if (playerDummyState == PlayerDummyAction.Tutorial)
+            {
+                //Tutorial
+                //tutorialController
+                //return;
+                moving = false;
+                playerState = PlayerAction.Idle;
+                Animator animation = animator.GetComponent<Animator>();
+                if (facingRight)
+                {
+                    animation.Play(IDLE);
+                }
+                else
+                {
+                    animation.Play(IDLE_L);
+                }
+
             }
             else
             {
                 if (playerState == PlayerAction.Won)
                 {
-                    if(time <= 4)
+                    timeBackup += Time.deltaTime;
+                    if (time <= 4)
                     {
                         return;
                     }
@@ -92,7 +131,10 @@ public class PlayerController: HittableController, IBoundaryElementController
                     playerState = PlayerAction.Idle;
                     Del.Invoke();
                     //goto to the next level
-
+                    if (timeBackup > 20)
+                    {
+                        Del.Invoke();
+                    }
                 }
                 /*
                 if (playerState == PlayerAction.Won)
@@ -103,6 +145,7 @@ public class PlayerController: HittableController, IBoundaryElementController
                 }*/
             }
          } else {
+            timeBackup = 0;
             ChooseWeapon();
             Blinking();
             //playerRB.mass = 1;
@@ -158,7 +201,7 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
-    private void ChooseWeapon()
+    public void ChooseWeapon()
     {
         if (Input.GetKeyDown(GameController.NO_WEAPON))
         {
@@ -213,10 +256,10 @@ public class PlayerController: HittableController, IBoundaryElementController
         return wait;
     }
 
-    private void Move()
+    public void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        if (!Dummy && (Input.GetKeyDown(GameController.LEFT) || moveHorizontal < 0))
+        if ((!Dummy || playerDummyState == PlayerDummyAction.Tutorial) && (Input.GetKeyDown(GameController.LEFT) || moveHorizontal < 0))
         {
             playerState = PlayerAction.Move;
             //move left
@@ -226,7 +269,7 @@ public class PlayerController: HittableController, IBoundaryElementController
             MoveTransform(Vector2.left);
             moving = true;
         }
-        else if (!Dummy && (Input.GetKeyDown(GameController.RIGHT) || moveHorizontal > 0))
+        else if ((!Dummy || playerDummyState == PlayerDummyAction.Tutorial) && (Input.GetKeyDown(GameController.RIGHT) || moveHorizontal > 0))
         {
             playerState = PlayerAction.Move;
             //move right
@@ -252,9 +295,9 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
-    private void Attack()
+    public void Attack()
     {
-        if (!Dummy)
+        if (!Dummy || playerDummyState == PlayerDummyAction.Tutorial)
         {
             if (Weapon.Bare == chosenWeapon)
             {
@@ -280,10 +323,12 @@ public class PlayerController: HittableController, IBoundaryElementController
                         
                         playerState = PlayerAction.Pike;
                         AttackWeapon(true);
+                        GameSaveStateController.GetInstance().GeneratePlayWeaponMoveAudio();
                     } else
                     {
                         playerState = PlayerAction.Axe;
                         AttackWeapon(false);
+                        GameSaveStateController.GetInstance().GeneratePlayWeaponMoveAudio();
                     }
                 }
             }
@@ -440,9 +485,9 @@ public class PlayerController: HittableController, IBoundaryElementController
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
-        if (!Dummy && Input.GetKeyDown(GameController.JUMP))
+        if ((!Dummy || playerDummyState == PlayerDummyAction.Tutorial) && Input.GetKeyDown(GameController.JUMP))
         {
             //Jump
             GameSaveStateController.GetInstance().GeneratePlayJumpAudio();

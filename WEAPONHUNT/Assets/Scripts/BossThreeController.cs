@@ -83,6 +83,7 @@ class BossThreeController : EnemyController
 
     protected override void PlayAttack()
     {
+        GameSaveStateController.GetInstance().GeneratePlayWeaponMoveAudio();
         Animator animation = animator.GetComponent<Animator>();
         if (FacingRight)
         {

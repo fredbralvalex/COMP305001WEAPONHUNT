@@ -29,6 +29,8 @@ AudioMixerController:
     - 59bc1619fa341e24b943985a135a7503
     - f7bd2d2ac9127ae4c89675ed94d018de
     - fe5e9f2c7a48e584aa42c163760b666f
+    - e40ec13bc276b8848a6aae4df6ed0e2d
+    - b52111b729ec71d4ca195137b43f3a10
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -52,6 +54,8 @@ AudioMixerGroupController:
   - {fileID: 243640027597509818}
   - {fileID: 243807733084522184}
   - {fileID: 243465666609536018}
+  - {fileID: 243439493751324240}
+  - {fileID: 243138657376345806}
   m_Volume: c3133f1c051b64f40a7833cef1ba9a29
   m_Pitch: caa29584521e00e4fa70ca6ba3ffd429
   m_Effects:
@@ -84,16 +88,20 @@ AudioMixerSnapshotController:
   m_FloatValues:
     7b85bd20d993e564a99ec52496d33f64: 1.2
     33c31d704baa8e246a5bc33fb92f7116: 0.67
+    11391261852e70b44a7da8c3301c5741: 0.8
     3e95fe91b4867414487e0d0192e9979f: -16.3
     5ea1c6b16e699ce47a43e80605394d47: 0.057
     252bf81342fc2434d8525fb64abb76a3: 11.5
     a175c2939991cfb4eb951f4dae6460d2: 77.5
     e7de0a846fdcfb143815517210bc1f30: 0.851
+    1263a405e13b56f4e8de9c4e1152aab0: 0.61
     c94fd026136ca7843adf18e47dba5341: 0
     49b2fdb7e7f9ff14e88924ea5f88179a: 0.94
     b520e568f36eba944ae97ec98a7f77a2: 0.803
+    75eba48934bd5564fbad857f7e67291a: -15.6
     fdd0772af33ef3d42a014112aa077a1f: 0.444
     a56a75ba58a80ae46af7cb047ddb30c0: 0.86
+    6b6b2ccaf95007c4c8fd3926972e940e: -5.1
     d9bd0a0cef27c524084ecbe9d7498cd8: -15.3
     9c3c1c2c88b5ab84da53f0d53cdb8cea: 4.31
     5fec5a5e38c74ec4a9d432d2957aaa21: -5.8
@@ -136,6 +144,23 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!243 &243138657376345806
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: brick
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: b52111b729ec71d4ca195137b43f3a10
+  m_Children: []
+  m_Volume: 75eba48934bd5564fbad857f7e67291a
+  m_Pitch: 11391261852e70b44a7da8c3301c5741
+  m_Effects:
+  - {fileID: 244106187963434110}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &243182386850797322
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -166,6 +191,23 @@ AudioMixerGroupController:
   m_Pitch: 5f86d0ed2c8387b498aa75a95dc977ee
   m_Effects:
   - {fileID: 244275988711473380}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &243439493751324240
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Fire
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: e40ec13bc276b8848a6aae4df6ed0e2d
+  m_Children: []
+  m_Volume: 6b6b2ccaf95007c4c8fd3926972e940e
+  m_Pitch: 1263a405e13b56f4e8de9c4e1152aab0
+  m_Effects:
+  - {fileID: 244285212711288478}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
@@ -365,6 +407,19 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!244 &244106187963434110
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 30267cc6d5b3e2c4880b269ec19bf414
+  m_EffectName: Attenuation
+  m_MixLevel: 009f979784d9b9c47bd9a29f234c3c29
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &244275988711473380
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -374,6 +429,19 @@ AudioMixerEffectController:
   m_EffectID: 18d1eefaf70401c4e8740e52b3b99564
   m_EffectName: Attenuation
   m_MixLevel: 2e6b034403d704f4eab757279dd80c73
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &244285212711288478
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 097c40782d1e9f445a453e2efc054788
+  m_EffectName: Attenuation
+  m_MixLevel: ff69962a0f5768e4ca8463a730aecac0
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
